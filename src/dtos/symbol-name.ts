@@ -1,8 +1,8 @@
-import { StringCase } from '@artgen/string-case';
+import { SmartString } from '@artgen/smart-string';
 import { ISymbolName } from '../interfaces/dtos/symbol-name.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
 
-export class SymbolName extends StringCase implements ISymbolName {
+export class SymbolName extends SmartString implements ISymbolName {
   constructor(
     protected readonly symbol: ISymbol,
     protected readonly name: string,

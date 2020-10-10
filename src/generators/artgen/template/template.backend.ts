@@ -1,4 +1,4 @@
-import { StringCase } from '@artgen/string-case';
+import { SmartString } from '@artgen/smart-string';
 import { Backend } from '../../../decorators/backend.decorator';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
 import { IGenerator } from '../../../interfaces/generator-template.interface';
@@ -27,7 +27,7 @@ import { TemplateTemplate } from './template.template';
 })
 export class ArtgenComponentBackend implements IGenerator {
   async render(renderer: IRenderEngine, input: any) {
-    const context = { $name: new StringCase(input.name) };
+    const context = { $name: new SmartString(input.name) };
 
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory;

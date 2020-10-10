@@ -1,4 +1,4 @@
-import { StringCase } from '@artgen/string-case';
+import { SmartString } from '@artgen/smart-string';
 import { join } from 'path';
 import { Backend } from '../../../decorators/backend.decorator';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
@@ -43,7 +43,7 @@ import { ServiceTemplate } from './service.template';
 })
 export class NestJSCRUDBackend implements IGenerator {
   async render(renderer: IRenderEngine, input: any) {
-    const context = { $name: new StringCase(input.moduleName) };
+    const context = { $name: new SmartString(input.moduleName) };
 
     renderer.setContext(context);
     renderer.outputBaseDirectory = join(

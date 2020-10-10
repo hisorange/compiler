@@ -1,3 +1,4 @@
+import { IFileSystem } from '@artgen/file-system';
 import { Constructor, MetadataInspector } from '@loopback/context';
 import * as engine from 'ejs';
 import * as cache from 'lru-cache';
@@ -8,7 +9,6 @@ import { Inject } from '../decorators/inject.decorator';
 import { ITemplateMeta } from '../decorators/template.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IContainer } from '../interfaces/container.interface';

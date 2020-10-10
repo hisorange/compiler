@@ -1,6 +1,6 @@
 {
   "name": "@artgen/kernel",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Work less, do More!",
   "main": "build/index.js",
   "scripts": {
@@ -32,7 +32,8 @@
   },
   "homepage": "https://artgen.io",
   "dependencies": {
-    "@artgen/string-case": "^1.0.5",
+    "@artgen/smart-string": "^1.0.7",
+    "@artgen/file-system": "^1.0.0",
     "@loopback/context": "^3.1.0",
     "crisphooks": "^2.0.1",
     "deepmerge": "^4.2.2",

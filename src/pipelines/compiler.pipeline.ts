@@ -1,5 +1,5 @@
+import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../constants/bindings';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IPath } from '../interfaces/dtos/path.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';

@@ -1,10 +1,10 @@
+import { IFileSystem } from '@artgen/file-system';
 import { Constructor, MetadataInspector } from '@loopback/context';
 import { Bindings } from './constants/bindings';
 import { Timings } from './constants/timings';
 import { IBackendMeta } from './decorators/backend.decorator';
 import { Path } from './dtos/path';
 import { CompilerException } from './exceptions/compiler.exception';
-import { IFileSystem } from './interfaces/components/file-system.interface';
 import { ILogger } from './interfaces/components/logger.interface';
 import { IConfig } from './interfaces/config.interface';
 import { IContainer } from './interfaces/container.interface';

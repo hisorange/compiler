@@ -1,4 +1,4 @@
-import { IStringCase } from '@artgen/string-case';
+import { ISmartString } from '@artgen/smart-string';
 import { Template } from '../../../decorators/template.decorator';
 import { ITemplate } from '../../../interfaces/template.interface';
 
@@ -7,7 +7,7 @@ import { ITemplate } from '../../../interfaces/template.interface';
   path: `<%- model.path %>`,
 })
 export class ModelTemplate implements ITemplate {
-  data(input: { $name: IStringCase }) {
+  data(input: { $name: ISmartString }) {
     return {
       model: {
         name: input.$name.pascalCase.suffix('Model'),

@@ -1,9 +1,8 @@
+import { FileSystem, IFileSystem } from '@artgen/file-system';
 import { Provider } from '@loopback/context';
-import { Volume } from 'memfs/lib/volume';
 import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 
 /**
@@ -27,13 +26,13 @@ export class MemoryFileSystemProvider implements Provider<IFileSystem> {
    */
   constructor(@Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory) {
     this.logger = loggerFactory.create({
-      label: ['MemoryFileSystem'],
+      label: ['FileSystem'],
     });
   }
 
   value(): IFileSystem {
     this.logger.info('New volume has been created!');
 
-    return new Volume();
+    return new FileSystem();
   }
 }

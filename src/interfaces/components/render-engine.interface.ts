@@ -1,7 +1,7 @@
+import { IFileSystem } from '@artgen/file-system';
 import { Constructor } from '../constructor.interface';
 import { ISymbolData } from '../symbol-data.interface';
 import { ITemplate } from '../template.interface';
-import { IFileSystem } from './file-system.interface';
 
 /**
  * Code template rendering, used by the renderers to render the source code

@@ -1,3 +1,4 @@
+import { IFileSystem } from '@artgen/file-system';
 import { BindingKey } from '@loopback/context';
 import { Tokenizer } from '../components/tokenizer';
 import { FileSystemFactory } from '../factories/file-system.factory';
@@ -5,7 +6,6 @@ import { GrammarFactory } from '../factories/grammar.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { RenderEngineFactory } from '../factories/render-engine.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IConfig } from '../interfaces/config.interface';

@@ -1,6 +1,6 @@
-import { IStringCase } from '@artgen/string-case';
+import { ISmartString } from '@artgen/smart-string';
 
-export interface ISymbolName extends IStringCase {
+export interface ISymbolName extends ISmartString {
   /**
    * Fully qualified name concataned with the parent symbol's name.
    */

@@ -1,4 +1,4 @@
-import { IStringCase } from '@artgen/string-case';
+import { ISmartString } from '@artgen/smart-string';
 import { Template } from '../../../../decorators/template.decorator';
 import { ITemplate } from '../../../../interfaces/template.interface';
 
@@ -11,7 +11,7 @@ export class ReadDtoTemplate implements ITemplate {
     return {};
   }
 
-  data(input: { $name: IStringCase }) {
+  data(input: { $name: ISmartString }) {
     return {
       dto: {
         read: {

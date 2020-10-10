@@ -1,3 +1,4 @@
+import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
@@ -7,7 +8,6 @@ import { ReaderException } from '../exceptions/reader.exception';
 import { LoggerFactory } from '../factories/logger.factory';
 import { ICollection } from '../interfaces/collection.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IConfig } from '../interfaces/config.interface';
 import { ICharacter } from '../interfaces/dtos/character.interface';

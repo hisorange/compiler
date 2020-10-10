@@ -1,4 +1,4 @@
-import { IStringCase } from '@artgen/string-case';
+import { ISmartString } from '@artgen/smart-string';
 import { ISymbol } from './dtos/symbol.interface';
 import { ISymbolDataProvider } from './symbol-data-provider.interface';
 
@@ -9,7 +9,7 @@ export type ISymbolDataTypes =
   | boolean
   | ISymbolData
   | ISymbolData[]
-  | IStringCase;
+  | ISmartString;
 
 export type ISymbolDataCreator<R> = (
   context: ISymbol,

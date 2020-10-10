@@ -1,4 +1,4 @@
-import { IStringCase } from '@artgen/string-case';
+import { ISmartString } from '@artgen/smart-string';
 import { Template } from '../../../decorators/template.decorator';
 import { ITemplate } from '../../../interfaces/template.interface';
 
@@ -15,7 +15,7 @@ export class ServiceTemplate implements ITemplate {
     };
   }
 
-  data(input: { $name: IStringCase }) {
+  data(input: { $name: ISmartString }) {
     return {
       service: {
         name: input.$name.pascalCase.suffix('Service'),

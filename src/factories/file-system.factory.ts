@@ -1,7 +1,6 @@
-import { Volume } from 'memfs/lib/volume';
+import { FileSystem, IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
-import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IFactory } from '../interfaces/factory.interface';
 import { LoggerFactory } from './logger.factory';
@@ -31,6 +30,6 @@ export class FileSystemFactory implements IFactory<null, IFileSystem> {
   create(): IFileSystem {
     this.logger.info('New file system has been created!');
 
-    return new Volume();
+    return new FileSystem();
   }
 }
