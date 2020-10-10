@@ -1,0 +1,19 @@
+# Code coverage riport
+coverage
+
+# Node
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+
+# Build artifacts
+build/
+tsconfig.tsbuildinfo
+package-lock.json
+
+temp
+.build-log
+yarn-error.log
+.artgenrc

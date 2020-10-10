@@ -1,0 +1,29 @@
+# Source
+**/*.ts
+*.ts
+
+# Definitions
+!/build/**/*.d.ts
+!/build/*.d.ts
+
+# Sources
+/.editorconfig
+/.github
+/.gitignore
+/.prettierignore
+/.prettierrc
+/.vscode
+/grammars
+/jest.config.js
+/src
+/tests
+/tsconfig.json
+/tsconfig.prod.json
+/tsconfig.test.json
+/tslint.json
+.artgenrc
+
+# Lock files
+/package-lock.json
+/yarn.lock
+/yarn-error.log

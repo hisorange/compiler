@@ -1,0 +1,40 @@
+name: 'Publish NPM Package'
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish-release:
+    name: 'Publish NPM Package'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.0.0
+
+      - name: Install
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Lint Tests
+        run: yarn lint:test
+
+      - name: Build Production
+        run: yarn build:prod
+
+      - name: Publish Package
+        uses: pascalgn/npm-publish-action@06e0830ea83eea10ed4a62654eeaedafb8bf50fc
+        with:
+          tag_name: 'v%s'
+          tag_message: 'v%s'
+          commit_pattern: "^Release (\\S+)"
+          workspace: '.'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

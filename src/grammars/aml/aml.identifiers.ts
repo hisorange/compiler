@@ -1,0 +1,24 @@
+// Identifiers defined by the AML grammar
+export enum AMLIdentifier {
+  EOL = 'EOL',
+  SPACE = 'SPACE',
+  WS = 'WS',
+  LETTER = 'LETTER',
+  TYPE_NAME = 'TYPE_NAME',
+  TYPE = 'TYPE',
+  FIELD_NAME = 'FIELD_NAME',
+  FIELD = 'FIELD',
+  MESSAGE_NAME = 'MESSAGE_NAME',
+  MESSAGE = 'MESSAGE',
+  RPC_NAME = 'RPC_NAME',
+  REQUEST = 'REQUEST',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+  RPC = 'RPC',
+  SERVICE_NAME = 'SERVICE_NAME',
+  SERVICE = 'SERVICE',
+  COMMENT = 'COMMENT',
+  SYMBOL_NAME = 'SYMBOL_NAME',
+  SYNTAX = 'SYNTAX'
+}
+    
