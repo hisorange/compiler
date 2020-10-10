@@ -4,14 +4,13 @@ import { Timings } from '../constants/timings';
 import { Inject } from '../decorators/inject.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
+import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IVirtualFileSystem } from '../interfaces/components/virtual-file-system.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 import { IRenderer } from '../interfaces/pipes/renderer.interface';
 
-export class CompilerPipe
-  implements IPipe<ISymbol, Promise<IVirtualFileSystem>> {
+export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
 
   public constructor(
@@ -21,7 +20,7 @@ export class CompilerPipe
     @Inject(Bindings.Collection.Renderer)
     protected readonly renderers: IRenderer[],
     @Inject(Bindings.Provider.OutputFileSystem)
-    protected readonly output: IVirtualFileSystem,
+    protected readonly output: IFileSystem,
   ) {
     // Create a new logger.
     this.logger = loggerFactory.create({
@@ -29,7 +28,7 @@ export class CompilerPipe
     });
   }
 
-  public async pipe(symbol: ISymbol): Promise<IVirtualFileSystem> {
+  public async pipe(symbol: ISymbol): Promise<IFileSystem> {
     this.logger.time(Timings.COMPILING);
 
     this.logger.info('Compiling from the ROOT symbol');

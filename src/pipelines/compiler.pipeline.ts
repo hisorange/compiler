@@ -1,14 +1,13 @@
 import { Bindings } from '../constants/bindings';
-import { IVirtualFileSystem } from '../interfaces/components/virtual-file-system.interface';
+import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IPath } from '../interfaces/dtos/path.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
-export class CompilerPipeline
-  implements IPipe<IPath, Promise<IVirtualFileSystem>> {
+export class CompilerPipeline implements IPipe<IPath, Promise<IFileSystem>> {
   constructor(protected readonly container: IContainer) {}
 
-  async pipe(input: IPath): Promise<IVirtualFileSystem> {
+  async pipe(input: IPath): Promise<IFileSystem> {
     const reader = this.container.getSync(Bindings.Pipe.Reader);
     const parser = this.container.getSync(Bindings.Pipe.Parser);
     const lexer = this.container.getSync(Bindings.Pipe.Lexer);

@@ -8,9 +8,9 @@ import { ComponentMetaData } from '../decorators/component.decorator';
 import { Inject } from '../decorators/inject.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
+import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IRenderEngine } from '../interfaces/components/render-engine.interface';
-import { IVirtualFileSystem } from '../interfaces/components/virtual-file-system.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IRendererComponent } from '../interfaces/renderer-component.interface';
 import { ISymbolData } from '../interfaces/symbol-data.interface';
@@ -62,8 +62,8 @@ export class RenderEngine implements IRenderEngine {
    *
    * @param {LoggerFactory} loggerFactory
    * @param {IEventEmitter} events
-   * @param {IVirtualFileSystem} inputFileSystem
-   * @param {IVirtualFileSystem} outputFileSystem
+   * @param {IFileSystem} inputFileSystem
+   * @param {IFileSystem} outputFileSystem
    * @memberof RenderEngine
    */
   constructor(
@@ -72,9 +72,9 @@ export class RenderEngine implements IRenderEngine {
     @Inject(Bindings.Components.EventEmitter)
     readonly events: IEventEmitter,
     @Inject(Bindings.Provider.InputFileSystem)
-    readonly inputFileSystem: IVirtualFileSystem,
+    readonly inputFileSystem: IFileSystem,
     @Inject(Bindings.Provider.OutputFileSystem)
-    readonly outputFileSystem: IVirtualFileSystem,
+    readonly outputFileSystem: IFileSystem,
     @Inject(Bindings.Container)
     private container: IContainer,
   ) {

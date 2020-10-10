@@ -6,7 +6,6 @@ import { Path } from './dtos/path';
 import { CompilerException } from './exceptions/compiler.exception';
 import { IFileSystem } from './interfaces/components/file-system.interface';
 import { ILogger } from './interfaces/components/logger.interface';
-import { IVirtualFileSystem } from './interfaces/components/virtual-file-system.interface';
 import { IConfig } from './interfaces/config.interface';
 import { IContainer } from './interfaces/container.interface';
 import { IPath } from './interfaces/dtos/path.interface';
@@ -95,10 +94,10 @@ export class Artgen {
   /**
    * Create a virtual file system.
    *
-   * @returns {IVirtualFileSystem}
+   * @returns {IFileSystem}
    * @memberof Artgen
    */
-  public createFileSystem(): IVirtualFileSystem {
+  public createFileSystem(): IFileSystem {
     return this.container.getSync(Bindings.Factory.FileSystem).create();
   }
 
@@ -207,10 +206,10 @@ export class Artgen {
    * Compile an input file into a virtual file system output.
    *
    * @param {(IPath | string)} path
-   * @returns {IVirtualFileSystem}
+   * @returns {IFileSystem}
    * @memberof Artgen
    */
-  public async compile(path: IPath | string): Promise<IVirtualFileSystem> {
+  public async compile(path: IPath | string): Promise<IFileSystem> {
     // Convert the path into a Path object if it's provided as a string.
     if (typeof path === 'string') {
       path = new Path(path);

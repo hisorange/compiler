@@ -1,7 +1,7 @@
 import { Constructor } from '../constructor.interface';
 import { IRendererComponent } from '../renderer-component.interface';
 import { ISymbolData } from '../symbol-data.interface';
-import { IVirtualFileSystem } from './virtual-file-system.interface';
+import { IFileSystem } from './file-system.interface';
 
 /**
  * Code template rendering, used by the renderers to render the source code
@@ -11,18 +11,18 @@ export interface IRenderEngine {
   /**
    * The input file system where the views are stored.
    *
-   * @type {IVirtualFileSystem}
+   * @type {IFileSystem}
    * @memberof IRenderer
    */
-  readonly inputFileSystem: IVirtualFileSystem;
+  readonly inputFileSystem: IFileSystem;
 
   /**
    * The targeted output file system where the compiled code is stored.
    *
-   * @type {IVirtualFileSystem}
+   * @type {IFileSystem}
    * @memberof IRenderer
    */
-  readonly outputFileSystem: IVirtualFileSystem;
+  readonly outputFileSystem: IFileSystem;
 
   /**
    * Base directory where the output is written,
