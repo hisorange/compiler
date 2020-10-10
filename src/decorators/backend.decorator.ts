@@ -1,12 +1,11 @@
 import { ClassDecoratorFactory } from '@loopback/metadata';
 import { Constructor } from '../interfaces/constructor.interface';
-import { IRendererComponent } from '../interfaces/renderer-component.interface';
+import { ITemplate } from '../interfaces/template.interface';
 
 export interface IBackendMeta {
   name: string;
   reference: string;
-  // depends?: Constructor<IGenerator>[],
-  components?: Constructor<IRendererComponent>[];
+  templates?: Constructor<ITemplate>[];
   input?: Object;
   // <3
   author?: {

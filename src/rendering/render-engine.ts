@@ -4,16 +4,16 @@ import * as cache from 'lru-cache';
 import { dirname, join } from 'path';
 import * as walk from 'walkdir';
 import { Bindings } from '../constants/bindings';
-import { ComponentMetaData } from '../decorators/component.decorator';
 import { Inject } from '../decorators/inject.decorator';
+import { ITemplateMeta } from '../decorators/template.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { IFileSystem } from '../interfaces/components/file-system.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IContainer } from '../interfaces/container.interface';
-import { IRendererComponent } from '../interfaces/renderer-component.interface';
 import { ISymbolData } from '../interfaces/symbol-data.interface';
+import { ITemplate } from '../interfaces/template.interface';
 const merge = require('deepmerge');
 const { isPlainObject } = require('is-plain-object');
 
@@ -90,9 +90,9 @@ export class RenderEngine implements IRenderEngine {
     this.logger.info('New instance created!');
   }
 
-  registerComponent(component: Constructor<IRendererComponent>): void {
-    const meta = MetadataInspector.getClassMetadata<ComponentMetaData>(
-      'artgen.component',
+  registerComponent(component: Constructor<ITemplate>): void {
+    const meta = MetadataInspector.getClassMetadata<ITemplateMeta>(
+      'artgen.template',
       component,
     );
     // Register the components.
@@ -374,9 +374,7 @@ export class RenderEngine implements IRenderEngine {
       escape: i => i,
       delimiter: `%`,
       includer: (path, filename) => {
-        const cmp = this.container.getSync<IRendererComponent>(
-          'component.' + path,
-        );
+        const cmp = this.container.getSync<ITemplate>('component.' + path);
 
         return {
           filename: path,
@@ -395,18 +393,16 @@ export class RenderEngine implements IRenderEngine {
   }
 
   renderComponent(ref: string) {
-    const meta = this.container.getSync<ComponentMetaData>(
-      'component-meta.' + ref,
-    );
-    const comp = this.container.getSync<IRendererComponent>('component.' + ref);
+    const meta = this.container.getSync<ITemplateMeta>('component-meta.' + ref);
+    const comp = this.container.getSync<ITemplate>('component.' + ref);
 
     this.context = merge(this.context, comp.data(this.context), {
       isMergeableObject: isPlainObject,
     });
 
     this.write(
-      this.renderString(meta.path, this.context, meta.renderer),
-      this.renderString(comp.render(), this.context, meta.renderer),
+      this.renderString(meta.path, this.context, meta.engine),
+      this.renderString(comp.render(), this.context, meta.engine),
     );
   }
 }

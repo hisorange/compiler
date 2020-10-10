@@ -1,6 +1,6 @@
 import { Constructor } from '../constructor.interface';
-import { IRendererComponent } from '../renderer-component.interface';
 import { ISymbolData } from '../symbol-data.interface';
+import { ITemplate } from '../template.interface';
 import { IFileSystem } from './file-system.interface';
 
 /**
@@ -82,6 +82,6 @@ export interface IRenderEngine {
    */
   write(path: string, content: string): void;
 
-  registerComponent(component: Constructor<IRendererComponent>): void;
+  registerComponent(component: Constructor<ITemplate>): void;
   renderComponent(component: string): void;
 }

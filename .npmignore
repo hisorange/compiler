@@ -20,7 +20,6 @@
 /tsconfig.json
 /tsconfig.prod.json
 /tsconfig.test.json
-/tslint.json
 .artgenrc
 
 # Lock files

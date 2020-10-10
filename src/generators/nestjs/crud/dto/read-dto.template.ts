@@ -1,12 +1,12 @@
 import { IStringCase } from '@artgen/string-case';
-import { Component } from '../../../../decorators/component.decorator';
-import { IRendererComponent } from '../../../../interfaces/renderer-component.interface';
+import { Template } from '../../../../decorators/template.decorator';
+import { ITemplate } from '../../../../interfaces/template.interface';
 
-@Component({
+@Template({
   reference: 'nestjs.crud.dto.read',
   path: `dto/<%- dto.read.path %>`,
 })
-export class ReadDtoComponent implements IRendererComponent {
+export class ReadDtoTemplate implements ITemplate {
   props() {
     return {};
   }

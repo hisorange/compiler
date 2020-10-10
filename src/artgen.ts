@@ -172,8 +172,8 @@ export class Artgen {
         config: {},
       } as any);
 
-    if (meta.components) {
-      for (const c of meta.components) {
+    if (meta.templates) {
+      for (const c of meta.templates) {
         renderer.registerComponent(c);
       }
     }

@@ -2,12 +2,12 @@ import { StringCase } from '@artgen/string-case';
 import { Backend } from '../../../decorators/backend.decorator';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
 import { IGenerator } from '../../../interfaces/generator-template.interface';
-import { ComponentComponent } from './component.component';
+import { TemplateTemplate } from './template.template';
 
 @Backend({
-  name: 'Component Generator',
-  reference: 'artgen.component',
-  components: [ComponentComponent],
+  name: 'Component Backend',
+  reference: 'artgen.template',
+  templates: [TemplateTemplate],
   input: [
     {
       message: `What is component's name?`,

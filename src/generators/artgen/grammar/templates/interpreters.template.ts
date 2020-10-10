@@ -1,12 +1,12 @@
-import { Component } from '../../../../decorators/component.decorator';
+import { Template } from '../../../../decorators/template.decorator';
 import { GrammarSymbol } from '../../../../grammars/wsn/symbols/grammar.symbol';
-import { IRendererComponent } from '../../../../interfaces/renderer-component.interface';
+import { ITemplate } from '../../../../interfaces/template.interface';
 
-@Component({
+@Template({
   reference: 'artgen.grammar.interpreters',
   path: `./<%- interpreters.path %>`,
 })
-export class InterpretersComponent implements IRendererComponent {
+export class InterpretersTemplate implements ITemplate {
   data(input: { $symbol: GrammarSymbol }) {
     return {
       interpreters: {

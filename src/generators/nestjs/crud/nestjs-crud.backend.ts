@@ -3,25 +3,25 @@ import { join } from 'path';
 import { Backend } from '../../../decorators/backend.decorator';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
 import { IGenerator } from '../../../interfaces/generator-template.interface';
-import { ControllerComponent } from './controller.component';
-import { CreateDtoComponent } from './dto/create-dto.component';
-import { ReadDtoComponent } from './dto/read-dto.component';
-import { ModelComponent } from './model.component';
-import { ModuleComponent } from './module.component';
-import { SchemaComponent } from './schema.component';
-import { ServiceComponent } from './service.component';
+import { ControllerTemplate } from './controller.template';
+import { CreateDtoTemplate } from './dto/create-dto.template';
+import { ReadDtoTemplate } from './dto/read-dto.template';
+import { ModelTemplate } from './model.template';
+import { ModuleTemplate } from './module.template';
+import { SchemaTemplate } from './schema.template';
+import { ServiceTemplate } from './service.template';
 
 @Backend({
   name: 'NestJS Module',
   reference: 'nestjs.crud',
-  components: [
-    ControllerComponent,
-    CreateDtoComponent,
-    ModelComponent,
-    ModuleComponent,
-    ReadDtoComponent,
-    SchemaComponent,
-    ServiceComponent,
+  templates: [
+    ControllerTemplate,
+    CreateDtoTemplate,
+    ModelTemplate,
+    ModuleTemplate,
+    ReadDtoTemplate,
+    SchemaTemplate,
+    ServiceTemplate,
   ],
   input: [
     {

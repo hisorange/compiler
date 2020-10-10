@@ -1,14 +1,14 @@
 import { IStringCase } from '@artgen/string-case';
-import { Component } from '../../../decorators/component.decorator';
-import { IRendererComponent } from '../../../interfaces/renderer-component.interface';
-import { ServiceComponent } from './service.component';
+import { Template } from '../../../decorators/template.decorator';
+import { ITemplate } from '../../../interfaces/template.interface';
+import { ServiceTemplate } from './service.template';
 
-@Component({
+@Template({
   reference: 'nestjs.crud.module',
   path: `<%- module.path %>`,
-  depends: [ServiceComponent],
+  depends: [ServiceTemplate],
 })
-export class ModuleComponent implements IRendererComponent {
+export class ModuleTemplate implements ITemplate {
   data(input: { $name: IStringCase }) {
     return {
       module: {

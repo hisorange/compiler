@@ -1,13 +1,13 @@
-import { Component } from '../../../../decorators/component.decorator';
+import { Template } from '../../../../decorators/template.decorator';
 import { GrammarSymbol } from '../../../../grammars/wsn/symbols/grammar.symbol';
 import { ProductionSymbol } from '../../../../grammars/wsn/symbols/production.symbol';
-import { IRendererComponent } from '../../../../interfaces/renderer-component.interface';
+import { ITemplate } from '../../../../interfaces/template.interface';
 
-@Component({
+@Template({
   reference: 'artgen.grammar.tokenizer',
   path: `./<%- tokenizer.path %>`,
 })
-export class TokenizerComponent implements IRendererComponent {
+export class TokenizerTemplate implements ITemplate {
   data(ctx: { $symbol: GrammarSymbol }) {
     return {
       tokenizer: {
