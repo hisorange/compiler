@@ -1,7 +1,7 @@
 import { SmartString } from '@artgen/smart-string';
 import { Backend } from '../../../decorators/backend.decorator';
+import { IBackend } from '../../../interfaces/backend.interface';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
-import { IGenerator } from '../../../interfaces/generator-template.interface';
 import { TemplateTemplate } from './template.template';
 
 @Backend({
@@ -25,7 +25,7 @@ import { TemplateTemplate } from './template.template';
     name: `Zsolo`,
   },
 })
-export class ArtgenComponentBackend implements IGenerator {
+export class TemplateBackend implements IBackend {
   async render(renderer: IRenderEngine, input: any) {
     const context = { $name: new SmartString(input.name) };
 

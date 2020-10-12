@@ -1,5 +1,5 @@
 import { IRenderEngine } from './components/render-engine.interface';
 
-export interface IGenerator {
+export interface IBackend {
   render(renderer: IRenderEngine, input: any): Promise<void>;
 }

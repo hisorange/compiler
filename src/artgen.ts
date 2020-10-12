@@ -5,11 +5,11 @@ import { Timings } from './constants/timings';
 import { IBackendMeta } from './decorators/backend.decorator';
 import { Path } from './dtos/path';
 import { CompilerException } from './exceptions/compiler.exception';
+import { IBackend } from './interfaces/backend.interface';
 import { ILogger } from './interfaces/components/logger.interface';
 import { IConfig } from './interfaces/config.interface';
 import { IContainer } from './interfaces/container.interface';
 import { IPath } from './interfaces/dtos/path.interface';
-import { IGenerator } from './interfaces/generator-template.interface';
 import { IPluginConfig } from './interfaces/plugin/plugin-config.interface';
 import { IPluginManager } from './interfaces/plugin/plugin-manager.interface';
 import { IPlugin } from './interfaces/plugin/plugin.interface';
@@ -123,12 +123,12 @@ export class Artgen {
   }
 
   /**
-   * Register a plugin instance.
+   * Register a backend.
    *
-   * @param {IPlugin<IPluginConfig>} plugin
+   * @param {Constructor<IBackend>} backend
    * @memberof Artgen
    */
-  public backend(backend: Constructor<IGenerator>): void {
+  public backend(backend: Constructor<IBackend>): void {
     const meta = MetadataInspector.getClassMetadata<IBackendMeta>(
       'artgen.backend',
       backend,
@@ -148,7 +148,7 @@ export class Artgen {
       });
     }
 
-    const generator = this.container.getSync<IGenerator>('backend.' + ref);
+    const generator = this.container.getSync<IBackend>('backend.' + ref);
     const meta = this.container.getSync<IBackendMeta>('backend-meta.' + ref);
 
     this.logger.start('Backend invoked', {

@@ -1,8 +1,8 @@
 import { SmartString } from '@artgen/smart-string';
 import { join } from 'path';
 import { Backend } from '../../../decorators/backend.decorator';
+import { IBackend } from '../../../interfaces/backend.interface';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
-import { IGenerator } from '../../../interfaces/generator-template.interface';
 import { ControllerTemplate } from './controller.template';
 import { CreateDtoTemplate } from './dto/create-dto.template';
 import { ReadDtoTemplate } from './dto/read-dto.template';
@@ -41,7 +41,7 @@ import { ServiceTemplate } from './service.template';
     name: `Zsolo`,
   },
 })
-export class NestJSCRUDBackend implements IGenerator {
+export class NestJSCRUDBackend implements IBackend {
   async render(renderer: IRenderEngine, input: any) {
     const context = { $name: new SmartString(input.moduleName) };
 
