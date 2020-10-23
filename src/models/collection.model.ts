@@ -22,21 +22,28 @@ export class Collection<T> implements ICollection<T> {
   /**
    * Initialize a new collection.
    *
-   * @param {T[]} items
+   * @param {T[]} _items
    * @memberof Collection
    */
-  constructor(protected readonly items: T[] = []) {
-    this._length = items.length;
+  constructor(protected readonly _items: T[] = []) {
+    this._length = _items.length;
   }
 
   /**
    * @inheritdoc
    */
   push(item: T): this {
-    this.items.push(item);
+    this._items.push(item);
     this._length++;
 
     return this;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  get items(): T[] {
+    return this._items;
   }
 
   /**
@@ -65,7 +72,7 @@ export class Collection<T> implements ICollection<T> {
    */
   get current(): T | undefined {
     if (this._cursor <= this._length - 1) {
-      return this.items[this._cursor];
+      return this._items[this._cursor];
     } else {
       return undefined;
     }
@@ -76,7 +83,7 @@ export class Collection<T> implements ICollection<T> {
    */
   get next(): T | undefined {
     if (this._cursor + 1 < this._length) {
-      return this.items[this._cursor + 1];
+      return this._items[this._cursor + 1];
     } else {
       return undefined;
     }
@@ -87,7 +94,7 @@ export class Collection<T> implements ICollection<T> {
    */
   get prev(): T | undefined {
     if (this._cursor - 1 >= 0) {
-      return this.items[this._cursor - 1];
+      return this._items[this._cursor - 1];
     } else {
       return undefined;
     }
@@ -120,7 +127,7 @@ export class Collection<T> implements ICollection<T> {
    * @inheritdoc
    */
   consume(amount: number = 1): T[] {
-    return this.advance(amount).items.slice(
+    return this.advance(amount)._items.slice(
       this._cursor - amount,
       this._cursor,
     );
@@ -130,13 +137,13 @@ export class Collection<T> implements ICollection<T> {
    * @inheritdoc
    */
   slice(start: number, length: number = 1): T[] {
-    return this.items.slice(start, start + length);
+    return this._items.slice(start, start + length);
   }
 
   /**
    * @inheritdoc
    */
   clone(): ICollection<T> {
-    return new Collection(this.items).advance(this.cursor);
+    return new Collection(this._items).advance(this.cursor);
   }
 }

@@ -28,6 +28,14 @@ export interface ICollection<T> extends IIterable<T>, IConsumable<T> {
   length: number;
 
   /**
+   * Raw items.
+   *
+   * @type T[]
+   * @memberof ICollection
+   */
+  items: T[];
+
+  /**
    * Slice a chunk from the collection.
    *
    * @param {number} start
