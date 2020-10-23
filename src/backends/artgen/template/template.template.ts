@@ -7,33 +7,32 @@ import { ITemplate } from '../../../interfaces/template.interface';
   engine: {
     delimiter: '?',
   },
-  path: `components/<?- component.path ?>`,
+  path: `templates/<?- template.path ?>`,
 })
 export class TemplateTemplate implements ITemplate {
   data(input: { $name: ISmartString }) {
     return {
       template: {
-        name: input.$name.pascalCase.suffix('Component'),
+        name: input.$name.pascalCase.suffix('Template'),
         namespace: input.$name.kebabCase,
-        path: input.$name.kebabCase.suffix('.component.ts'),
+        path: input.$name.kebabCase.suffix('.template.ts'),
       },
     };
   }
 
   render() {
     return `import { ISmartString } from '@artgen/smart-string';
-import { Template } from '../../../../decorators/template.decorator';
-import { ITemplate } from '../../../../interfaces/template.interface';
+import { Template, ITemplate } from '@artgen/kernel';
 
 @Template({
   reference: 'artgen.<?- template.namespace ?>',
-  path: \`components/<%- <?- template.namespace ?>.path %>\`,
+  path: \`templates/<%- <?- template.namespace ?>.path %>\`,
 })
 export class <?- template.name ?> implements ITemplate {
   data(input: { $name: ISmartString }) {
     return {
       <?- template.namespace ?>: {
-
+        // Template data
       }
     };
   }

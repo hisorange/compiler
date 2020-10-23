@@ -32,6 +32,6 @@ export class TemplateBackend implements IBackend {
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory;
 
-    renderer.renderComponent(`artgen.component`);
+    renderer.renderComponent(`artgen.template`);
   }
 }
