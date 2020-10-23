@@ -35,13 +35,13 @@ export class TokenParserTemplate implements ITemplate {
     <% for(const child of expression.getChildren()) { -%><%- include('artgen.grammar.token-parser', { expression: child }); %>,<% } %>
   ])
 <% } else if (expression.type === 'REPETITION') { %>
-  T.repetition([
+  T.repetition(
     <% for(const child of expression.getChildren()) { -%><%- include('artgen.grammar.token-parser', { expression: child }); %>,<% } %>
-  ])
+  )
 <% } else if (expression.type === 'OPTIONAL') { %>
-  T.optional([
+  T.optional(
     <% for(const child of expression.getChildren()) { -%><%- include('artgen.grammar.token-parser', { expression: child }); %>,<% } %>
-  ])
+  )
 <% } else if (expression.type === 'CONCAT') { %>
   T.concat([
     <% for(const child of expression.getChildren()) { -%><%- include('artgen.grammar.token-parser', { expression: child }); %>,<% } %>
