@@ -1,4 +1,4 @@
-import { Collection } from '../../src/dtos/collection';
+import { Collection } from '../../src/models/collection.model';
 
 describe('Collection', () => {
   describe('.construct()', () => {
