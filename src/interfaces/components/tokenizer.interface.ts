@@ -1,3 +1,4 @@
+import { ICharacter } from '../dtos/character.interface';
 import { IParser } from '../pipes/parser.interface';
 
 export interface ITokenizer {
@@ -73,4 +74,7 @@ export interface ITokenizer {
    * @memberof ITokenizer
    */
   resolve(identifier: string): IParser;
+
+  prepare(): void;
+  lastParserCharacter(): ICharacter | null;
 }

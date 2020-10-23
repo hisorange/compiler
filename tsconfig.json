@@ -4,7 +4,7 @@
     "module": "commonjs",
     "allowJs": false,
     "checkJs": false,
-    "declaration": false,
+    "declaration": true,
     "sourceMap": true,
     "outDir": "./build",
     "rootDir": "./src",

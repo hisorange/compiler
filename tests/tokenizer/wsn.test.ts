@@ -1,7 +1,7 @@
 import { Tokenizer } from '../../src/components/tokenizer.old';
 import { Character } from '../../src/dtos/character';
 import { Path } from '../../src/dtos/path';
-import { createTokenizer } from '../../src/grammars/wsn/wsn.tokenizer';
+import { createTokenizer } from '../../src/frontends/wsn/wsn.tokenizer';
 import { ICharacter } from '../../src/interfaces/dtos/character.interface';
 import { Collection } from '../../src/models/collection.model';
 
@@ -24,7 +24,6 @@ export function createCharacters(input: string) {
 }
 
 const loggerFactory: any = { create: () => console };
-
 
 describe('WSN', () => {
   describe('Language', () => {

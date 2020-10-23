@@ -6,7 +6,6 @@ export interface IBackendMeta {
   name: string;
   reference: string;
   templates?: Constructor<ITemplate>[];
-  input?: Object;
   // <3
   author?: {
     name: string;

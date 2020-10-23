@@ -4,15 +4,12 @@ import { Bindings } from './constants/bindings';
 import { Timings } from './constants/timings';
 import { IBackendMeta } from './decorators/backend.decorator';
 import { Path } from './dtos/path';
-import { CompilerException } from './exceptions/compiler.exception';
-import { IBackend } from './interfaces/backend.interface';
+import { IBackend, IGenerator } from './interfaces/backend.interface';
 import { ILogger } from './interfaces/components/logger.interface';
 import { IConfig } from './interfaces/config.interface';
 import { IContainer } from './interfaces/container.interface';
 import { IPath } from './interfaces/dtos/path.interface';
-import { IPluginConfig } from './interfaces/plugin/plugin-config.interface';
-import { IPluginManager } from './interfaces/plugin/plugin-manager.interface';
-import { IPlugin } from './interfaces/plugin/plugin.interface';
+import { IFrontend } from './interfaces/frontend.interface';
 import { CompilerPipeline } from './pipelines/compiler.pipeline';
 import { ContainerProvider } from './providers/container.provider';
 
@@ -39,15 +36,6 @@ export class Artgen {
   protected readonly logger: ILogger;
 
   /**
-   * Alows us to proxy plugin registering request from the main instance.
-   *
-   * @protected
-   * @type {IPluginManager}
-   * @memberof Artgen
-   */
-  protected readonly pluginManager: IPluginManager;
-
-  /**
    * Creates an instance of Artgen.
    *
    * @param {Partial<IConfig>} [config={}]
@@ -69,12 +57,6 @@ export class Artgen {
 
     // Create a custom logger for the main instance.
     this.logger = this.createLogger(['Kernel']);
-
-    // Resolve the proxied components.
-    this.pluginManager = this.container.getSync(
-      Bindings.Components.PluginManager,
-    );
-
     this.logger.info('Systems ready to rock!');
   }
 
@@ -115,11 +97,21 @@ export class Artgen {
   /**
    * Register a plugin instance.
    *
-   * @param {IPlugin<IPluginConfig>} plugin
+   * @param {IFrontend<IPluginConfig>} plugin
    * @memberof Artgen
    */
-  public plugin(plugin: IPlugin<IPluginConfig>): void {
-    this.pluginManager.register(plugin);
+  public frontend(frontend: Constructor<IFrontend>): void {
+    this.setExtension('frontend', frontend);
+  }
+
+  /**
+   * Register a generator.
+   *
+   * @param {Constructor<IGenerator>} generator
+   * @memberof Artgen
+   */
+  public generator(generator: Constructor<IGenerator>): void {
+    this.setExtension('generator', generator);
   }
 
   /**
@@ -129,77 +121,39 @@ export class Artgen {
    * @memberof Artgen
    */
   public backend(backend: Constructor<IBackend>): void {
-    const meta = MetadataInspector.getClassMetadata<IBackendMeta>(
-      'artgen.backend',
-      backend,
-    );
-    // Register the components.
-    this.container.bind('backend.' + meta.reference).toClass(backend);
-    this.container.bind('backend-meta.' + meta.reference).to(meta);
+    this.setExtension('backend', backend);
   }
 
+  /**
+   * Register a decorated extension with it's meta.
+   *
+   * @param ref
+   * @param extension
+   */
+  protected setExtension(ref: string, extension: Constructor<any>): void {
+    const meta = MetadataInspector.getClassMetadata<IBackendMeta>(
+      'artgen.' + ref,
+      extension,
+    );
+    // Register the components.
+    this.container
+      .bind(ref + '.' + meta.reference)
+      .toClass(extension)
+      .tag(ref);
+    this.container
+      .bind(ref + '-meta.' + meta.reference)
+      .to(meta)
+      .tag(ref + '-meta');
+  }
+
+  /**
+   * Run the generator with the given input, or run a prompt.
+   */
   public async generate(
     ref: string,
-    getConfig?: GeneratorInput | Object,
+    input?: GeneratorInput | Object,
   ): Promise<IFileSystem> {
-    if (!this.container.contains('backend.' + ref)) {
-      throw new CompilerException(`Generator doest not exists`, {
-        reference: ref,
-      });
-    }
-
-    const generator = this.container.getSync<IBackend>('backend.' + ref);
-    const meta = this.container.getSync<IBackendMeta>('backend-meta.' + ref);
-
-    this.logger.start('Backend invoked', {
-      backend: meta.name,
-    });
-
-    let input = {};
-
-    if (getConfig) {
-      if (typeof getConfig === 'function') {
-        input = await getConfig(meta.input);
-      } else {
-        input = getConfig;
-      }
-    }
-
-    const renderer = this.container
-      .getSync(Bindings.Factory.RenderEngine)
-      .create({
-        id: meta.name,
-        config: {},
-      } as any);
-
-    if (meta.templates) {
-      for (const c of meta.templates) {
-        renderer.registerComponent(c);
-      }
-    }
-
-    await generator.render(renderer, input);
-
-    if (meta.author) {
-      this.logger.fav(
-        `Thanks for ${meta.author.name} for this awesome generator!`,
-      );
-    }
-
-    renderer.write(
-      '.artgenrc',
-      JSON.stringify(
-        {
-          mode: 'generator',
-          reference: ref,
-          input,
-        },
-        null,
-        2,
-      ),
-    );
-
-    return this.container.getSync(Bindings.Provider.OutputFileSystem);
+    return this.container.getSync(Bindings.Pipe.Generator).pipe({ ref, input });
   }
 
   /**
@@ -217,9 +171,6 @@ export class Artgen {
 
     this.logger.time(Timings.OVERALL);
     this.logger.start('Compiling input path', { path });
-
-    // Bootstrap plugin before any process is executed.
-    this.pluginManager.invoke();
 
     try {
       const output = await new CompilerPipeline(this.container).pipe(path);

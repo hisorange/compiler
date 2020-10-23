@@ -1,5 +1,5 @@
 import { Template } from '../../../../decorators/template.decorator';
-import { GrammarSymbol } from '../../../../grammars/wsn/symbols/grammar.symbol';
+import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol';
 import { ITemplate } from '../../../../interfaces/template.interface';
 
 // Snippet

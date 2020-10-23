@@ -13,7 +13,7 @@
 /.prettierignore
 /.prettierrc
 /.vscode
-/grammars
+/frontends
 /jest.config.js
 /src
 /tests

@@ -82,6 +82,6 @@ export interface IRenderEngine {
    */
   write(path: string, content: string): void;
 
-  registerComponent(component: Constructor<ITemplate>): void;
-  renderComponent(component: string): void;
+  registerTemplate(template: Constructor<ITemplate>): void;
+  renderTemplate(template: string): void;
 }

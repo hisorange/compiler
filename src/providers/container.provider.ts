@@ -1,19 +1,16 @@
 import {
   BindingScope,
   Context as Container,
-  Provider
+  Provider,
 } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
-import { PluginManager } from '../components/plugin-manager';
-import { Tokenizer } from '../components/tokenizer.old';
 import { Bindings } from '../constants/bindings';
 import { FileSystemFactory } from '../factories/file-system.factory';
-import { GrammarFactory } from '../factories/grammar.factory';
 import { LoggerFactory } from '../factories/logger.factory';
-import { RenderEngineFactory } from '../factories/render-engine.factory';
 import { SymbolTable } from '../iml/symbol-table';
 import { IContainer } from '../interfaces/container.interface';
 import { CompilerPipe } from '../pipes/compiler.pipe';
+import { GeneratorPipe } from '../pipes/generator.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
 import { ParserPipe } from '../pipes/parser.pipe';
@@ -92,7 +89,6 @@ export class ContainerProvider implements Provider<IContainer> {
   protected bindCollections(container: IContainer): void {
     const namespace = Bindings.Collection;
 
-    container.bind(namespace.Plugin).to([]);
     container.bind(namespace.Grammar).to([]);
     container.bind(namespace.Lexer).to([]);
     container.bind(namespace.Interpreter).to([]);
@@ -140,8 +136,6 @@ export class ContainerProvider implements Provider<IContainer> {
     const namespace = Bindings.Factory;
 
     container.bind(namespace.Logger).toClass(LoggerFactory);
-    container.bind(namespace.RenderEngine).toClass(RenderEngineFactory);
-    container.bind(namespace.Grammar).toClass(GrammarFactory);
     container.bind(namespace.FileSystem).toClass(FileSystemFactory);
   }
 
@@ -155,6 +149,7 @@ export class ContainerProvider implements Provider<IContainer> {
   protected bindPipes(container: IContainer): void {
     const namespace = Bindings.Pipe;
 
+    container.bind(namespace.Generator).toClass(GeneratorPipe);
     container.bind(namespace.Reader).toClass(ReaderPipe);
     container.bind(namespace.Parser).toClass(ParserPipe);
     container.bind(namespace.Lexer).toClass(LexerPipe);
@@ -180,16 +175,9 @@ export class ContainerProvider implements Provider<IContainer> {
       .inScope(BindingScope.CONTEXT);
 
     container
-      .bind(namespace.PluginManager)
-      .toClass(PluginManager)
-      .inScope(BindingScope.CONTEXT);
-
-    container
       .bind(namespace.SymbolTable)
       .toClass(SymbolTable)
       .inScope(BindingScope.CONTEXT);
-
-    container.bind(namespace.Tokenizer).toClass(Tokenizer);
 
     container.bind(namespace.RenderEngine).toClass(RenderEngine);
   }

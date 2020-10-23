@@ -1,13 +1,16 @@
 export * from './artgen';
-export * from './backends/artgen/backend/backend.backend';
+// Backends
+export * from './backends/artgen/build-log/build-log.backend';
 export * from './backends/artgen/grammar/grammar.backend';
-export * from './backends/artgen/template/template.backend';
-export * from './backends/nestjs/crud/nestjs-crud.backend';
 export * from './decorators/template.decorator';
 export * from './exceptions';
-// Plugins, grammars for compiling.
-export * from './grammars/aml/aml.plugin';
-export * from './grammars/wsn/wsn.plugin';
+// Frontends
+export * from './frontends/aml/aml.frontend';
+export * from './frontends/wsn/wsn.frontend';
+// Generators
+export * from './generators/artgen/backend/backend.generator';
+export * from './generators/artgen/template/template.generator';
+export * from './generators/nestjs/crud/nestjs-crud.generator';
+// Misc
 export * from './interfaces/components/logger.interface';
 export * from './interfaces/template.interface';
-export * from './plugins/build-log/build-log.plugin';

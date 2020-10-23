@@ -10,7 +10,7 @@ import { ICharacter } from '../interfaces/dtos/character.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
 import { IParser } from '../interfaces/pipes/parser.interface';
 
-export class Tokenizer implements ITokenizer {
+export abstract class Tokenizer implements ITokenizer {
   protected readonly logger: ILogger;
   protected readonly symbolMap = new Map<string, IParser>();
   protected lastChar: ICharacter | null = null;
@@ -24,6 +24,8 @@ export class Tokenizer implements ITokenizer {
     });
   }
 
+  abstract prepare(): void;
+
   lastParserCharacter(): ICharacter | null {
     return this.lastChar;
   }
@@ -32,7 +34,10 @@ export class Tokenizer implements ITokenizer {
     if (characters.length) {
       const lastChar = characters[characters.length - 1];
 
-      if (!this.lastChar || lastChar.position.index > this.lastChar.position.index) {
+      if (
+        !this.lastChar ||
+        lastChar.position.index > this.lastChar.position.index
+      ) {
         this.lastChar = lastChar;
       }
     }
@@ -91,10 +96,10 @@ export class Tokenizer implements ITokenizer {
       if (
         characters.isValid &&
         literal ===
-        characters
-          .slice(characters.cursor, length)
-          .map(character => character.value)
-          .join('')
+          characters
+            .slice(characters.cursor, length)
+            .map(character => character.value)
+            .join('')
       ) {
         token = this.createToken(
           characters.slice(characters.cursor, length),

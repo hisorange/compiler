@@ -90,7 +90,7 @@ export class RenderEngine implements IRenderEngine {
     this.logger.info('New instance created!');
   }
 
-  registerComponent(component: Constructor<ITemplate>): void {
+  registerTemplate(component: Constructor<ITemplate>): void {
     const meta = MetadataInspector.getClassMetadata<ITemplateMeta>(
       'artgen.template',
       component,
@@ -374,7 +374,7 @@ export class RenderEngine implements IRenderEngine {
       escape: i => i,
       delimiter: `%`,
       includer: (path, filename) => {
-        const cmp = this.container.getSync<ITemplate>('component.' + path);
+        const cmp = this.container.getSync<ITemplate>('template.' + path);
 
         return {
           filename: path,
@@ -392,9 +392,9 @@ export class RenderEngine implements IRenderEngine {
     return this.engine.render(input, context, options);
   }
 
-  renderComponent(ref: string) {
-    const meta = this.container.getSync<ITemplateMeta>('component-meta.' + ref);
-    const comp = this.container.getSync<ITemplate>('component.' + ref);
+  renderTemplate(ref: string) {
+    const meta = this.container.getSync<ITemplateMeta>('template-meta.' + ref);
+    const comp = this.container.getSync<ITemplate>('template.' + ref);
 
     this.context = merge(this.context, comp.data(this.context), {
       isMergeableObject: isPlainObject,

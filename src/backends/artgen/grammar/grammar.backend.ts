@@ -1,5 +1,5 @@
 import { Backend } from '../../../decorators/backend.decorator';
-import { GrammarSymbol } from '../../../grammars/wsn/symbols/grammar.symbol';
+import { GrammarSymbol } from '../../../frontends/wsn/symbols/grammar.symbol';
 import { IBackend } from '../../../interfaces/backend.interface';
 import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
 import { GrammarTemplate } from './templates/grammar.template';
@@ -9,7 +9,7 @@ import { LexersTemplate } from './templates/lexers.template';
 import { TokenizerTemplate } from './templates/tokenizer.template';
 
 @Backend({
-  name: 'Grammar Generator',
+  name: 'Grammar Backend',
   reference: 'artgen.grammar',
   templates: [
     GrammarTemplate,
@@ -21,9 +21,14 @@ import { TokenizerTemplate } from './templates/tokenizer.template';
 })
 export class GrammarBackend implements IBackend {
   async render(renderer: IRenderEngine, input: GrammarSymbol) {
-    const context = { grammar: input };
+    const context = { $symbol: input };
 
     renderer.setContext(context);
-    renderer.renderComponent(`artgen.grammar.identifier`);
+
+    renderer.renderTemplate('artgen.grammar.interpreters');
+    renderer.renderTemplate('artgen.grammar.lexers');
+    renderer.renderTemplate('artgen.grammar.identifier');
+    renderer.renderTemplate('artgen.grammar.tokenizer');
+    renderer.renderTemplate('artgen.grammar.grammar');
   }
 }

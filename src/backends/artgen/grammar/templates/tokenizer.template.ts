@@ -1,6 +1,6 @@
 import { Template } from '../../../../decorators/template.decorator';
-import { GrammarSymbol } from '../../../../grammars/wsn/symbols/grammar.symbol';
-import { ProductionSymbol } from '../../../../grammars/wsn/symbols/production.symbol';
+import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol';
+import { ProductionSymbol } from '../../../../frontends/wsn/symbols/production.symbol';
 import { ITemplate } from '../../../../interfaces/template.interface';
 
 @Template({
