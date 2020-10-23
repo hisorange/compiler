@@ -1,6 +1,6 @@
 import { IFileSystem } from '@artgen/file-system';
 import { BindingKey } from '@loopback/context';
-import { Tokenizer } from '../components/tokenizer';
+import { Tokenizer } from '../components/tokenizer.old';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { GrammarFactory } from '../factories/grammar.factory';
 import { LoggerFactory } from '../factories/logger.factory';

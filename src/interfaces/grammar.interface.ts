@@ -1,4 +1,4 @@
-import { Tokenizer } from '../components/tokenizer';
+import { Tokenizer } from '../components/tokenizer.old';
 import { ICollection } from './collection.interface';
 import { ICharacter } from './dtos/character.interface';
 import { IParserResult } from './parser-result.interface';

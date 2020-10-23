@@ -1,4 +1,4 @@
-import { Tokenizer } from '../../components/tokenizer';
+import { Tokenizer } from '../../components/tokenizer.old';
 import { AMLIdentifier } from './aml.identifiers';
 
 export function createTokenizer(T: Tokenizer) {

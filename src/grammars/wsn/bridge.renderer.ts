@@ -1,9 +1,9 @@
-import { GrammarTemplate } from '../../generators/artgen/grammar/templates/grammar.template';
-import { IdentifierTemplate } from '../../generators/artgen/grammar/templates/identifier.template';
-import { InterpretersTemplate } from '../../generators/artgen/grammar/templates/interpreters.template';
-import { LexersTemplate } from '../../generators/artgen/grammar/templates/lexers.template';
-import { TokenParserTemplate } from '../../generators/artgen/grammar/templates/token-parser.template';
-import { TokenizerTemplate } from '../../generators/artgen/grammar/templates/tokenizer.template';
+import { GrammarTemplate } from '../../backends/artgen/grammar/templates/grammar.template';
+import { IdentifierTemplate } from '../../backends/artgen/grammar/templates/identifier.template';
+import { InterpretersTemplate } from '../../backends/artgen/grammar/templates/interpreters.template';
+import { LexersTemplate } from '../../backends/artgen/grammar/templates/lexers.template';
+import { TokenParserTemplate } from '../../backends/artgen/grammar/templates/token-parser.template';
+import { TokenizerTemplate } from '../../backends/artgen/grammar/templates/tokenizer.template';
 import { Renderer } from '../../rendering/generic.compiler';
 import { GrammarSymbol } from './symbols/grammar.symbol';
 

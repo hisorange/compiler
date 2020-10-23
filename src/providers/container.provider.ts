@@ -1,11 +1,11 @@
 import {
   BindingScope,
   Context as Container,
-  Provider,
+  Provider
 } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
 import { PluginManager } from '../components/plugin-manager';
-import { Tokenizer } from '../components/tokenizer';
+import { Tokenizer } from '../components/tokenizer.old';
 import { Bindings } from '../constants/bindings';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { GrammarFactory } from '../factories/grammar.factory';

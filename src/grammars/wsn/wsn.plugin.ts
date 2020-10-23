@@ -11,7 +11,7 @@ import { IdentifierLexer } from './lexers/identifier.lexer';
 import { LiteralLexer } from './lexers/literal.lexer';
 import { LogicalLexer } from './lexers/logical.lexer';
 import { ProductionLexer } from './lexers/production.lexer';
-import { createParsers } from './wsn.grammar';
+import { createTokenizer } from './wsn.tokenizer';
 
 /*
 @Grammar({
@@ -47,7 +47,7 @@ export class WSNPlugin implements IPlugin<IPluginConfig> {
 
     // Grammar
     const grammar = grammarFactory.create({ id: 'WSN', extension: 'wsn' });
-    createParsers(grammar.tokenizer);
+    createTokenizer(grammar.tokenizer);
     collections.grammars.push(grammar);
 
     // Lexing
