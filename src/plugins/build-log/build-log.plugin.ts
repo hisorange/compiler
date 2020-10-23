@@ -1,6 +1,8 @@
 import { AsciiTree } from 'oo-ascii-tree';
 import { Bindings } from '../../constants/bindings';
 import { Events } from '../../constants/events';
+import { ICollection } from '../../interfaces/collection.interface';
+import { ICharacter } from '../../interfaces/dtos/character.interface';
 import { INode } from '../../interfaces/dtos/node.interface';
 import { ISymbol } from '../../interfaces/dtos/symbol.interface';
 import { IToken } from '../../interfaces/dtos/token.interface';
@@ -54,6 +56,40 @@ export class BuildLogPlugin implements IPlugin<IPluginConfig> {
   invoke(invoker: IPluginInvoker): void {
     const { renderEngine } = invoker;
     const events = invoker.container.getSync(Bindings.Components.EventEmitter);
+
+    // Capture byte sequence.
+    events.subscribe(Events.READ, (collection: ICollection<ICharacter>) => {
+      const output = [];
+
+      for (const chr of collection.items) {
+        output.push({
+          rawValue: chr.value,
+          charCode: chr.code,
+          position: {
+            index: chr.position.index,
+            line: chr.position.line,
+            column: chr.position.column,
+          },
+        });
+      }
+
+      renderEngine.write(
+        '00-characters.json',
+        JSON.stringify(
+          {
+            pipe: 'reader',
+            product: {
+              meta: {
+                length: output.length,
+              },
+              data: output,
+            },
+          },
+          null,
+          2,
+        ),
+      );
+    });
 
     // Capture token tree.
     events.subscribe(Events.PARSED, (token: IToken) => {
