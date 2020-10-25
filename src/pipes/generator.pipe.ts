@@ -1,4 +1,5 @@
 import { IFileSystem } from '@artgen/file-system';
+import { IRenderEngine } from '@artgen/renderer';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
@@ -6,7 +7,6 @@ import { Inject } from '../decorators/inject.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 

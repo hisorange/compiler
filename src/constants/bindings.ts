@@ -1,10 +1,10 @@
 import { IFileSystem } from '@artgen/file-system';
+import { IRenderEngine } from '@artgen/renderer';
 import { BindingKey } from '@loopback/context';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IConfig } from '../interfaces/config.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IDescriptor } from '../interfaces/descriptor.interface';

@@ -1,10 +1,10 @@
+import { IRenderEngine } from '@artgen/renderer';
 import { AsciiTree } from 'oo-ascii-tree';
 import { Bindings } from '../../../constants/bindings';
 import { Events } from '../../../constants/events';
 import { Backend } from '../../../decorators/backend.decorator';
 import { Inject } from '../../../decorators/inject.decorator';
 import { ICollection } from '../../../interfaces/collection.interface';
-import { IRenderEngine } from '../../../interfaces/components/render-engine.interface';
 import { ICharacter } from '../../../interfaces/dtos/character.interface';
 import { INode } from '../../../interfaces/dtos/node.interface';
 import { IToken } from '../../../interfaces/dtos/token.interface';

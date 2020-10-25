@@ -1,5 +1,5 @@
+import { IRenderEngine } from '@artgen/renderer';
 import { Constructor } from '@loopback/context';
-import { IRenderEngine } from '../components/render-engine.interface';
 import { ISymbol } from '../dtos/symbol.interface';
 import { ISymbolDataProvider } from '../symbol-data-provider.interface';
 import { ISymbolData } from '../symbol-data.interface';

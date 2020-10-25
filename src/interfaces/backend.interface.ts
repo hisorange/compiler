@@ -1,4 +1,4 @@
-import { IRenderEngine } from './components/render-engine.interface';
+import { IRenderEngine } from '@artgen/renderer';
 import { ISymbol } from './dtos/symbol.interface';
 
 export interface IBackend {

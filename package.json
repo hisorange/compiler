@@ -1,6 +1,6 @@
 {
   "name": "@artgen/kernel",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Work less, do More!",
   "main": "build/index.js",
   "scripts": {
@@ -32,21 +32,16 @@
   },
   "homepage": "https://artgen.io",
   "dependencies": {
-    "@artgen/smart-string": "^1.0.7",
     "@artgen/file-system": "^1.0.0",
+    "@artgen/smart-string": "^1.0.7",
+    "@artgen/rendere": "^1.0.0",
     "@loopback/context": "^3.1.0",
     "crisphooks": "^2.0.1",
-    "deepmerge": "^4.2.2",
-    "ejs": "^3.1.5",
-    "is-plain-object": "^5.0.0",
-    "lru-cache": "^6.0.0",
-    "memfs": "^3.1.2",
     "oo-ascii-tree": "^1.12.0",
     "reflect-metadata": "^0.1.13",
     "signale": "^1.4.0",
     "tslib": "^1.11.1",
-    "uuid": "^7.0.2",
-    "walkdir": "^0.4.1"
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@sentry/types": "^5.14.2",

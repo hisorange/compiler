@@ -1,3 +1,4 @@
+import { RenderEngine } from '@artgen/renderer';
 import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
 import { Bindings } from '../constants/bindings';
@@ -13,7 +14,6 @@ import { LexerPipe } from '../pipes/lexer.pipe';
 import { ParserPipe } from '../pipes/parser.pipe';
 import { ReaderPipe } from '../pipes/reader.pipe';
 import { LoggerProvider } from '../providers/logger.provider';
-import { RenderEngine } from '../rendering/render-engine';
 import { MemoryFileSystemProvider } from './memory-file-system.provider';
 import sessionGenerator = require('uuid');
 
