@@ -1,10 +1,7 @@
-import {
-  BindingScope,
-  Context as Container,
-  Provider,
-} from '@loopback/context';
+import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
 import { Bindings } from '../constants/bindings';
+import { Container } from '../container';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { SymbolTable } from '../iml/symbol-table';

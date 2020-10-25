@@ -1,19 +1,16 @@
 import { IFileSystem } from '@artgen/file-system';
-import { Constructor, MetadataInspector } from '@loopback/context';
 import * as engine from 'ejs';
 import * as cache from 'lru-cache';
 import { dirname, join } from 'path';
 import * as walk from 'walkdir';
 import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
-import { ITemplateMeta } from '../decorators/template.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { ISymbolData } from '../interfaces/symbol-data.interface';
-import { ITemplate } from '../interfaces/template.interface';
 const merge = require('deepmerge');
 const { isPlainObject } = require('is-plain-object');
 
@@ -90,16 +87,6 @@ export class RenderEngine implements IRenderEngine {
     this.logger.info('New instance created!');
   }
 
-  registerTemplate(component: Constructor<ITemplate>): void {
-    const meta = MetadataInspector.getClassMetadata<ITemplateMeta>(
-      'artgen.template',
-      component,
-    );
-    // Register the components.
-    this.container.bind('component.' + meta.reference).toClass(component);
-    this.container.bind('component-meta.' + meta.reference).to(meta);
-  }
-
   setContext(context: Object): void {
     this.context = context;
   }
@@ -163,11 +150,7 @@ export class RenderEngine implements IRenderEngine {
    * @inheritdoc
    */
   render(from: string, to: string, context: ISymbolData = {}): void {
-    if (
-      this.inputFileSystem
-        .lstatSync(join(this._inputBaseDirectory, from))
-        .isFile()
-    ) {
+    if (this.inputFileSystem.lstatSync(join(this._inputBaseDirectory, from)).isFile()) {
       this.renderFile(from, to, context);
     } else {
       this.renderDir(from, to, context);
@@ -223,11 +206,7 @@ export class RenderEngine implements IRenderEngine {
    * @param {ISymbolData} [context={}]
    * @memberof RenderEngine
    */
-  protected renderFile(
-    from: string,
-    to: string,
-    context: ISymbolData = {},
-  ): void {
+  protected renderFile(from: string, to: string, context: ISymbolData = {}): void {
     // Check if this needs to compiled or just a copy.
     if (this.checkExtension(from)) {
       this.write(to.replace(/\.ejs$/, ''), this.execute(from, context));
@@ -257,11 +236,7 @@ export class RenderEngine implements IRenderEngine {
    * @param {ISymbolData} [context={}]
    * @memberof RenderEngine
    */
-  protected renderDir(
-    from: string,
-    to: string,
-    context: ISymbolData = {},
-  ): void {
+  protected renderDir(from: string, to: string, context: ISymbolData = {}): void {
     // Remove trailing slashes to ensure a standard input.
     from = this.trimSlashes(from);
     to = this.trimSlashes(to);
@@ -298,9 +273,7 @@ export class RenderEngine implements IRenderEngine {
       path,
     });
 
-    const content = this.inputFileSystem
-      .readFileSync(this.addInputBase(path))
-      .toString();
+    const content = this.inputFileSystem.readFileSync(this.addInputBase(path)).toString();
 
     this.cache.set(path, content);
 
@@ -374,11 +347,11 @@ export class RenderEngine implements IRenderEngine {
       escape: i => i,
       delimiter: `%`,
       includer: (path, filename) => {
-        const cmp = this.container.getSync<ITemplate>('template.' + path);
+        const template = this.container.loadTemplateModule(path);
 
         return {
           filename: path,
-          template: cmp.render(),
+          template: template.module.render(),
         };
       },
     };
@@ -393,16 +366,15 @@ export class RenderEngine implements IRenderEngine {
   }
 
   renderTemplate(ref: string) {
-    const meta = this.container.getSync<ITemplateMeta>('template-meta.' + ref);
-    const comp = this.container.getSync<ITemplate>('template.' + ref);
+    const template = this.container.loadTemplateModule(ref);
 
-    this.context = merge(this.context, comp.data(this.context), {
+    this.context = merge(this.context, template.module.data(this.context), {
       isMergeableObject: isPlainObject,
     });
 
     this.write(
-      this.renderString(meta.path, this.context, meta.engine),
-      this.renderString(comp.render(), this.context, meta.engine),
+      this.renderString(template.meta.path, this.context, template.meta.engine),
+      this.renderString(template.module.render(), this.context, template.meta.engine),
     );
   }
 }

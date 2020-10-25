@@ -1,7 +1,5 @@
 import { IFileSystem } from '@artgen/file-system';
-import { Constructor } from '../constructor.interface';
 import { ISymbolData } from '../symbol-data.interface';
-import { ITemplate } from '../template.interface';
 
 /**
  * Code template rendering, used by the renderers to render the source code
@@ -82,6 +80,5 @@ export interface IRenderEngine {
    */
   write(path: string, content: string): void;
 
-  registerTemplate(template: Constructor<ITemplate>): void;
   renderTemplate(template: string): void;
 }

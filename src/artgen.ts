@@ -1,8 +1,7 @@
 import { IFileSystem } from '@artgen/file-system';
-import { Constructor, MetadataInspector } from '@loopback/context';
+import { Constructor } from '@loopback/context';
 import { Bindings } from './constants/bindings';
 import { Timings } from './constants/timings';
-import { IBackendMeta } from './decorators/backend.decorator';
 import { Path } from './dtos/path';
 import { IBackend, IGenerator } from './interfaces/backend.interface';
 import { ILogger } from './interfaces/components/logger.interface';
@@ -61,7 +60,7 @@ export class Artgen {
   }
 
   /**
-   * Create a logger instance, useful in the CLI and other external applications.
+   * Create a logger instance, useful in the CLI and other external extensions.
    *
    * @param {string[]} label
    * @returns {ILogger}
@@ -74,7 +73,7 @@ export class Artgen {
   }
 
   /**
-   * Create a virtual file system.
+   * Create an empty virtual file system.
    *
    * @returns {IFileSystem}
    * @memberof Artgen
@@ -85,7 +84,7 @@ export class Artgen {
 
   /**
    * Mount an input file system, used to read the input path.
-   * By default Artgen will use an in memory file system.
+   * By default Artgen will use an empty in-memory file system.
    *
    * @param {IFileSystem} input
    * @memberof Artgen
@@ -101,7 +100,7 @@ export class Artgen {
    * @memberof Artgen
    */
   public frontend(frontend: Constructor<IFrontend>): void {
-    this.setExtension('frontend', frontend);
+    this.container.registerFrontendModule(frontend);
   }
 
   /**
@@ -111,7 +110,7 @@ export class Artgen {
    * @memberof Artgen
    */
   public generator(generator: Constructor<IGenerator>): void {
-    this.setExtension('generator', generator);
+    this.container.registerGeneratorModule(generator);
   }
 
   /**
@@ -121,38 +120,13 @@ export class Artgen {
    * @memberof Artgen
    */
   public backend(backend: Constructor<IBackend>): void {
-    this.setExtension('backend', backend);
-  }
-
-  /**
-   * Register a decorated extension with it's meta.
-   *
-   * @param ref
-   * @param extension
-   */
-  protected setExtension(ref: string, extension: Constructor<any>): void {
-    const meta = MetadataInspector.getClassMetadata<IBackendMeta>(
-      'artgen.' + ref,
-      extension,
-    );
-    // Register the components.
-    this.container
-      .bind(ref + '.' + meta.reference)
-      .toClass(extension)
-      .tag(ref);
-    this.container
-      .bind(ref + '-meta.' + meta.reference)
-      .to(meta)
-      .tag(ref + '-meta');
+    this.container.registerBackendModule(backend);
   }
 
   /**
    * Run the generator with the given input, or run a prompt.
    */
-  public async generate(
-    ref: string,
-    input?: GeneratorInput | Object,
-  ): Promise<IFileSystem> {
+  public async generate(ref: string, input?: GeneratorInput | Object): Promise<IFileSystem> {
     return this.container.getSync(Bindings.Pipe.Generator).pipe({ ref, input });
   }
 

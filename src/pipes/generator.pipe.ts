@@ -2,13 +2,11 @@ import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
-import { IGeneratorMeta } from '../decorators/generator.decorator';
 import { Inject } from '../decorators/inject.decorator';
-import { CompilerException } from '../exceptions/compiler.exception';
 import { LoggerFactory } from '../factories/logger.factory';
-import { IGenerator } from '../interfaces/backend.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
+import { IRenderEngine } from '../interfaces/components/render-engine.interface';
 import { IContainer } from '../interfaces/container.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
@@ -31,6 +29,8 @@ export class GeneratorPipe
     protected readonly output: IFileSystem,
     @Inject(Bindings.Container)
     protected readonly container: IContainer,
+    @Inject(Bindings.Components.RenderEngine)
+    protected readonly renderer: IRenderEngine,
   ) {
     // Create a new logger.
     this.logger = loggerFactory.create({
@@ -42,50 +42,31 @@ export class GeneratorPipe
     this.logger.time(Timings.COMPILING);
     this.logger.info('Generating output');
 
-    if (!this.container.contains('generator.' + job.ref)) {
-      throw new CompilerException(`Generator doest not exists`, {
-        reference: job.ref,
-      });
-    }
+    const generator = this.container.loadGeneratorModule(job.ref);
 
-    const generator = this.container.getSync<IGenerator>(
-      'generator.' + job.ref,
-    );
-    const meta = this.container.getSync<IGeneratorMeta>(
-      'generator-meta.' + job.ref,
-    );
-
-    this.logger.start('Generator invoked', {
-      generator: meta.name,
+    this.logger.start('Generator module invoked', {
+      generator: generator.meta.name,
     });
 
     let input = {};
 
     if (job.input) {
       if (typeof job.input === 'function') {
-        input = await job.input(meta.input);
+        input = await job.input(generator.meta.input);
       } else {
         input = job.input;
       }
     }
 
-    const renderer = this.container.getSync(Bindings.Components.RenderEngine);
+    await generator.module.render(this.renderer, job.input);
 
-    if (meta.templates) {
-      for (const c of meta.templates) {
-        renderer.registerTemplate(c);
-      }
-    }
-
-    await generator.render(renderer, job.input);
-
-    if (meta.author) {
+    if (generator.meta.author) {
       this.logger.fav(
-        `Thanks for ${meta.author.name} for this awesome generator!`,
+        `Thanks for ${generator.meta.author.name} for this awesome generator!`,
       );
     }
 
-    renderer.write(
+    this.renderer.write(
       '.artgenrc',
       JSON.stringify(
         {
