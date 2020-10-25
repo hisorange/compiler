@@ -1,19 +1,20 @@
-# Code coverage riport
-coverage
-
 # Node
-node_modules/
+/node_modules/
 
 # IDE
 /.idea
 /.awcache
 
 # Build artifacts
-build/
-tsconfig.tsbuildinfo
-package-lock.json
+/build
+/tsconfig.tsbuildinfo
+/package-lock.json
+/yarn.lock
+/yarn-error.log
 
-temp
+# Artgen artifacts
 .build-log
-yarn-error.log
 .artgenrc
+
+# Code coverage report
+/coverage

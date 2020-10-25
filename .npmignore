@@ -1,28 +1,37 @@
 # Source
 **/*.ts
 *.ts
+src/
 
 # Definitions
-!/build/**/*.d.ts
-!/build/*.d.ts
+!**/*.d.ts
+!*.d.ts
+
+# Source maps
+build/**/*.js.map
 
 # Sources
+/.dependabot
 /.editorconfig
+/.eslintignore
+/.eslintrc.js
+/.eslintrc.test.js
 /.github
 /.gitignore
+/.npmignore
 /.prettierignore
 /.prettierrc
+/.travis.yml
 /.vscode
-/frontends
+/coverage
 /jest.config.js
 /src
 /tests
 /tsconfig.json
 /tsconfig.prod.json
 /tsconfig.test.json
-.artgenrc
-
-# Lock files
-/package-lock.json
 /yarn.lock
-/yarn-error.log
+
+# Artgen artifacts
+.build-log
+.artgenrc
