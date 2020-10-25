@@ -16,9 +16,7 @@ export interface IGeneratorMeta {
 }
 
 export function Generator(spec: IGeneratorMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<IGeneratorMeta>(
-    'artgen.generator',
-    spec,
-    { decoratorName: '@Generator' },
-  );
+  return ClassDecoratorFactory.createDecorator<IGeneratorMeta>('artgen.generator', spec, {
+    decoratorName: '@Generator',
+  });
 }

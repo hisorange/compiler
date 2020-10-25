@@ -23,8 +23,7 @@ import { Collection } from '../models/collection.model';
  * @class ReaderPipe
  * @implements {IPipe<IPath, ICharacter>}
  */
-export class ReaderPipe
-  implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
+export class ReaderPipe implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
   /**
    * Instance's own logger.
    *

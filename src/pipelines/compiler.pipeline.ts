@@ -14,10 +14,6 @@ export class CompilerPipeline implements IPipe<IPath, Promise<IFileSystem>> {
     const intepreter = this.container.getSync(Bindings.Pipe.Interpreter);
     const compiler = this.container.getSync(Bindings.Pipe.Compiler);
 
-    return compiler.pipe(
-      await intepreter.pipe(
-        await lexer.pipe(await parser.pipe(await reader.pipe(input))),
-      ),
-    );
+    return compiler.pipe(await intepreter.pipe(await lexer.pipe(await parser.pipe(await reader.pipe(input)))));
   }
 }

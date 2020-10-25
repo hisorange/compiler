@@ -11,9 +11,7 @@ export class ServiceLexer implements ILexer {
   enter(ctx: Node, token: IToken) {
     return new Node(
       AMLIdentifier.SERVICE,
-      token
-        .getChildren()
-        .find(t => t.type === AMLIdentifier.SERVICE_NAME)?.content,
+      token.getChildren().find(t => t.type === AMLIdentifier.SERVICE_NAME)?.content,
     ).setParent(ctx);
   }
 

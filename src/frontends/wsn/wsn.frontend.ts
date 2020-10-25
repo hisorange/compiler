@@ -15,17 +15,7 @@ import { WSNTokenizer } from './wsn.tokenizer';
   reference: 'wsn',
   extensions: ['wsn'],
   tokenizer: WSNTokenizer,
-  lexers: [
-    GrammarLexer,
-    LiteralLexer,
-    LogicalLexer,
-    IdentifierLexer,
-    ProductionLexer,
-  ],
-  interpreters: [
-    SyntaxInterpreter,
-    ProductionInterpreter,
-    IdentifierInterpreter,
-  ],
+  lexers: [GrammarLexer, LiteralLexer, LogicalLexer, IdentifierLexer, ProductionLexer],
+  interpreters: [SyntaxInterpreter, ProductionInterpreter, IdentifierInterpreter],
 })
 export class WSNFrontend implements IFrontend {}

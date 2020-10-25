@@ -11,9 +11,7 @@ export class MessageLexer implements ILexer {
   enter(ctx: Node, token: IToken) {
     return new Node(
       AMLIdentifier.MESSAGE,
-      token
-        .getChildren()
-        .find(t => t.type === AMLIdentifier.MESSAGE_NAME)?.content,
+      token.getChildren().find(t => t.type === AMLIdentifier.MESSAGE_NAME)?.content,
     ).setParent(ctx);
   }
 

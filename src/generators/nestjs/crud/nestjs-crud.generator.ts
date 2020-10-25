@@ -46,10 +46,7 @@ export class NestJSCrudGenerator implements IGenerator {
     const context = { $name: new SmartString(input.moduleName) };
 
     renderer.setContext(context);
-    renderer.outputBaseDirectory = join(
-      input.baseDirectory,
-      context.$name.kebabCase.toString(),
-    );
+    renderer.outputBaseDirectory = join(input.baseDirectory, context.$name.kebabCase.toString());
 
     renderer.renderTemplate(`nestjs.crud.dto.read`);
     renderer.renderTemplate(`nestjs.crud.dto.create`);

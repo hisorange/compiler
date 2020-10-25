@@ -33,9 +33,7 @@ export const Bindings = {
   Provider: {
     Logger: BindingKey.create<ILogger>('Provider.Logger'),
     InputFileSystem: BindingKey.create<IFileSystem>('Provider.InputFileSystem'),
-    OutputFileSystem: BindingKey.create<IFileSystem>(
-      'Provider.OutputFileSystem',
-    ),
+    OutputFileSystem: BindingKey.create<IFileSystem>('Provider.OutputFileSystem'),
   },
   Factory: {
     FileSystem: BindingKey.create<FileSystemFactory>('Factory.FileSystem'),
@@ -54,8 +52,6 @@ export const Bindings = {
     Lexer: BindingKey.create<ILexer[]>('Collection.Lexer'),
     Interpreter: BindingKey.create<IInterpreter[]>('Collection.Interpreter'),
     Renderer: BindingKey.create<IRenderer[]>('Collection.Renderer'),
-    Descriptor: BindingKey.create<IDescriptor<INode>[]>(
-      'Collection.Descriptor',
-    ),
+    Descriptor: BindingKey.create<IDescriptor<INode>[]>('Collection.Descriptor'),
   },
 };

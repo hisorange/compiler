@@ -17,11 +17,7 @@ export class LogicalLexer implements ILexer {
       return new Node('OPTIONAL').setParent(ctx);
     } else if (token.content === '(') {
       return new Node('LOGICAL_GROUP').setParent(ctx);
-    } else if (
-      token.content === ')' ||
-      token.content === '}' ||
-      token.content === ']'
-    ) {
+    } else if (token.content === ')' || token.content === '}' || token.content === ']') {
       return ctx.getParent();
     }
 

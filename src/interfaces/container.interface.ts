@@ -13,11 +13,7 @@ export interface IContainer extends Context {
   registerBackendModule(backend: Constructor<IBackend>): void;
   registerGeneratorModule(generator: Constructor<IGenerator>): void;
 
-  loadGeneratorModule(
-    reference: string,
-  ): IModuleResolution<IGeneratorMeta, IGenerator>;
+  loadGeneratorModule(reference: string): IModuleResolution<IGeneratorMeta, IGenerator>;
 
-  loadTemplateModule(
-    reference: string,
-  ): IModuleResolution<ITemplateMeta, ITemplate>;
+  loadTemplateModule(reference: string): IModuleResolution<ITemplateMeta, ITemplate>;
 }

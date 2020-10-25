@@ -26,11 +26,7 @@ export class ProductionInterpreter implements IInterpreter {
     let type = node.type;
 
     if (type === 'IDENTIFIER') {
-      if (
-        !node.hasParent() ||
-        node.getParent().type === 'OR_GROUP' ||
-        node.getParent().type === 'IDENTIFIER'
-      ) {
+      if (!node.hasParent() || node.getParent().type === 'OR_GROUP' || node.getParent().type === 'IDENTIFIER') {
         if (node.getParent().getParent().type === 'SYNTAX') {
           type = 'ALIAS';
         }

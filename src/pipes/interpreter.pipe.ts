@@ -55,9 +55,7 @@ export class InterpreterPipe implements IPipe<INode, Promise<ISymbol>> {
 
   protected traverse(symbol: ISymbol, node: INode) {
     const original = symbol;
-    const interpreters = this.interpreters.filter(i =>
-      i.interest().find(interest => node.type === interest),
-    );
+    const interpreters = this.interpreters.filter(i => i.interest().find(interest => node.type === interest));
 
     for (const interepreter of interpreters) {
       symbol = interepreter.visit(symbol, node);

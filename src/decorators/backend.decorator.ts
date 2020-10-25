@@ -15,9 +15,5 @@ export interface IBackendMeta {
 }
 
 export function Backend(spec: IBackendMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<IBackendMeta>(
-    'artgen.backend',
-    spec,
-    { decoratorName: '@Backend' },
-  );
+  return ClassDecoratorFactory.createDecorator<IBackendMeta>('artgen.backend', spec, { decoratorName: '@Backend' });
 }

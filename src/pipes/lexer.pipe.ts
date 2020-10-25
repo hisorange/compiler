@@ -48,9 +48,7 @@ export class LexerPipe implements IPipe<IToken, Promise<INode>> {
 
   protected async visit(ctx: INode, token: IToken): Promise<INode> {
     // Find related lexers for the current context.
-    const lexers = this.lexers.filter(v =>
-      v.interest().find(i => i === token.type),
-    );
+    const lexers = this.lexers.filter(v => v.interest().find(i => i === token.type));
 
     if (lexers.length) {
       this.logger.info('Lexing', {

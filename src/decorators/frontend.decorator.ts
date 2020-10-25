@@ -20,9 +20,5 @@ export interface IFroentendMeta {
 }
 
 export function Frontend(spec: IFroentendMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<IFroentendMeta>(
-    'artgen.frontend',
-    spec,
-    { decoratorName: '@Frontend' },
-  );
+  return ClassDecoratorFactory.createDecorator<IFroentendMeta>('artgen.frontend', spec, { decoratorName: '@Frontend' });
 }

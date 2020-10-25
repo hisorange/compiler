@@ -19,6 +19,5 @@ export enum AMLIdentifier {
   SERVICE = 'SERVICE',
   COMMENT = 'COMMENT',
   SYMBOL_NAME = 'SYMBOL_NAME',
-  SYNTAX = 'SYNTAX'
+  SYNTAX = 'SYNTAX',
 }
-    

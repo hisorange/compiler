@@ -21,6 +21,5 @@ export enum WSNIdentifier {
   PRODUCTION = 'PRODUCTION',
   SYNTAX = 'SYNTAX',
   GRAMMAR = 'GRAMMAR',
-  COMMENT = 'COMMENT'
+  COMMENT = 'COMMENT',
 }
-    

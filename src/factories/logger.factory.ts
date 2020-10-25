@@ -5,9 +5,7 @@ import { IFactory } from '../interfaces/factory.interface';
 import { ILoggerConfig } from '../interfaces/logger-config.interface';
 
 export class LoggerFactory implements IFactory<ILoggerConfig, ILogger> {
-  public constructor(
-    @Inject(Bindings.Provider.Logger) protected readonly logger: ILogger,
-  ) {}
+  public constructor(@Inject(Bindings.Provider.Logger) protected readonly logger: ILogger) {}
 
   create(config: ILoggerConfig): ILogger {
     const scope = [];

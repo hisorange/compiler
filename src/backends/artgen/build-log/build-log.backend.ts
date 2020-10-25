@@ -26,41 +26,38 @@ export class BuildLogPlugin implements IFrontend {
    */
   async render(renderer: IRenderEngine) {
     // Capture byte sequence.
-    this.events.subscribe(
-      Events.READ,
-      (collection: ICollection<ICharacter>) => {
-        const output = [];
+    this.events.subscribe(Events.READ, (collection: ICollection<ICharacter>) => {
+      const output = [];
 
-        for (const chr of collection.items) {
-          output.push({
-            rawValue: chr.value,
-            charCode: chr.code,
-            position: {
-              index: chr.position.index,
-              line: chr.position.line,
-              column: chr.position.column,
-            },
-          });
-        }
+      for (const chr of collection.items) {
+        output.push({
+          rawValue: chr.value,
+          charCode: chr.code,
+          position: {
+            index: chr.position.index,
+            line: chr.position.line,
+            column: chr.position.column,
+          },
+        });
+      }
 
-        renderer.write(
-          '00-characters.json',
-          JSON.stringify(
-            {
-              pipe: 'reader',
-              product: {
-                meta: {
-                  length: output.length,
-                },
-                data: output,
+      renderer.write(
+        '00-characters.json',
+        JSON.stringify(
+          {
+            pipe: 'reader',
+            product: {
+              meta: {
+                length: output.length,
               },
+              data: output,
             },
-            null,
-            2,
-          ),
-        );
-      },
-    );
+          },
+          null,
+          2,
+        ),
+      );
+    });
 
     // Capture token tree.
     this.events.subscribe(Events.PARSED, (token: IToken) => {

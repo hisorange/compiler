@@ -17,8 +17,7 @@ import { IFrontend } from '../interfaces/frontend.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
-export class ParserPipe
-  implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
+export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
   protected readonly logger: ILogger;
 
   public constructor(
@@ -50,13 +49,10 @@ export class ParserPipe
     this.logger.timeEnd(Timings.PARSING);
 
     if (!result.token || result.characters.isValid) {
-      throw new ParserException<IParserExceptionContext>(
-        'Unexpected character',
-        {
-          grammar: grammar,
-          characters: result.characters,
-        },
-      );
+      throw new ParserException<IParserExceptionContext>('Unexpected character', {
+        grammar: grammar,
+        characters: result.characters,
+      });
     }
 
     // Publish the result, here the subscribers can even optimize or change the tokens.
@@ -75,23 +71,15 @@ export class ParserPipe
 
       for (const ext of meta.extensions) {
         if (ext.toLowerCase() === extension.toLowerCase()) {
-          const fn = this.container.getSync<IFrontend>(
-            'frontend.' + meta.reference,
-          );
+          const fn = this.container.getSync<IFrontend>('frontend.' + meta.reference);
 
           const tknCls = meta.tokenizer;
-          const tokenizer = new tknCls(
-            this.container.getSync(Bindings.Factory.Logger),
-          );
+          const tokenizer = new tknCls(this.container.getSync(Bindings.Factory.Logger));
           grammar = new Grammar(meta.name, tokenizer);
 
           if (meta.lexers) {
-            this.container
-              .getSync(Bindings.Collection.Lexer)
-              .push(...meta.lexers.map(l => new l()));
-            this.container
-              .getSync(Bindings.Collection.Interpreter)
-              .push(...meta.interpreters.map(i => new i()));
+            this.container.getSync(Bindings.Collection.Lexer).push(...meta.lexers.map(l => new l()));
+            this.container.getSync(Bindings.Collection.Interpreter).push(...meta.interpreters.map(i => new i()));
           }
         }
       }

@@ -11,13 +11,7 @@ import { TokenizerTemplate } from './templates/tokenizer.template';
 @Backend({
   name: 'Grammar Backend',
   reference: 'artgen.grammar',
-  templates: [
-    GrammarTemplate,
-    IdentifierTemplate,
-    InterpretersTemplate,
-    LexersTemplate,
-    TokenizerTemplate,
-  ],
+  templates: [GrammarTemplate, IdentifierTemplate, InterpretersTemplate, LexersTemplate, TokenizerTemplate],
 })
 export class GrammarBackend implements IBackend {
   async render(renderer: IRenderEngine, input: GrammarSymbol) {

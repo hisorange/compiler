@@ -3,10 +3,7 @@ import { ISymbolName } from '../interfaces/dtos/symbol-name.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
 
 export class SymbolName extends SmartString implements ISymbolName {
-  constructor(
-    protected readonly symbol: ISymbol,
-    protected readonly name: string,
-  ) {
+  constructor(protected readonly symbol: ISymbol, protected readonly name: string) {
     super(name);
   }
 
@@ -14,10 +11,7 @@ export class SymbolName extends SmartString implements ISymbolName {
     let name: ISymbolName = this;
 
     if (this.symbol.hasParent()) {
-      name = new SymbolName(
-        this.symbol,
-        this.symbol.getParent().name.toString() + this.toString(),
-      );
+      name = new SymbolName(this.symbol, this.symbol.getParent().name.toString() + this.toString());
     }
 
     return name;

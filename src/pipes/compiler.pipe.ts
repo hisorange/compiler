@@ -41,9 +41,7 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
   }
 
   protected traverse(symbol: ISymbol) {
-    const renderers = this.renderers.filter(c =>
-      c.interest.find(interest => symbol instanceof interest),
-    );
+    const renderers = this.renderers.filter(c => c.interest.find(interest => symbol instanceof interest));
 
     for (const renderer of renderers) {
       const symbolData = symbol.getData(renderer.dataProviders);

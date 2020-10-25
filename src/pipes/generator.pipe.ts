@@ -17,8 +17,7 @@ interface IGeneratorJob {
   input: Object | GetConfig;
 }
 
-export class GeneratorPipe
-  implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
+export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
 
   public constructor(
@@ -61,9 +60,7 @@ export class GeneratorPipe
     await generator.module.render(this.renderer, job.input);
 
     if (generator.meta.author) {
-      this.logger.fav(
-        `Thanks for ${generator.meta.author.name} for this awesome generator!`,
-      );
+      this.logger.fav(`Thanks for ${generator.meta.author.name} for this awesome generator!`);
     }
 
     this.renderer.write(

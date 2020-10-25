@@ -10,25 +10,16 @@ export class Character implements ICharacter {
   protected _prev: ICharacter;
   protected _next: ICharacter;
 
-  constructor(
-    readonly value: string,
-    readonly path: IPath,
-    line: number,
-    column: number,
-    index: number,
-  ) {
+  constructor(readonly value: string, readonly path: IPath, line: number, column: number, index: number) {
     this.position = new Position(this, line, column, index);
 
     if (this.value.length !== 1) {
-      throw new CharacterLengthException(
-        'Character length cannot be anything else but one',
-        {
-          value,
-          length: this.value.length,
-          position: this.position,
-          path,
-        },
-      );
+      throw new CharacterLengthException('Character length cannot be anything else but one', {
+        value,
+        length: this.value.length,
+        position: this.position,
+        path,
+      });
     }
 
     this.code = this.value.charCodeAt(0);
