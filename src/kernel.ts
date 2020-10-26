@@ -66,7 +66,7 @@ export class Kernel implements IKernel {
   }
 
   template(template: Constructor<ITemplate>): void {
-    this.container.registerBackendModule(template);
+    this.container.registerTemplateModule(template);
   }
 
   async generate(reference: string, input: IGeneratorInput = {}): Promise<IFileSystem> {
