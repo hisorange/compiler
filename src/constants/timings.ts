@@ -5,4 +5,5 @@ export enum Timings {
   LEXING = 'Lexing',
   INTERPRETING = 'Interpreting',
   COMPILING = 'Compiling',
+  GENERATING = 'Generating',
 }

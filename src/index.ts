@@ -1,4 +1,3 @@
-export * from './artgen';
 // Backends
 export * from './backends/artgen/build-log/build-log.backend';
 export * from './backends/artgen/grammar/grammar.backend';
@@ -19,5 +18,6 @@ export * from './interfaces/components/logger.interface';
 export * from './interfaces/container.interface';
 export * from './interfaces/symbol-data.interface';
 export * from './interfaces/template.interface';
+export * from './kernel';
 
 // const imph: ISymbolData =1;

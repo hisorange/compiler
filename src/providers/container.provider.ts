@@ -107,9 +107,7 @@ export class ContainerProvider implements Provider<IContainer> {
     const namespace = Bindings.Provider;
 
     container.bind(namespace.Logger).toProvider(LoggerProvider).inScope(BindingScope.CONTEXT);
-
     container.bind(namespace.InputFileSystem).toProvider(MemoryFileSystemProvider).inScope(BindingScope.CONTEXT);
-
     container.bind(namespace.OutputFileSystem).toProvider(MemoryFileSystemProvider).inScope(BindingScope.CONTEXT);
   }
 
@@ -158,9 +156,7 @@ export class ContainerProvider implements Provider<IContainer> {
     const namespace = Bindings.Components;
 
     container.bind(namespace.EventEmitter).toClass(EventEmitter).inScope(BindingScope.CONTEXT);
-
     container.bind(namespace.SymbolTable).toClass(SymbolTable).inScope(BindingScope.CONTEXT);
-
     container.bind(namespace.RenderEngine).toClass(RenderEngine);
   }
 }

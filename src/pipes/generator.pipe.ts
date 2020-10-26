@@ -8,14 +8,8 @@ import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IContainer } from '../interfaces/container.interface';
+import { IGeneratorJob } from '../interfaces/generator-job.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
-
-type GetConfig = (prompt: any) => Promise<Object>;
-
-interface IGeneratorJob {
-  ref: string;
-  input: Object | GetConfig;
-}
 
 export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
@@ -41,7 +35,7 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
     this.logger.time(Timings.COMPILING);
     this.logger.info('Generating output');
 
-    const generator = this.container.loadGeneratorModule(job.ref);
+    const generator = this.container.loadGeneratorModule(job.reference);
 
     this.logger.start('Generator module invoked', {
       generator: generator.meta.name,
@@ -68,7 +62,7 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
       JSON.stringify(
         {
           mode: 'generator',
-          reference: job.ref,
+          reference: job.reference,
           input,
         },
         null,

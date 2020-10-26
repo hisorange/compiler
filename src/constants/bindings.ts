@@ -7,13 +7,13 @@ import { IEventEmitter } from '../interfaces/components/event-emitter.interface'
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IConfig } from '../interfaces/config.interface';
 import { IContainer } from '../interfaces/container.interface';
-import { IDescriptor } from '../interfaces/descriptor.interface';
-import { INode } from '../interfaces/dtos/node.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IInterpreter } from '../interfaces/pipes/interpreter.interface';
 import { ILexer } from '../interfaces/pipes/lexer.interface';
 import { IRenderer } from '../interfaces/pipes/renderer.interface';
 import { ISymbolTable } from '../interfaces/symbol-table.interface';
+import { CompilerPipeline } from '../pipelines/compiler.pipeline';
+import { GeneratorPipeline } from '../pipelines/generator.pipeline';
 import { CompilerPipe } from '../pipes/compiler.pipe';
 import { GeneratorPipe } from '../pipes/generator.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
@@ -47,11 +47,14 @@ export const Bindings = {
     Interpreter: BindingKey.create<InterpreterPipe>('Pipe.Interpreter'),
     Compiler: BindingKey.create<CompilerPipe>('Pipe.Compiler'),
   },
+  Pipeline: {
+    Generator: BindingKey.create<GeneratorPipeline>('Pipeline.Generator'),
+    Compiler: BindingKey.create<CompilerPipeline>('Pipeline.Compiler'),
+  },
   Collection: {
     Grammar: BindingKey.create<IGrammar[]>('Collection.Grammar'),
     Lexer: BindingKey.create<ILexer[]>('Collection.Lexer'),
     Interpreter: BindingKey.create<IInterpreter[]>('Collection.Interpreter'),
     Renderer: BindingKey.create<IRenderer[]>('Collection.Renderer'),
-    Descriptor: BindingKey.create<IDescriptor<INode>[]>('Collection.Descriptor'),
   },
 };
