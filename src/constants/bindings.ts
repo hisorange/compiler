@@ -1,5 +1,5 @@
 import { IFileSystem } from '@artgen/file-system';
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { BindingKey } from '@loopback/context';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
@@ -10,7 +10,6 @@ import { IContainer } from '../interfaces/container.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IInterpreter } from '../interfaces/pipes/interpreter.interface';
 import { ILexer } from '../interfaces/pipes/lexer.interface';
-import { IRenderer } from '../interfaces/pipes/renderer.interface';
 import { ISymbolTable } from '../interfaces/symbol-table.interface';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { GeneratorPipeline } from '../pipelines/generator.pipeline';
@@ -28,7 +27,7 @@ export const Bindings = {
   Components: {
     EventEmitter: BindingKey.create<IEventEmitter>('EventEmitter'),
     SymbolTable: BindingKey.create<ISymbolTable>('SymbolTable'),
-    RenderEngine: BindingKey.create<IRenderEngine>('RenderEngine'),
+    Renderer: BindingKey.create<IRenderer>('Renderer'),
   },
   Provider: {
     Logger: BindingKey.create<ILogger>('Provider.Logger'),

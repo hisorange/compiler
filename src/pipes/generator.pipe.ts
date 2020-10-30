@@ -1,5 +1,5 @@
 import { IFileSystem } from '@artgen/file-system';
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
@@ -22,8 +22,8 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
     protected readonly output: IFileSystem,
     @Inject(Bindings.Container)
     protected readonly container: IContainer,
-    @Inject(Bindings.Components.RenderEngine)
-    protected readonly renderer: IRenderEngine,
+    @Inject(Bindings.Components.Renderer)
+    protected readonly renderer: IRenderer,
   ) {
     // Create a new logger.
     this.logger = loggerFactory.create({

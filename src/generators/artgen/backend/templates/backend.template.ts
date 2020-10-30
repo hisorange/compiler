@@ -20,7 +20,7 @@ export class BackendTemplate implements ITemplate {
 
   render() {
     return `import { SmartString } from '@artgen/smart-string';
-import { Backend, IBackend, IRenderEngine } from '@artgen/kernel';
+import { Backend, IBackend, IRenderer } from '@artgen/kernel';
 
 @Backend({
   name: '<%- backend.name %>',
@@ -43,13 +43,13 @@ import { Backend, IBackend, IRenderEngine } from '@artgen/kernel';
   ],
 })
 export class <%- backend.clss %> implements IBackend {
-  async render(renderer: IRenderEngine, input: any) {
+  async render(renderer: IRenderer, input: any) {
     const context = { $name: new SmartString(input.name) };
 
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory;
 
-    renderer.renderTemplate(\`<%- backend.ns %>.example\`);
+    renderer.render(\`<%- backend.ns %>.example\`);
   }
 }
 `;

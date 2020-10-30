@@ -1,4 +1,4 @@
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { SmartString } from '@artgen/smart-string';
 import { join } from 'path';
 import { Generator } from '../../../decorators/generator.decorator';
@@ -42,18 +42,18 @@ import { ServiceTemplate } from './templates/service.template';
   },
 })
 export class NestJSCrudGenerator implements IGenerator {
-  async render(renderer: IRenderEngine, input: any) {
+  async render(renderer: IRenderer, input: any) {
     const context = { $name: new SmartString(input.moduleName) };
 
     renderer.setContext(context);
     renderer.outputBaseDirectory = join(input.baseDirectory, context.$name.kebabCase.toString());
 
-    renderer.renderTemplate(`nestjs.crud.dto.read`);
-    renderer.renderTemplate(`nestjs.crud.dto.create`);
-    renderer.renderTemplate(`nestjs.crud.schema`);
-    renderer.renderTemplate(`nestjs.crud.model`);
-    renderer.renderTemplate(`nestjs.crud.service`);
-    renderer.renderTemplate(`nestjs.crud.controller`);
-    renderer.renderTemplate(`nestjs.crud.module`);
+    renderer.render(`nestjs.crud.dto.read`);
+    renderer.render(`nestjs.crud.dto.create`);
+    renderer.render(`nestjs.crud.schema`);
+    renderer.render(`nestjs.crud.model`);
+    renderer.render(`nestjs.crud.service`);
+    renderer.render(`nestjs.crud.controller`);
+    renderer.render(`nestjs.crud.module`);
   }
 }

@@ -1,4 +1,4 @@
-import { RenderEngine } from '@artgen/renderer';
+import { Renderer } from '@artgen/renderer';
 import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
 import { Bindings } from '../constants/bindings';
@@ -156,6 +156,6 @@ export class ContainerProvider implements Provider<IContainer> {
 
     container.bind(namespace.EventEmitter).toClass(EventEmitter).inScope(BindingScope.CONTEXT);
     container.bind(namespace.SymbolTable).toClass(SymbolTable).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.RenderEngine).toClass(RenderEngine);
+    container.bind(namespace.Renderer).toClass(Renderer);
   }
 }

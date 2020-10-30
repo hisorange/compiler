@@ -1,4 +1,4 @@
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { AsciiTree } from 'oo-ascii-tree';
 import { Bindings } from '../../../constants/bindings';
 import { Events } from '../../../constants/events';
@@ -24,7 +24,7 @@ export class BuildLogPlugin implements IFrontend {
   /**
    * @inheritdoc
    */
-  async render(renderer: IRenderEngine) {
+  async render(renderer: IRenderer) {
     // Capture byte sequence.
     this.events.subscribe(Events.READ, (collection: ICollection<ICharacter>) => {
       const output = [];

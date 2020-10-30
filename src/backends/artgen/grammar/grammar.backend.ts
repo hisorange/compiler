@@ -1,4 +1,4 @@
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { Backend } from '../../../decorators/backend.decorator';
 import { GrammarSymbol } from '../../../frontends/wsn/symbols/grammar.symbol';
 import { IBackend } from '../../../interfaces/backend.interface';
@@ -14,15 +14,15 @@ import { TokenizerTemplate } from './templates/tokenizer.template';
   templates: [GrammarTemplate, IdentifierTemplate, InterpretersTemplate, LexersTemplate, TokenizerTemplate],
 })
 export class GrammarBackend implements IBackend {
-  async render(renderer: IRenderEngine, input: GrammarSymbol) {
+  async render(renderer: IRenderer, input: GrammarSymbol) {
     const context = { $symbol: input };
 
     renderer.setContext(context);
 
-    renderer.renderTemplate('artgen.grammar.interpreters');
-    renderer.renderTemplate('artgen.grammar.lexers');
-    renderer.renderTemplate('artgen.grammar.identifier');
-    renderer.renderTemplate('artgen.grammar.tokenizer');
-    renderer.renderTemplate('artgen.grammar.grammar');
+    renderer.render('artgen.grammar.interpreters');
+    renderer.render('artgen.grammar.lexers');
+    renderer.render('artgen.grammar.identifier');
+    renderer.render('artgen.grammar.tokenizer');
+    renderer.render('artgen.grammar.grammar');
   }
 }

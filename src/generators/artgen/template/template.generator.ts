@@ -1,4 +1,4 @@
-import { IRenderEngine } from '@artgen/renderer';
+import { IRenderer } from '@artgen/renderer';
 import { SmartString } from '@artgen/smart-string';
 import { Generator } from '../../../decorators/generator.decorator';
 import { IGenerator } from '../../../interfaces/backend.interface';
@@ -26,12 +26,12 @@ import { TemplateTemplate } from './templates/template.template';
   },
 })
 export class TemplateGenerator implements IGenerator {
-  async render(renderer: IRenderEngine, input: any) {
+  async render(renderer: IRenderer, input: any) {
     const context = { $name: new SmartString(input.name) };
 
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory;
 
-    renderer.renderTemplate(`artgen.template`);
+    renderer.render(`artgen.template`);
   }
 }
