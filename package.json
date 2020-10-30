@@ -1,6 +1,6 @@
 {
   "name": "@artgen/kernel",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Work less, do More!",
   "main": "build/index.js",
   "scripts": {

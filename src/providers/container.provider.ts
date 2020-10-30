@@ -90,7 +90,6 @@ export class ContainerProvider implements Provider<IContainer> {
     container.bind(namespace.Lexer).to([]);
     container.bind(namespace.Interpreter).to([]);
     container.bind(namespace.Renderer).to([]);
-    container.bind(namespace.Descriptor).to([]);
   }
 
   /**
