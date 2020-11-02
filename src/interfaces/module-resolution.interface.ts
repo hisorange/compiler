@@ -1,4 +1,4 @@
-export interface IModuleResolution<Meta, Module> {
+export interface IModule<Meta, Module> {
   meta: Meta;
   module: Module;
 }

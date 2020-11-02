@@ -15,7 +15,6 @@ export * from './generators/artgen/template/template.generator';
 export * from './generators/nestjs/crud/nestjs-crud.generator';
 export * from './interfaces/components/event-emitter.interface';
 export * from './interfaces/components/logger.interface';
-export * from './interfaces/container.interface';
 export * from './interfaces/symbol-data.interface';
 export * from './interfaces/template.interface';
 export * from './kernel';

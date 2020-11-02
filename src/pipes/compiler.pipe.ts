@@ -2,6 +2,7 @@ import { IFileSystem } from '@artgen/file-system';
 import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
+import { KernelModuleTypes } from '../constants/modules';
 import { Timings } from '../constants/timings';
 import { IBackendMeta } from '../decorators/backend.decorator';
 import { Inject } from '../decorators/inject.decorator';
@@ -9,12 +10,12 @@ import { LoggerFactory } from '../factories/logger.factory';
 import { IBackend } from '../interfaces/backend.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IContainer } from '../interfaces/container.interface';
+import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
-import { IModuleResolution } from '../interfaces/module-resolution.interface';
+import { IModule } from '../interfaces/module-resolution.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
-type IBackendModule = IModuleResolution<IBackendMeta, IBackend>;
+type IBackendModule = IModule<IBackendMeta, IBackend>;
 
 export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
@@ -25,8 +26,8 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
     protected readonly eventEmitter: IEventEmitter,
     @Inject(Bindings.Provider.OutputFileSystem)
     protected readonly output: IFileSystem,
-    @Inject(Bindings.Container)
-    protected readonly container: IContainer,
+    @Inject(Bindings.Module.Handler)
+    protected readonly module: IModuleHandler,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
   ) {
@@ -40,7 +41,7 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
     this.logger.time(Timings.COMPILING);
     this.logger.info('Compiling from the root symbol');
 
-    this.traverse(symbol, this.loadBackends());
+    this.traverse(symbol, this.module.search(KernelModuleTypes.BACKEND));
 
     this.eventEmitter.publish(Events.COMPILED, symbol);
     this.logger.timeEnd(Timings.COMPILING);
@@ -58,24 +59,5 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
     for (const child of symbol.getChildren()) {
       this.traverse(child, backends);
     }
-  }
-
-  protected loadBackends(): IBackendModule[] {
-    const backends: IBackendModule[] = [];
-
-    for (const backendMetaRef of this.container.findByTag('backend-meta')) {
-      const meta: IBackendMeta = backendMetaRef.getValue(this.container);
-
-      backends.push({
-        meta,
-        module: this.container.getSync<IBackend>(`backend.${meta.reference}`),
-      });
-
-      this.logger.info(`Loaded kernel backend module`, {
-        reference: meta.reference,
-      });
-    }
-
-    return backends;
   }
 }

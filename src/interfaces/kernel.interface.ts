@@ -10,11 +10,15 @@ import { ITemplate } from './template.interface';
 export interface IKernel {
   /**
    * Create a logger instance, useful in the CLI and other external extensions.
+   *
+   * @throws {KernelException}
    */
   createLogger(label: string[]): ILogger;
 
   /**
    * Create an empty virtual file system, useful for input handling.
+   *
+   * @throws {KernelException}
    */
   createFileSystem(): IFileSystem;
 

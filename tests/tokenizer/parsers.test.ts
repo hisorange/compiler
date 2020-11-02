@@ -4,6 +4,10 @@ import { Path } from '../../src/dtos/path';
 import { ICharacter } from '../../src/interfaces/dtos/character.interface';
 import { Collection } from '../../src/models/collection.model';
 
+class TokenizerTestImpl extends Tokenizer {
+  prepare(): void {}
+}
+
 export function createCharacters(input: string) {
   const characters = new Collection<ICharacter>();
   const path = new Path('test/input.txt');
@@ -27,7 +31,7 @@ const loggerFactory: any = { create: () => console };
 describe('Parsers', () => {
   describe('.resolve', () => {
     test('should resolve reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const input = 'ab';
       const characters = createCharacters(input);
 
@@ -46,7 +50,7 @@ describe('Parsers', () => {
 
   describe('.alias', () => {
     test('should alias reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const input = 'ab';
       const characters = createCharacters(input);
 
@@ -66,7 +70,7 @@ describe('Parsers', () => {
 
   describe('.concat', () => {
     test('should match nested second reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const input = 'ab'.repeat(2) + 'c';
       const characters = createCharacters(input);
 
@@ -89,13 +93,10 @@ describe('Parsers', () => {
       ['bac', 'b'],
       ['cab', 'c'],
     ])('Should match a parser on (%s)', (input, expected) => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters(input);
 
-      const parser = T.identifier(
-        input,
-        T.or([T.literal('a'), T.literal('b'), T.literal('c')]),
-      );
+      const parser = T.identifier(input, T.or([T.literal('a'), T.literal('b'), T.literal('c')]));
       const match = parser(characters);
 
       expect(match.token).toBeDefined();
@@ -105,7 +106,7 @@ describe('Parsers', () => {
     });
 
     test('should match the third parser', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('cab');
 
       const parser = T.or([T.literal('a'), T.literal('b'), T.literal('c')]);
@@ -117,7 +118,7 @@ describe('Parsers', () => {
     });
 
     test('should match nested second reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const input = 'a'.repeat(8);
       const characters = createCharacters(input);
 
@@ -142,7 +143,7 @@ describe('Parsers', () => {
       ['caab', 'aa'],
       ['caaab', 'aaa'],
     ])('Should match every repetition on (%s)', (input, expected) => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters(input);
       characters.advance(1);
 
@@ -159,7 +160,7 @@ describe('Parsers', () => {
     });
 
     test('should match multiple characters', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc1');
 
       expect(characters.cursor).toBe(0);
@@ -173,7 +174,7 @@ describe('Parsers', () => {
     });
 
     test('should not match any on wrong start', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('2abc1');
 
       expect(characters.cursor).toBe(0);
@@ -186,7 +187,7 @@ describe('Parsers', () => {
     });
 
     test('should match multiple reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abcdefgh1');
 
       const ALPHA = T.regexp(/[a-z]/);
@@ -202,7 +203,7 @@ describe('Parsers', () => {
     });
 
     test('should match multiple nested reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abcdefgh123');
 
       const ALPHANUM = T.or([T.regexp(/[a-z]/), T.regexp(/[0-9]/)]);
@@ -218,7 +219,7 @@ describe('Parsers', () => {
     });
 
     test('should match multiple deep nested reference', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const input = 'a'.repeat(8 * 9);
       const characters = createCharacters(input);
 
@@ -239,7 +240,7 @@ describe('Parsers', () => {
 
   describe('.regexp', () => {
     test('should match the first character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
 
       expect(characters.cursor).toBe(0);
@@ -253,7 +254,7 @@ describe('Parsers', () => {
     });
 
     test('should not match the second character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
 
       expect(characters.cursor).toBe(0);
@@ -268,7 +269,7 @@ describe('Parsers', () => {
 
   describe('.literal', () => {
     test('should match a single character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
 
       const parser = T.literal('a');
@@ -280,7 +281,7 @@ describe('Parsers', () => {
     });
 
     test('should not match the second character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
       expect(characters.cursor).toBe(0);
 
@@ -292,7 +293,7 @@ describe('Parsers', () => {
     });
 
     test('should match a two character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
 
       const parser = T.literal('ab');
@@ -303,31 +304,24 @@ describe('Parsers', () => {
       expect(match.characters.cursor).toBe(2);
     });
 
-    test.each([`\\`, `|`, `=`, `;`, ` `])(
-      'should match literal (%s)',
-      input => {
-        const T = new Tokenizer(loggerFactory);
-        const characters = createCharacters(input);
+    test.each([`\\`, `|`, `=`, `;`, ` `])('should match literal (%s)', input => {
+      const T = new TokenizerTestImpl(loggerFactory);
+      const characters = createCharacters(input);
 
-        const parser = T.literal(input);
-        const match = parser(characters);
+      const parser = T.literal(input);
+      const match = parser(characters);
 
-        expect(match.token).toBeDefined();
-        expect(match.token.content).toBe(input);
-      },
-    );
+      expect(match.token).toBeDefined();
+      expect(match.token.content).toBe(input);
+    });
   });
 
   describe('.opt', () => {
     test('should match with optional ws', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('a b');
 
-      const parser = T.concat([
-        T.literal('a'),
-        T.optional(T.literal(' ')),
-        T.literal('b'),
-      ]);
+      const parser = T.concat([T.literal('a'), T.optional(T.literal(' ')), T.literal('b')]);
       const match = parser(characters);
 
       expect(match.token).toBeDefined();
@@ -336,7 +330,7 @@ describe('Parsers', () => {
     });
 
     test('should not match the second character', () => {
-      const T = new Tokenizer(loggerFactory);
+      const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('abc');
       expect(characters.cursor).toBe(0);
 

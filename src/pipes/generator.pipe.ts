@@ -2,12 +2,13 @@ import { IFileSystem } from '@artgen/file-system';
 import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
+import { KernelModuleTypes } from '../constants/modules';
 import { Timings } from '../constants/timings';
 import { Inject } from '../decorators/inject.decorator';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IContainer } from '../interfaces/container.interface';
+import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { IGeneratorJob } from '../interfaces/generator-job.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
@@ -20,8 +21,8 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
     protected readonly eventEmitter: IEventEmitter,
     @Inject(Bindings.Provider.OutputFileSystem)
     protected readonly output: IFileSystem,
-    @Inject(Bindings.Container)
-    protected readonly container: IContainer,
+    @Inject(Bindings.Module.Handler)
+    protected readonly module: IModuleHandler,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
   ) {
@@ -35,7 +36,7 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
     this.logger.time(Timings.COMPILING);
     this.logger.info('Generating output');
 
-    const generator = this.container.loadGeneratorModule(job.reference);
+    const generator = this.module.retrive(KernelModuleTypes.GENERATOR, job.reference);
 
     this.logger.start('Generator module invoked', {
       generator: generator.meta.name,

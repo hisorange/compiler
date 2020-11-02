@@ -1,8 +1,9 @@
 import { Grammar } from '../components/grammar';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
+import { KernelModuleTypes } from '../constants/modules';
 import { Timings } from '../constants/timings';
-import { IFroentendMeta } from '../decorators/frontend.decorator';
+import { Container } from '../container';
 import { Inject } from '../decorators/inject.decorator';
 import { ParserException } from '../exceptions';
 import { IParserExceptionContext } from '../exceptions/contexts/parser.exception-context';
@@ -10,10 +11,9 @@ import { LoggerFactory } from '../factories/logger.factory';
 import { ICollection } from '../interfaces/collection.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IContainer } from '../interfaces/container.interface';
+import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { ICharacter } from '../interfaces/dtos/character.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
-import { IFrontend } from '../interfaces/frontend.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
@@ -21,8 +21,9 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
   protected readonly logger: ILogger;
 
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
-    @Inject(Bindings.Container) protected container: IContainer,
+    @Inject(Bindings.Factory.Logger) protected loggerFactory: LoggerFactory,
+    @Inject(Bindings.Module.Handler) protected module: IModuleHandler,
+    @Inject(Bindings.Container) protected container: Container,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly events: IEventEmitter,
   ) {
@@ -64,22 +65,21 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
   protected loadGrammar(extension: string): IGrammar {
     let grammar: IGrammar;
 
-    const fnMetas = this.container.findByTag<IFroentendMeta>('frontend-meta');
+    const frontends = this.module.search(KernelModuleTypes.FRONTEND);
 
-    for (const fnMeta of fnMetas) {
-      const meta = fnMeta.getValue(this.container) as IFroentendMeta;
-
-      for (const ext of meta.extensions) {
+    for (const frontendMod of frontends) {
+      for (const ext of frontendMod.meta.extensions) {
         if (ext.toLowerCase() === extension.toLowerCase()) {
-          const fn = this.container.getSync<IFrontend>('frontend.' + meta.reference);
+          const tknCls = frontendMod.meta.tokenizer;
+          const tokenizer = new tknCls(this.loggerFactory);
 
-          const tknCls = meta.tokenizer;
-          const tokenizer = new tknCls(this.container.getSync(Bindings.Factory.Logger));
-          grammar = new Grammar(meta.name, tokenizer);
+          grammar = new Grammar(frontendMod.meta.name, tokenizer);
 
-          if (meta.lexers) {
-            this.container.getSync(Bindings.Collection.Lexer).push(...meta.lexers.map(l => new l()));
-            this.container.getSync(Bindings.Collection.Interpreter).push(...meta.interpreters.map(i => new i()));
+          if (frontendMod.meta.lexers) {
+            this.container.getSync(Bindings.Collection.Lexer).push(...frontendMod.meta.lexers.map(l => new l()));
+            this.container
+              .getSync(Bindings.Collection.Interpreter)
+              .push(...frontendMod.meta.interpreters.map(i => new i()));
           }
         }
       }

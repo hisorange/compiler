@@ -1,14 +1,14 @@
 import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../constants/bindings';
+import { Container } from '../container';
 import { Inject } from '../decorators/inject.decorator';
-import { IContainer } from '../interfaces/container.interface';
 import { IPath } from '../interfaces/dtos/path.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 
 export class CompilerPipeline implements IPipe<IPath, Promise<IFileSystem>> {
   constructor(
     @Inject(Bindings.Container)
-    protected readonly container: IContainer,
+    protected readonly container: Container,
   ) {}
 
   async pipe(input: IPath): Promise<IFileSystem> {

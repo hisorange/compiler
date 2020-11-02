@@ -1,12 +1,12 @@
 import { Renderer } from '@artgen/renderer';
 import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
+import { ModuleHandler } from '../components/module-handler';
 import { Bindings } from '../constants/bindings';
 import { Container } from '../container';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { SymbolTable } from '../iml/symbol-table';
-import { IContainer } from '../interfaces/container.interface';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { GeneratorPipeline } from '../pipelines/generator.pipeline';
 import { CompilerPipe } from '../pipes/compiler.pipe';
@@ -24,15 +24,17 @@ import sessionGenerator = require('uuid');
  * used by the Artgen main instance to share dependencies
  * between components and plugins.
  */
-export class ContainerProvider implements Provider<IContainer> {
+export class ContainerProvider implements Provider<Container> {
   /**
    * Create a new container and bind the required dependencies to it.
    *
-   * @returns {IContainer}
+   * @returns {Container}
    * @memberof ContainerProvider
    */
-  value(): IContainer {
-    const container = new Container();
+  value(): Container {
+    const container = new Container('kernel');
+
+    container.bind(Bindings.Module.Handler).toClass(ModuleHandler).inScope(BindingScope.SINGLETON);
 
     this.bindSelf(container);
     this.bindSession(container);
@@ -50,10 +52,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Bind itself to be able to inject the container into dependencies.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindSelf(container: IContainer): void {
+  protected bindSelf(container: Container): void {
     container.bind(Bindings.Container).to(container);
   }
 
@@ -70,10 +72,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * @example "a154eb57", "a3e1e155b"
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindSession(container: IContainer): void {
+  protected bindSession(container: Container): void {
     const namespace = Bindings.Session;
 
     container.bind(namespace).to('a' + sessionGenerator.v4().substr(0, 7));
@@ -83,10 +85,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Register empty collections to create the shared object.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindCollections(container: IContainer): void {
+  protected bindCollections(container: Container): void {
     const namespace = Bindings.Collection;
 
     container.bind(namespace.Grammar).to([]);
@@ -102,10 +104,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * in their context.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindProviders(container: IContainer): void {
+  protected bindProviders(container: Container): void {
     const namespace = Bindings.Provider;
 
     container.bind(namespace.Logger).toProvider(LoggerProvider).inScope(BindingScope.CONTEXT);
@@ -117,10 +119,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Register the factory pattern based dependencies.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindFactories(container: IContainer): void {
+  protected bindFactories(container: Container): void {
     const namespace = Bindings.Factory;
 
     container.bind(namespace.Logger).toClass(LoggerFactory);
@@ -131,10 +133,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Register the processing pipes.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindPipes(container: IContainer): void {
+  protected bindPipes(container: Container): void {
     const namespace = Bindings.Pipe;
 
     container.bind(namespace.Generator).toClass(GeneratorPipe);
@@ -149,10 +151,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Register the processing pipelines.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindPipelines(container: IContainer): void {
+  protected bindPipelines(container: Container): void {
     const namespace = Bindings.Pipeline;
 
     container.bind(namespace.Generator).toClass(GeneratorPipeline);
@@ -165,10 +167,10 @@ export class ContainerProvider implements Provider<IContainer> {
    * Components are expected to share the instance in their context.
    *
    * @protected
-   * @param {IContainer} container
+   * @param {Container} container
    * @memberof ContainerProvider
    */
-  protected bindComponents(container: IContainer): void {
+  protected bindComponents(container: Container): void {
     const namespace = Bindings.Components;
 
     container.bind(namespace.EventEmitter).toClass(EventEmitter).inScope(BindingScope.CONTEXT);

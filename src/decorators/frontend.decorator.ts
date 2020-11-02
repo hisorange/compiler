@@ -4,7 +4,7 @@ import { Constructor } from '../interfaces/constructor.interface';
 import { IInterpreter } from '../interfaces/pipes/interpreter.interface';
 import { ILexer } from '../interfaces/pipes/lexer.interface';
 
-export interface IFroentendMeta {
+export interface IFrontendMeta {
   name: string;
   reference: string;
   extensions: string[];
@@ -19,6 +19,6 @@ export interface IFroentendMeta {
   };
 }
 
-export function Frontend(spec: IFroentendMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<IFroentendMeta>('artgen.frontend', spec, { decoratorName: '@Frontend' });
+export function Frontend(spec: IFrontendMeta): ClassDecorator {
+  return ClassDecoratorFactory.createDecorator<IFrontendMeta>('artgen.frontend', spec, { decoratorName: '@Frontend' });
 }

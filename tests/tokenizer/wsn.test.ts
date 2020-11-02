@@ -1,7 +1,6 @@
-import { Tokenizer } from '../../src/components/tokenizer.old';
 import { Character } from '../../src/dtos/character';
 import { Path } from '../../src/dtos/path';
-import { createTokenizer } from '../../src/frontends/wsn/wsn.tokenizer';
+import { WSNTokenizer } from '../../src/frontends/wsn/wsn.tokenizer';
 import { ICharacter } from '../../src/interfaces/dtos/character.interface';
 import { Collection } from '../../src/models/collection.model';
 
@@ -27,9 +26,9 @@ const loggerFactory: any = { create: () => console };
 
 describe('WSN', () => {
   describe('Language', () => {
-    const T = new Tokenizer(loggerFactory);
+    const T = new WSNTokenizer(loggerFactory);
 
-    createTokenizer(T);
+    T.prepare();
 
     test.each([
       [
@@ -87,18 +86,15 @@ describe('WSN', () => {
       expect(match.token.content).toBe(input);
     });
 
-    test.each([`"a"`, `"1"`, `"="`, `";"`, `"'"`])(
-      'should match LITERAL (%s)',
-      input => {
-        const characters = createCharacters(input);
+    test.each([`"a"`, `"1"`, `"="`, `";"`, `"'"`])('should match LITERAL (%s)', input => {
+      const characters = createCharacters(input);
 
-        const parser = T.resolve('LITERAL');
-        const match = parser(characters);
+      const parser = T.resolve('LITERAL');
+      const match = parser(characters);
 
-        expect(match.token).toBeDefined();
-        expect(match.token.content).toBe(input);
-      },
-    );
+      expect(match.token).toBeDefined();
+      expect(match.token.content).toBe(input);
+    });
 
     test.each([`\\`, `|`, `=`, `;`])('should match SYMBOL (%s)', input => {
       const characters = createCharacters(input);
@@ -149,17 +145,15 @@ describe('WSN', () => {
       expect(match.characters.cursor).toBe(18);
     });
 
-    const exprs: [string, number][] = Array.from(Array(9).keys()).map(
-      length => {
-        length++;
-        return [
-          Array.from(Array(length))
-            .map(v => 'exp')
-            .join('|'),
-          length * 3 + length - 1,
-        ];
-      },
-    );
+    const exprs: [string, number][] = Array.from(Array(9).keys()).map(length => {
+      length++;
+      return [
+        Array.from(Array(length))
+          .map(v => 'exp')
+          .join('|'),
+        length * 3 + length - 1,
+      ];
+    });
 
     test.each(exprs)('should match EXPRESSION as (%s)', (input, expected) => {
       const characters = createCharacters(input);
@@ -173,24 +167,20 @@ describe('WSN', () => {
       expect(match.characters.isValid).toBe(false);
     });
 
-    test.each([
-      'Identifier',
-      `"Literal"`,
-      `[Exp]`,
-      `(Exp)`,
-      `{"Exp"}`,
-      `{eXp|Exp|"EXp"}`,
-    ])('should match FACTOR (%s)', input => {
-      const characters = createCharacters(input);
+    test.each(['Identifier', `"Literal"`, `[Exp]`, `(Exp)`, `{"Exp"}`, `{eXp|Exp|"EXp"}`])(
+      'should match FACTOR (%s)',
+      input => {
+        const characters = createCharacters(input);
 
-      const parser = T.resolve('FACTOR');
-      const match = parser(characters);
+        const parser = T.resolve('FACTOR');
+        const match = parser(characters);
 
-      expect(match.token).toBeDefined();
-      expect(match.token.content).toBe(input);
-      expect(match.characters.cursor).toBe(input.length);
-      expect(match.characters.isValid).toBe(false);
-    });
+        expect(match.token).toBeDefined();
+        expect(match.token.content).toBe(input);
+        expect(match.characters.cursor).toBe(input.length);
+        expect(match.characters.isValid).toBe(false);
+      },
+    );
 
     test.each([`'Art'`, `"Gen"`])('should match LITERAL (%s)', input => {
       const characters = createCharacters(input);
@@ -204,19 +194,16 @@ describe('WSN', () => {
       expect(match.characters.isValid).toBe(false);
     });
 
-    test.each(['test', 'Test', 'TesT', 'TEST_ME'])(
-      'should match IDENTIFIER (%s)',
-      input => {
-        const characters = createCharacters(input);
+    test.each(['test', 'Test', 'TesT', 'TEST_ME'])('should match IDENTIFIER (%s)', input => {
+      const characters = createCharacters(input);
 
-        const parser = T.resolve('IDENTIFIER');
-        const match = parser(characters);
+      const parser = T.resolve('IDENTIFIER');
+      const match = parser(characters);
 
-        expect(match.token).toBeDefined();
-        expect(match.token.type).toBe('IDENTIFIER');
-        expect(match.token.content).toBe(input);
-        expect(match.characters.cursor).toBe(input.length);
-      },
-    );
+      expect(match.token).toBeDefined();
+      expect(match.token.type).toBe('IDENTIFIER');
+      expect(match.token.content).toBe(input);
+      expect(match.characters.cursor).toBe(input.length);
+    });
   });
 });

@@ -1,12 +1,13 @@
 import { IFileSystem } from '@artgen/file-system';
 import { IRenderer } from '@artgen/renderer';
 import { BindingKey } from '@loopback/context';
+import { Container } from '../container';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
+import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { IConfig } from '../interfaces/config.interface';
-import { IContainer } from '../interfaces/container.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IInterpreter } from '../interfaces/pipes/interpreter.interface';
 import { ILexer } from '../interfaces/pipes/lexer.interface';
@@ -23,7 +24,10 @@ import { ReaderPipe } from '../pipes/reader.pipe';
 export const Bindings = {
   Config: BindingKey.create<IConfig>('Config'),
   Session: BindingKey.create<string>('Session'),
-  Container: BindingKey.create<IContainer>('Container'),
+  Container: BindingKey.create<Container>('Container'),
+  Module: {
+    Handler: BindingKey.create<IModuleHandler>('Module.Handler'),
+  },
   Components: {
     EventEmitter: BindingKey.create<IEventEmitter>('EventEmitter'),
     SymbolTable: BindingKey.create<ISymbolTable>('SymbolTable'),
