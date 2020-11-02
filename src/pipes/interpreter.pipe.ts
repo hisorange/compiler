@@ -3,7 +3,6 @@ import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
 import { Inject } from '../decorators/inject.decorator';
 import { Symbol } from '../dtos/symbol';
-import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { INode } from '../interfaces/dtos/node.interface';
@@ -11,6 +10,7 @@ import { ISymbol } from '../interfaces/dtos/symbol.interface';
 import { IInterpreter } from '../interfaces/pipes/interpreter.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
 import { ISymbolTable } from '../interfaces/symbol-table.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 
 export class InterpreterPipe implements IPipe<INode, Promise<ISymbol>> {
   protected readonly logger: ILogger;

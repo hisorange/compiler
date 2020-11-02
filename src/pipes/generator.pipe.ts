@@ -4,11 +4,11 @@ import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
 import { Inject } from '../decorators/inject.decorator';
-import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IGeneratorJob } from '../interfaces/generator-job.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 import { IModuleHandler } from '../module-handler/module-handler.interface';
 import { ModuleType } from '../module-handler/module.type';
 

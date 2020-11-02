@@ -2,13 +2,13 @@ import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
 import { Token } from '../dtos/token';
 import { LexerException, ParserException } from '../exceptions';
-import { LoggerFactory } from '../factories/logger.factory';
 import { ICollection } from '../interfaces/collection.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { ITokenizer } from '../interfaces/components/tokenizer.interface';
 import { ICharacter } from '../interfaces/dtos/character.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
 import { IParser } from '../interfaces/pipes/parser.interface';
+import { LoggerFactory } from '../logger';
 
 export abstract class Tokenizer implements ITokenizer {
   protected readonly logger: ILogger;

@@ -5,7 +5,6 @@ export * from './constants/bindings';
 export * from './decorators/inject.decorator';
 export * from './decorators/template.decorator';
 export * from './exceptions';
-export * from './factories/logger.factory';
 // Frontends
 export * from './frontends/aml/aml.frontend';
 export * from './frontends/wsn/wsn.frontend';
@@ -18,6 +17,7 @@ export * from './interfaces/components/logger.interface';
 export * from './interfaces/symbol-data.interface';
 export * from './interfaces/template.interface';
 export * from './kernel';
+export * from './logger/index';
 export * from './module-handler/index';
 
 // const imph: ISymbolData =1;

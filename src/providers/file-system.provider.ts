@@ -2,8 +2,8 @@ import { FileSystem, IFileSystem } from '@artgen/file-system';
 import { Provider } from '@loopback/context';
 import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
-import { LoggerFactory } from '../factories/logger.factory';
 import { ILogger } from '../interfaces/components/logger.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 
 /**
  * Creates an in memory file system instance, used for output compiling.

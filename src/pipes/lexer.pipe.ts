@@ -3,13 +3,13 @@ import { Events } from '../constants/events';
 import { Timings } from '../constants/timings';
 import { Inject } from '../decorators/inject.decorator';
 import { Node } from '../dtos/node';
-import { LoggerFactory } from '../factories/logger.factory';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { INode } from '../interfaces/dtos/node.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
 import { ILexer } from '../interfaces/pipes/lexer.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 
 export class LexerPipe implements IPipe<IToken, Promise<INode>> {
   protected readonly logger: ILogger;

@@ -4,8 +4,9 @@ import { EventEmitter } from '../components/event-emitter';
 import { Bindings } from '../constants/bindings';
 import { Container } from '../container';
 import { FileSystemFactory } from '../factories/file-system.factory';
-import { LoggerFactory } from '../factories/logger.factory';
 import { SymbolTable } from '../iml/symbol-table';
+import { LoggerFactory } from '../logger/logger.factory';
+import { LoggerProvider } from '../logger/logger.provider';
 import { ModuleHandler } from '../module-handler/module-handler';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { GeneratorPipeline } from '../pipelines/generator.pipeline';
@@ -15,7 +16,6 @@ import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
 import { ParserPipe } from '../pipes/parser.pipe';
 import { ReaderPipe } from '../pipes/reader.pipe';
-import { LoggerProvider } from '../providers/logger.provider';
 import { FileSystemProvider } from './file-system.provider';
 import sessionGenerator = require('uuid');
 

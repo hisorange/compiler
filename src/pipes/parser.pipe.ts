@@ -5,7 +5,6 @@ import { Container } from '../container';
 import { Inject } from '../decorators/inject.decorator';
 import { ParserException } from '../exceptions';
 import { IParserExceptionContext } from '../exceptions/contexts/parser.exception-context';
-import { LoggerFactory } from '../factories/logger.factory';
 import { Grammar } from '../iml/grammar';
 import { ICollection } from '../interfaces/collection.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
@@ -14,6 +13,7 @@ import { ICharacter } from '../interfaces/dtos/character.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 import { IModuleHandler } from '../module-handler/module-handler.interface';
 import { ModuleType } from '../module-handler/module.type';
 

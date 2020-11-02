@@ -1,10 +1,10 @@
 import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
-import { LoggerFactory } from '../factories/logger.factory';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
 import { ISymbolId } from '../interfaces/symbol-record.interface';
 import { ISymbolTable } from '../interfaces/symbol-table.interface';
+import { LoggerFactory } from '../logger/logger.factory';
 
 export class SymbolTable implements ISymbolTable {
   protected readonly table = new Map<string, ISymbolId>();

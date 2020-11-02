@@ -2,7 +2,7 @@ import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IFactory } from '../interfaces/factory.interface';
-import { ILoggerConfig } from '../interfaces/logger-config.interface';
+import { ILoggerConfig } from './logger-config.interface';
 
 export class LoggerFactory implements IFactory<ILoggerConfig, ILogger> {
   public constructor(@Inject(Bindings.Provider.Logger) protected readonly logger: ILogger) {}

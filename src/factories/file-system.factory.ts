@@ -3,7 +3,7 @@ import { Bindings } from '../constants/bindings';
 import { Inject } from '../decorators/inject.decorator';
 import { ILogger } from '../interfaces/components/logger.interface';
 import { IFactory } from '../interfaces/factory.interface';
-import { LoggerFactory } from './logger.factory';
+import { LoggerFactory } from '../logger/logger.factory';
 
 export class FileSystemFactory implements IFactory<null, IFileSystem> {
   /**
