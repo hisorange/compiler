@@ -15,38 +15,35 @@ import { IToken } from '../models/interfaces/token.interface';
 import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
+import { ExtensionExceptionContext } from './interfaces/extension.exception-context';
 import { IParserExceptionContext } from './interfaces/parser.exception-context';
 
 export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
   protected readonly logger: ILogger;
 
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Inject(Bindings.Factory.Logger) protected readonly loggerFactory: LoggerFactory,
     @Inject(Bindings.Module.Handler) protected readonly module: IModuleHandler,
     @Inject(Bindings.Container) protected readonly container: Container,
     @Inject(Bindings.Components.EventEmitter) protected readonly event: IEventEmitter,
   ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
+    this.logger = loggerFactory.create({ label: 'Parser' });
   }
 
   async pipe(characters: ICollection<ICharacter>): Promise<IToken> {
+    this.logger.time(Timings.PARSING);
+
     const extension = characters.current.path.extension;
     const grammar = this.loadGrammar(extension);
 
-    this.logger.time(Timings.PARSING);
-
     if (!grammar) {
-      throw new ParserException('Extension does not have a parser', {
-        extension,
-      });
+      throw new ParserException<ExtensionExceptionContext>('No frontend for given extension', { extension });
     }
 
-    const result = grammar.parse(characters.clone());
-
-    this.logger.timeEnd(Timings.PARSING);
+    // TODO: Get the Tokenizer, load the parsers and then run for the longest, then run again until the content is finished or no change is detected
+    // by this, we can detect if the result is partial finished.
+    // Grammar should be a helper class to handle the frontend, without collections like lexer?
+    const result = grammar.parse(characters);
 
     if (!result.token || result.characters.isValid) {
       throw new ParserException<IParserExceptionContext>('Unexpected character', {
@@ -57,6 +54,7 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
 
     // Publish the result, here the subscribers can even optimize or change the tokens.
     this.event.publish(Events.PARSED, result.token);
+    this.logger.timeEnd(Timings.PARSING);
 
     return result.token;
   }
