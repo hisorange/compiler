@@ -1,5 +1,4 @@
 import { IFileSystem } from '@artgen/file-system';
-import { Constructor } from '@loopback/context';
 import { Bindings } from './components/container/bindings';
 import { Container } from './components/container/container';
 import { ContainerProvider } from './components/container/container.provider';
@@ -10,11 +9,7 @@ import { IGeneratorInput } from './components/generator/generator-input.interfac
 import { ILogger } from './components/logger/interfaces/logger.interface';
 import { IPath } from './components/models/interfaces/path.interface';
 import { Path } from './components/models/path';
-import { IBackend, IGenerator } from './components/module-handler/interfaces/backend.interface';
-import { IFrontend } from './components/module-handler/interfaces/frontend.interface';
 import { IModuleHandler } from './components/module-handler/interfaces/module-handler.interface';
-import { ITemplate } from './components/module-handler/interfaces/template.interface';
-import { ModuleType } from './components/module-handler/module-type.enum';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {
@@ -25,9 +20,9 @@ export class Kernel implements IKernel {
   protected readonly ctx: Container;
 
   /**
-   * Hidden implementation for module registering.
+   * @inheritdoc
    */
-  protected readonly module: IModuleHandler;
+  readonly module: IModuleHandler;
 
   /**
    * Private logger for the kernel instance.
@@ -72,22 +67,6 @@ export class Kernel implements IKernel {
 
   mount(input: IFileSystem): void {
     this.ctx.bind(Bindings.Provider.InputFileSystem).to(input);
-  }
-
-  frontend(frontend: Constructor<IFrontend>): void {
-    this.module.register(ModuleType.FRONTEND, frontend);
-  }
-
-  template(template: Constructor<ITemplate>): void {
-    this.module.register(ModuleType.TEMPLATE, template);
-  }
-
-  generator(generator: Constructor<IGenerator>): void {
-    this.module.register(ModuleType.GENERATOR, generator);
-  }
-
-  backend(backend: Constructor<IBackend>): void {
-    this.module.register(ModuleType.BACKEND, backend);
   }
 
   async generate(reference: string, input: IGeneratorInput = {}): Promise<IFileSystem> {
