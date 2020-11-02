@@ -1,20 +1,20 @@
 import { IFileSystem } from '@artgen/file-system';
 import { Constructor } from '@loopback/context';
 import { Bindings } from './constants/bindings';
-import { KernelModuleTypes } from './constants/modules';
 import { Timings } from './constants/timings';
 import { Container } from './container';
 import { Path } from './dtos/path';
 import { KernelException } from './exceptions/kernel.exception';
 import { IBackend, IGenerator } from './interfaces/backend.interface';
 import { ILogger } from './interfaces/components/logger.interface';
-import { IModuleHandler } from './interfaces/components/module-handler.interface';
 import { IPath } from './interfaces/dtos/path.interface';
 import { MissingBindingExceptionContext } from './interfaces/exception-contexts/missing-binding.exception-context';
 import { IFrontend } from './interfaces/frontend.interface';
 import { IGeneratorInput } from './interfaces/generator-input.interface';
 import { IKernel } from './interfaces/kernel.interface';
 import { ITemplate } from './interfaces/template.interface';
+import { IModuleHandler } from './module-handler/module-handler.interface';
+import { ModuleType } from './module-handler/module.type';
 import { ContainerProvider } from './providers/container.provider';
 
 export class Kernel implements IKernel {
@@ -75,19 +75,19 @@ export class Kernel implements IKernel {
   }
 
   frontend(frontend: Constructor<IFrontend>): void {
-    this.module.register(KernelModuleTypes.FRONTEND, frontend);
+    this.module.register(ModuleType.FRONTEND, frontend);
   }
 
   template(template: Constructor<ITemplate>): void {
-    this.module.register(KernelModuleTypes.TEMPLATE, template);
+    this.module.register(ModuleType.TEMPLATE, template);
   }
 
   generator(generator: Constructor<IGenerator>): void {
-    this.module.register(KernelModuleTypes.GENERATOR, generator);
+    this.module.register(ModuleType.GENERATOR, generator);
   }
 
   backend(backend: Constructor<IBackend>): void {
-    this.module.register(KernelModuleTypes.BACKEND, backend);
+    this.module.register(ModuleType.BACKEND, backend);
   }
 
   async generate(reference: string, input: IGeneratorInput = {}): Promise<IFileSystem> {

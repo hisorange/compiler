@@ -1,21 +1,21 @@
-import { Grammar } from '../components/grammar';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
-import { KernelModuleTypes } from '../constants/modules';
 import { Timings } from '../constants/timings';
 import { Container } from '../container';
 import { Inject } from '../decorators/inject.decorator';
 import { ParserException } from '../exceptions';
 import { IParserExceptionContext } from '../exceptions/contexts/parser.exception-context';
 import { LoggerFactory } from '../factories/logger.factory';
+import { Grammar } from '../iml/grammar';
 import { ICollection } from '../interfaces/collection.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { ICharacter } from '../interfaces/dtos/character.interface';
 import { IToken } from '../interfaces/dtos/token.interface';
 import { IGrammar } from '../interfaces/grammar.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
+import { IModuleHandler } from '../module-handler/module-handler.interface';
+import { ModuleType } from '../module-handler/module.type';
 
 export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
   protected readonly logger: ILogger;
@@ -65,7 +65,7 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
   protected loadGrammar(extension: string): IGrammar {
     let grammar: IGrammar;
 
-    const frontends = this.module.search(KernelModuleTypes.FRONTEND);
+    const frontends = this.module.search(ModuleType.FRONTEND);
 
     for (const frontendMod of frontends) {
       for (const ext of frontendMod.meta.extensions) {

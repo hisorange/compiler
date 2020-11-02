@@ -1,6 +1,6 @@
-import { KernelModuleTypes } from '../../constants/modules';
+import { ModuleType } from '../../module-handler/module.type';
 
 export interface MissingModuleBindingExceptionContext {
-  type: KernelModuleTypes;
+  type: ModuleType;
   reference: string;
 }

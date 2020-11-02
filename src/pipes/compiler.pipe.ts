@@ -2,7 +2,6 @@ import { IFileSystem } from '@artgen/file-system';
 import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../constants/bindings';
 import { Events } from '../constants/events';
-import { KernelModuleTypes } from '../constants/modules';
 import { Timings } from '../constants/timings';
 import { IBackendMeta } from '../decorators/backend.decorator';
 import { Inject } from '../decorators/inject.decorator';
@@ -10,10 +9,11 @@ import { LoggerFactory } from '../factories/logger.factory';
 import { IBackend } from '../interfaces/backend.interface';
 import { IEventEmitter } from '../interfaces/components/event-emitter.interface';
 import { ILogger } from '../interfaces/components/logger.interface';
-import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { ISymbol } from '../interfaces/dtos/symbol.interface';
-import { IModule } from '../interfaces/module-resolution.interface';
 import { IPipe } from '../interfaces/pipes/pipe.interface';
+import { IModuleHandler } from '../module-handler/module-handler.interface';
+import { IModule } from '../module-handler/module.interface';
+import { ModuleType } from '../module-handler/module.type';
 
 type IBackendModule = IModule<IBackendMeta, IBackend>;
 
@@ -41,7 +41,7 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
     this.logger.time(Timings.COMPILING);
     this.logger.info('Compiling from the root symbol');
 
-    this.traverse(symbol, this.module.search(KernelModuleTypes.BACKEND));
+    this.traverse(symbol, this.module.search(ModuleType.BACKEND));
 
     this.eventEmitter.publish(Events.COMPILED, symbol);
     this.logger.timeEnd(Timings.COMPILING);

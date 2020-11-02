@@ -1,12 +1,12 @@
 import { Renderer } from '@artgen/renderer';
 import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../components/event-emitter';
-import { ModuleHandler } from '../components/module-handler';
 import { Bindings } from '../constants/bindings';
 import { Container } from '../container';
 import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { SymbolTable } from '../iml/symbol-table';
+import { ModuleHandler } from '../module-handler/module-handler';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { GeneratorPipeline } from '../pipelines/generator.pipeline';
 import { CompilerPipe } from '../pipes/compiler.pipe';
@@ -16,7 +16,7 @@ import { LexerPipe } from '../pipes/lexer.pipe';
 import { ParserPipe } from '../pipes/parser.pipe';
 import { ReaderPipe } from '../pipes/reader.pipe';
 import { LoggerProvider } from '../providers/logger.provider';
-import { MemoryFileSystemProvider } from './memory-file-system.provider';
+import { FileSystemProvider } from './file-system.provider';
 import sessionGenerator = require('uuid');
 
 /**
@@ -111,8 +111,8 @@ export class ContainerProvider implements Provider<Container> {
     const namespace = Bindings.Provider;
 
     container.bind(namespace.Logger).toProvider(LoggerProvider).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.InputFileSystem).toProvider(MemoryFileSystemProvider).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.OutputFileSystem).toProvider(MemoryFileSystemProvider).inScope(BindingScope.CONTEXT);
+    container.bind(namespace.InputFileSystem).toProvider(FileSystemProvider).inScope(BindingScope.CONTEXT);
+    container.bind(namespace.OutputFileSystem).toProvider(FileSystemProvider).inScope(BindingScope.CONTEXT);
   }
 
   /**

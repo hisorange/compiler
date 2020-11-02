@@ -18,5 +18,6 @@ export * from './interfaces/components/logger.interface';
 export * from './interfaces/symbol-data.interface';
 export * from './interfaces/template.interface';
 export * from './kernel';
+export * from './module-handler/index';
 
 // const imph: ISymbolData =1;

@@ -1,6 +1,5 @@
 import { MetadataInspector } from '@loopback/context';
 import { Bindings } from '../constants/bindings';
-import { KernelModuleTypes } from '../constants/modules';
 import { Container } from '../container';
 import { IBackendMeta } from '../decorators/backend.decorator';
 import { IFrontendMeta } from '../decorators/frontend.decorator';
@@ -9,13 +8,14 @@ import { Inject } from '../decorators/inject.decorator';
 import { ITemplateMeta } from '../decorators/template.decorator';
 import { ModuleException } from '../exceptions/module.exception';
 import { IBackend, IGenerator } from '../interfaces/backend.interface';
-import { IModuleHandler } from '../interfaces/components/module-handler.interface';
 import { Constructor } from '../interfaces/constructor.interface';
 import { MissingMetaDataExceptionContext } from '../interfaces/exception-contexts/missing-meta-data.exception-context';
 import { MissingModuleBindingExceptionContext } from '../interfaces/exception-contexts/missing-module-binding.exception-context';
 import { IFrontend } from '../interfaces/frontend.interface';
-import { IModule } from '../interfaces/module-resolution.interface';
 import { ITemplate } from '../interfaces/template.interface';
+import { IModuleHandler } from './module-handler.interface';
+import { IModule } from './module.interface';
+import { ModuleType } from './module.type';
 
 type ModuleMeta = ITemplateMeta | IGeneratorMeta | IBackendMeta | IFrontendMeta;
 type ModuleData = ITemplate | IGenerator | IBackend | IFrontend;
@@ -34,11 +34,11 @@ export class ModuleHandler implements IModuleHandler {
     this.ctx = new Container(kernelContext, 'modules');
   }
 
-  register(type: KernelModuleTypes.FRONTEND, mod: Constructor<IFrontend>): void;
-  register(type: KernelModuleTypes.TEMPLATE, mod: Constructor<ITemplate>): void;
-  register(type: KernelModuleTypes.GENERATOR, mod: Constructor<IGenerator>): void;
-  register(type: KernelModuleTypes.BACKEND, mod: Constructor<IBackend>): void;
-  register(type: KernelModuleTypes, module: Constructor<ModuleData>): void {
+  register(type: ModuleType.FRONTEND, mod: Constructor<IFrontend>): void;
+  register(type: ModuleType.TEMPLATE, mod: Constructor<ITemplate>): void;
+  register(type: ModuleType.GENERATOR, mod: Constructor<IGenerator>): void;
+  register(type: ModuleType.BACKEND, mod: Constructor<IBackend>): void;
+  register(type: ModuleType, module: Constructor<ModuleData>): void {
     // Acquire the meta data from the module.
     const meta = this.readMeta<ModuleMeta>(type, module);
 
@@ -52,17 +52,17 @@ export class ModuleHandler implements IModuleHandler {
 
     // Run the special hooks.
     switch (type) {
-      case KernelModuleTypes.GENERATOR:
+      case ModuleType.GENERATOR:
         this.onRegisterGenerator(meta as IGeneratorMeta);
         break;
     }
   }
 
-  retrive(type: KernelModuleTypes.FRONTEND, reference: string): IModule<IFrontendMeta, IFrontend>;
-  retrive(type: KernelModuleTypes.TEMPLATE, reference: string): IModule<ITemplateMeta, ITemplate>;
-  retrive(type: KernelModuleTypes.GENERATOR, reference: string): IModule<IGeneratorMeta, IGenerator>;
-  retrive(type: KernelModuleTypes.BACKEND, reference: string): IModule<IBackendMeta, IBackend>;
-  retrive(type: KernelModuleTypes, reference: string): RetriveReturn {
+  retrive(type: ModuleType.FRONTEND, reference: string): IModule<IFrontendMeta, IFrontend>;
+  retrive(type: ModuleType.TEMPLATE, reference: string): IModule<ITemplateMeta, ITemplate>;
+  retrive(type: ModuleType.GENERATOR, reference: string): IModule<IGeneratorMeta, IGenerator>;
+  retrive(type: ModuleType.BACKEND, reference: string): IModule<IBackendMeta, IBackend>;
+  retrive(type: ModuleType, reference: string): RetriveReturn {
     const metaRef = this.createMetaReference(type, reference);
     const dataRef = this.createDataReference(type, reference);
 
@@ -88,11 +88,11 @@ export class ModuleHandler implements IModuleHandler {
     return { meta, module };
   }
 
-  search(type: KernelModuleTypes.FRONTEND): IModule<IFrontendMeta, IFrontend>[];
-  search(type: KernelModuleTypes.TEMPLATE): IModule<ITemplateMeta, ITemplate>[];
-  search(type: KernelModuleTypes.GENERATOR): IModule<IGeneratorMeta, IGenerator>[];
-  search(type: KernelModuleTypes.BACKEND): IModule<IBackendMeta, IBackend>[];
-  search(type: KernelModuleTypes): RetriveReturn[] {
+  search(type: ModuleType.FRONTEND): IModule<IFrontendMeta, IFrontend>[];
+  search(type: ModuleType.TEMPLATE): IModule<ITemplateMeta, ITemplate>[];
+  search(type: ModuleType.GENERATOR): IModule<IGeneratorMeta, IGenerator>[];
+  search(type: ModuleType.BACKEND): IModule<IBackendMeta, IBackend>[];
+  search(type: ModuleType): RetriveReturn[] {
     return this.ctx
       .findByTag(`${type}-meta`)
       .map(metaRef => this.retrive(type as any, metaRef.getValue(this.ctx).reference));
@@ -104,7 +104,7 @@ export class ModuleHandler implements IModuleHandler {
   protected onRegisterGenerator(meta: IGeneratorMeta): void {
     if (meta.templates) {
       for (const template of meta.templates) {
-        this.register(KernelModuleTypes.TEMPLATE, template);
+        this.register(ModuleType.TEMPLATE, template);
       }
     }
   }
@@ -112,21 +112,21 @@ export class ModuleHandler implements IModuleHandler {
   /**
    * Creates a uniform reference key for module meta in the module context.
    */
-  protected createMetaReference(type: KernelModuleTypes, reference: string): string {
+  protected createMetaReference(type: ModuleType, reference: string): string {
     return type + '-meta.' + reference;
   }
 
   /**
    * Creates a uniform reference key for module data in the module context.
    */
-  protected createDataReference(type: KernelModuleTypes, reference: string): string {
+  protected createDataReference(type: ModuleType, reference: string): string {
     return type + '-data.' + reference;
   }
 
   /**
    * Reads the meta data from the kernel module.
    */
-  protected readMeta<M>(type: KernelModuleTypes, module: Constructor<ModuleData>): M {
+  protected readMeta<M>(type: ModuleType, module: Constructor<ModuleData>): M {
     const meta = MetadataInspector.getClassMetadata<M>(type, module);
 
     // Happens when a class is registered as kernel module but does not have the right or any decorator for it.

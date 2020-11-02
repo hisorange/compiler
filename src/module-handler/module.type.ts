@@ -1,4 +1,4 @@
-export enum KernelModuleTypes {
+export enum ModuleType {
   TEMPLATE = 'artgen.template',
   GENERATOR = 'artgen.generator',
   BACKEND = 'artgen.backend',
