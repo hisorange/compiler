@@ -1,11 +1,10 @@
 import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
-import { IConfig } from '../container/interfaces/config.interface';
 import { Events } from '../event-handler/events';
+import { ReadEvent } from '../event-handler/events/read.event';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
-import { ReaderException } from '../exceptions/reader.exception';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
 import { Character } from '../models/character';
@@ -13,108 +12,75 @@ import { Collection } from '../models/collection.model';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
 import { IPath } from '../models/interfaces/path.interface';
-import { IPipe } from './interfaces/pipe.interface';
+import { IPipe } from '../pipes/interfaces/pipe.interface';
+import { ReaderException } from './exceptions/reader.exception';
+import { FileNotFoundExcetionContext } from './interfaces/file-not-found.exception-context';
 
-/**
- * This pipe reads the content from the volume, then splits
- * the input into a linked list of characters.
- *
- * @export
- * @class ReaderPipe
- * @implements {IPipe<IPath, ICharacter>}
- */
 export class ReaderPipe implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
-  /**
-   * Instance's own logger.
-   *
-   * @protected
-   * @type {ILogger}
-   * @memberof ReaderPipe
-   */
   protected readonly logger: ILogger;
 
-  /**
-   * Creates an instance of ReaderPipe.
-   *
-   * @param {LoggerFactory} loggerFactory
-   * @param {IFileSystem} fileSystem
-   * @param {IEventEmitter} events
-   * @param {IConfig} config
-   * @memberof ReaderPipe
-   */
   constructor(
     @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
     @Inject(Bindings.Provider.InputFileSystem)
     protected readonly fileSystem: IFileSystem,
     @Inject(Bindings.Components.EventEmitter)
-    protected readonly events: IEventEmitter,
-    @Inject(Bindings.Config)
-    protected readonly config: IConfig,
+    protected readonly event: IEventEmitter,
   ) {
-    // Create a labeled logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
+    this.logger = loggerFactory.create({ label: 'Reader' });
   }
 
   /**
    * Process the input path and create the linked list of characters from it.
    *
    * @throws {ReaderException}
-   *
-   * @param {IPath} path
-   * @returns {ICollection<ICharacter>}
-   * @memberof ReaderPipe
    */
   async pipe(path: IPath): Promise<ICollection<ICharacter>> {
     this.logger.time(Timings.READING);
-    this.logger.info(`Verifying the input path's existence.`);
+    this.logger.info(`Verifying the input path's existence`);
 
     if (!this.fileSystem.existsSync(path.realPath)) {
-      throw new ReaderException('Path does not exists on the volume!', {
-        path,
-      });
+      throw new ReaderException<FileNotFoundExcetionContext>('Path does not exists on the volume!', { path });
     }
 
-    this.logger.success('Path verified, starting the read process.');
+    this.logger.success('Path verified, starting to read characters');
 
     // Read the content from the volume into memory.
     const content = this.fileSystem.readFileSync(path.realPath).toString();
 
+    // Important notice, maybe there is an error, but generally this is not an error itself.
     if (!content.length) {
-      throw new ReaderException('File is empty!', { path });
+      this.logger.warn(`File is empty`, { path });
     }
 
-    // Position trackers.
     let line = 1;
     let column = 1;
 
-    // Entry point for the linked list.
-    const collection: ICollection<ICharacter> = new Collection();
+    const characters: ICollection<ICharacter> = new Collection();
 
     for (let cursor = 0; cursor < content.length; cursor++, column++) {
       const value = content.substr(cursor, 1);
 
       // Create the new item.
-      collection.push(new Character(value, path, line, column, cursor));
+      characters.push(new Character(value, path, line, column, cursor));
 
       // Step up the line counter.
       if (value === '\n') {
-        this.logger.complete('Parsed line', { file: path.baseName, line });
+        this.logger.complete('Read line', { file: path.baseName, byteIndex: cursor, line });
 
         column = 0;
         line++;
       }
     }
 
-    this.events.publish(Events.READ, collection);
+    this.event.publish<ReadEvent>(Events.READ, { path, characters });
     this.logger.timeEnd(Timings.READING);
-    this.logger.info('Analytics', {
+
+    this.logger.info('Reader analytics', {
       bytes: content.length,
-      chars: collection.length,
+      chars: characters.length,
       lines: line,
     });
 
-    return collection;
+    return characters;
   }
 }

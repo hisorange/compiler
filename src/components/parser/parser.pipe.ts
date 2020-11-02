@@ -21,11 +21,10 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
   protected readonly logger: ILogger;
 
   public constructor(
-    @Inject(Bindings.Factory.Logger) protected loggerFactory: LoggerFactory,
-    @Inject(Bindings.Module.Handler) protected module: IModuleHandler,
-    @Inject(Bindings.Container) protected container: Container,
-    @Inject(Bindings.Components.EventEmitter)
-    protected readonly events: IEventEmitter,
+    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Inject(Bindings.Module.Handler) protected readonly module: IModuleHandler,
+    @Inject(Bindings.Container) protected readonly container: Container,
+    @Inject(Bindings.Components.EventEmitter) protected readonly event: IEventEmitter,
   ) {
     // Create a new logger.
     this.logger = loggerFactory.create({
@@ -57,7 +56,7 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
     }
 
     // Publish the result, here the subscribers can even optimize or change the tokens.
-    this.events.publish(Events.PARSED, result.token);
+    this.event.publish(Events.PARSED, result.token);
 
     return result.token;
   }

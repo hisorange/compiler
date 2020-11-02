@@ -17,7 +17,7 @@ import { IInterpreter } from '../pipes/interfaces/interpreter.interface';
 import { ILexer } from '../pipes/interfaces/lexer.interface';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
-import { ReaderPipe } from '../pipes/reader.pipe';
+import { ReaderPipe } from '../reader/reader.pipe';
 import { Container } from './container';
 import { IConfig } from './interfaces/config.interface';
 

@@ -14,7 +14,7 @@ import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { CompilerPipe } from '../pipes/compiler.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
-import { ReaderPipe } from '../pipes/reader.pipe';
+import { ReaderPipe } from '../reader/reader.pipe';
 import { Bindings } from './bindings';
 import { Container } from './container';
 import sessionGenerator = require('uuid');

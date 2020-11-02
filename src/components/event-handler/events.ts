@@ -1,7 +1,7 @@
 export enum Events {
-  READ = 'artgen.read',
-  PARSED = 'artgen.parsed',
-  LEXED = 'artgen.lexed',
-  INTERPRETED = 'artgen.interptered',
-  COMPILED = 'artgen.compiled',
+  READ = 'artgen.pipe.read',
+  PARSED = 'artgen.pipe.parsed',
+  LEXED = 'artgen.pipe.lexed',
+  INTERPRETED = 'artgen.pipe.interptered',
+  COMPILED = 'artgen.pipe.compiled',
 }
