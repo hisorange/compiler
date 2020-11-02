@@ -6,11 +6,9 @@ import { IModuleHandler } from './components/module-handler';
 
 export interface IKernel {
   /**
-   * Create a logger instance, useful in the CLI and other external extensions.
-   *
-   * @throws {KernelException}
+   * Access to the main logger instance, can be used to create child loggers.
    */
-  createLogger(label: string[]): ILogger;
+  readonly logger: ILogger;
 
   /**
    * Create an empty virtual file system, useful for input handling.

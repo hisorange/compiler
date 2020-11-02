@@ -19,15 +19,8 @@ export class Kernel implements IKernel {
    */
   protected readonly ctx: Container;
 
-  /**
-   * @inheritdoc
-   */
   readonly module: IModuleHandler;
-
-  /**
-   * Private logger for the kernel instance.
-   */
-  protected readonly logger: ILogger;
+  readonly logger: ILogger;
 
   constructor() {
     // Prepare a new container and inject every neccessary dependency.
@@ -38,21 +31,10 @@ export class Kernel implements IKernel {
       debug: true,
     });
 
-    // Create a custom logger for the main instance.
-    this.logger = this.createLogger(['Kernel']);
+    this.logger = this.ctx.getSync(Bindings.Factory.Logger).create({ label: 'Kernel' });
     this.module = this.ctx.getSync(Bindings.Module.Handler);
 
     this.logger.info('System is ready to rock!');
-  }
-
-  createLogger(label: string[]): ILogger {
-    if (this.ctx.contains(Bindings.Factory.Logger)) {
-      throw new KernelException<MissingBindingExceptionContext>(`Missing kernel binding`, {
-        binding: Bindings.Factory.Logger.key,
-      });
-    }
-
-    return this.ctx.getSync(Bindings.Factory.Logger).create({ label });
   }
 
   createFileSystem(): IFileSystem {
