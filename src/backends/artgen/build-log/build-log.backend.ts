@@ -14,6 +14,7 @@ import { EventInterpreted, nodeTree, symbolTree, tokenTree } from './utils';
 @Backend({
   name: 'Build Logger',
   reference: 'build-log',
+  interest: () => false,
 })
 export class BuildLogPlugin implements IFrontend {
   constructor(

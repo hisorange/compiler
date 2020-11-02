@@ -2,6 +2,7 @@ import { IRenderer } from '@artgen/renderer';
 import { Backend } from '../../../decorators/backend.decorator';
 import { GrammarSymbol } from '../../../frontends/wsn/symbols/grammar.symbol';
 import { IBackend } from '../../../interfaces/backend.interface';
+import { ISymbol } from '../../../interfaces/dtos/symbol.interface';
 import { GrammarTemplate } from './templates/grammar.template';
 import { IdentifierTemplate } from './templates/identifier.template';
 import { InterpretersTemplate } from './templates/interpreters.template';
@@ -12,6 +13,7 @@ import { TokenizerTemplate } from './templates/tokenizer.template';
   name: 'Grammar Backend',
   reference: 'artgen.grammar',
   templates: [GrammarTemplate, IdentifierTemplate, InterpretersTemplate, LexersTemplate, TokenizerTemplate],
+  interest: (symbol: ISymbol) => symbol instanceof GrammarSymbol,
 })
 export class GrammarBackend implements IBackend {
   async render(renderer: IRenderer, input: GrammarSymbol) {

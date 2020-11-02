@@ -1,4 +1,5 @@
 import { Context } from '@loopback/context';
+import { IBackendMeta } from '../decorators/backend.decorator';
 import { IGeneratorMeta } from '../decorators/generator.decorator';
 import { ITemplateMeta } from '../decorators/template.decorator';
 import { IBackend, IGenerator } from './backend.interface';
@@ -14,6 +15,6 @@ export interface IContainer extends Context {
   registerGeneratorModule(generator: Constructor<IGenerator>): void;
 
   loadGeneratorModule(reference: string): IModuleResolution<IGeneratorMeta, IGenerator>;
-
   loadTemplateModule(reference: string): IModuleResolution<ITemplateMeta, ITemplate>;
+  loadBackendModule(reference: string): IModuleResolution<IBackendMeta, IBackend>;
 }

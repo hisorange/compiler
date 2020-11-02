@@ -7,6 +7,8 @@ import { FileSystemFactory } from '../factories/file-system.factory';
 import { LoggerFactory } from '../factories/logger.factory';
 import { SymbolTable } from '../iml/symbol-table';
 import { IContainer } from '../interfaces/container.interface';
+import { CompilerPipeline } from '../pipelines/compiler.pipeline';
+import { GeneratorPipeline } from '../pipelines/generator.pipeline';
 import { CompilerPipe } from '../pipes/compiler.pipe';
 import { GeneratorPipe } from '../pipes/generator.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
@@ -38,6 +40,7 @@ export class ContainerProvider implements Provider<IContainer> {
     this.bindProviders(container);
     this.bindFactories(container);
     this.bindPipes(container);
+    this.bindPipelines(container);
     this.bindComponents(container);
 
     return container;
@@ -140,6 +143,20 @@ export class ContainerProvider implements Provider<IContainer> {
     container.bind(namespace.Lexer).toClass(LexerPipe);
     container.bind(namespace.Interpreter).toClass(InterpreterPipe);
     container.bind(namespace.Compiler).toClass(CompilerPipe);
+  }
+
+  /**
+   * Register the processing pipelines.
+   *
+   * @protected
+   * @param {IContainer} container
+   * @memberof ContainerProvider
+   */
+  protected bindPipelines(container: IContainer): void {
+    const namespace = Bindings.Pipeline;
+
+    container.bind(namespace.Generator).toClass(GeneratorPipeline);
+    container.bind(namespace.Compiler).toClass(CompilerPipeline);
   }
 
   /**

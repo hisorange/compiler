@@ -59,11 +59,32 @@ export class Container extends Context implements IContainer {
     };
   }
 
-  protected getModuleMeta<M>(type: string, extension: Function): M {
-    return MetadataInspector.getClassMetadata<M>(`artgen.${type}`, extension);
+  loadBackendModule(reference: string): IModuleResolution<IBackendMeta, IBackend> {
+    if (!this.contains(`backend.${reference}`)) {
+      throw new CompilerException(`Backend module doest not exists`, {
+        reference,
+      });
+    }
+
+    return {
+      meta: this.getSync<IBackendMeta>(`backend-meta.${reference}`),
+      module: this.getSync<IBackend>(`backend.${reference}`),
+    };
+  }
+
+  protected getModuleMeta<M>(type: string, clss: Function): M {
+    return MetadataInspector.getClassMetadata<M>(`artgen.${type}`, clss);
   }
 
   protected registerKernelModule(type: string, meta: any, mod: any): void {
+    if (typeof meta === 'undefined') {
+      throw new CompilerException(`Meta has no reference`, {
+        type,
+        meta,
+        module: mod,
+      });
+    }
+
     this.bind(`${type}-meta.${meta.reference}`).to(meta).tag(`${type}-meta`);
     this.bind(`${type}.${meta.reference}`).toClass(mod).tag(type);
   }
