@@ -1,14 +1,14 @@
 import { IRenderer } from '@artgen/renderer';
 import { AsciiTree } from 'oo-ascii-tree';
+import { IEventEmitter } from '../../../../components';
 import { Bindings } from '../../../../components/container/bindings';
 import { Inject } from '../../../../components/container/decorators/inject.decorator';
 import { Events } from '../../../../components/event-handler/events';
-import { ICharacter } from '../../../../components/models/interfaces/character.interface';
-import { ICollection } from '../../../../components/models/interfaces/collection.interface';
+import { ReadEvent } from '../../../../components/event-handler/events/read.event';
 import { INode } from '../../../../components/models/interfaces/node.interface';
 import { IToken } from '../../../../components/models/interfaces/token.interface';
 import { Backend } from '../../../../components/module-handler/decorators/backend.decorator';
-import { IFrontend } from '../../../../components/module-handler/interfaces/frontend.interface';
+import { IBackend } from '../../../../components/module-handler/interfaces/backend.interface';
 import { EventInterpreted, nodeTree, symbolTree, tokenTree } from './utils';
 
 @Backend({
@@ -16,10 +16,10 @@ import { EventInterpreted, nodeTree, symbolTree, tokenTree } from './utils';
   reference: 'build-log',
   interest: () => false,
 })
-export class BuildLogPlugin implements IFrontend {
+export class BuildLogBackend implements IBackend {
   constructor(
     @Inject(Bindings.Components.EventEmitter)
-    protected events,
+    protected event: IEventEmitter,
   ) {}
 
   /**
@@ -27,10 +27,10 @@ export class BuildLogPlugin implements IFrontend {
    */
   async render(renderer: IRenderer) {
     // Capture byte sequence.
-    this.events.subscribe(Events.READ, (collection: ICollection<ICharacter>) => {
+    this.event.subscribe<ReadEvent>(Events.READ, event => {
       const output = [];
 
-      for (const chr of collection.items) {
+      for (const chr of event.characters.items) {
         output.push({
           rawValue: chr.value,
           charCode: chr.code,
@@ -61,7 +61,7 @@ export class BuildLogPlugin implements IFrontend {
     });
 
     // Capture token tree.
-    this.events.subscribe(Events.PARSED, (token: IToken) => {
+    this.event.subscribe(Events.PARSED, (token: IToken) => {
       const tree = new AsciiTree('@');
       tokenTree(tree, token);
 
@@ -69,14 +69,14 @@ export class BuildLogPlugin implements IFrontend {
     });
 
     // Capture node tree.
-    this.events.subscribe(Events.LEXED, (node: INode) => {
+    this.event.subscribe(Events.LEXED, (node: INode) => {
       const tree = new AsciiTree('@');
       nodeTree(tree, node);
 
       renderer.write('02-node.tree.log', tree.toString());
     });
 
-    this.events.subscribe(Events.INTERPRETED, (data: EventInterpreted) => {
+    this.event.subscribe(Events.INTERPRETED, (data: EventInterpreted) => {
       const tree = new AsciiTree('@');
       symbolTree(tree, data.symbol);
       renderer.write('03-symbol.tree.log', tree.toString());
