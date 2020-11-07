@@ -1,0 +1,30 @@
+import { IRenderer } from '@artgen/renderer';
+import { SmartString } from '@artgen/smart-string';
+import { Bindings, IModuleHandler, Inject } from '../../../components';
+import { ISymbol } from '../../../components/iml/interfaces/symbol.interface';
+import { Backend } from '../../../components/module-handler/decorators/backend.decorator';
+import { IBackend } from '../../../components/module-handler/interfaces/backend.interface';
+import { GrammarSymbol } from '../../frontends/wsn/symbols/grammar.symbol';
+import { ReadMeTemplate } from './templates/readme.template';
+
+@Backend({
+  name: 'Input',
+  reference: 'input',
+  templates: [ReadMeTemplate],
+  interest: (symbol: ISymbol) => symbol instanceof GrammarSymbol,
+})
+export class NestJSBackend implements IBackend {
+  constructor(
+    @Inject(Bindings.Module.Handler)
+    private readonly module: IModuleHandler,
+  ) {}
+
+  async render(renderer: IRenderer, input: any) {
+    const context = { $name: new SmartString(input.name) };
+
+    renderer.setContext(context);
+    renderer.outputBaseDirectory = input.baseDirectory;
+
+    renderer.render(`nestjs.readme`);
+  }
+}

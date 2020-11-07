@@ -30,7 +30,7 @@ export class TemplateGenerator implements IGenerator {
     const context = { $name: new SmartString(input.name) };
 
     renderer.setContext(context);
-    renderer.outputBaseDirectory = input.baseDirectory;
+    renderer.outputBaseDirectory = input.baseDirectory || '.';
 
     renderer.render(`artgen.template`);
   }
