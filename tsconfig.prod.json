@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": false,
-    "sourceMap": true,
+    "skipLibCheck": true,
     "removeComments": false,
     "incremental": false,
     "noEmitOnError": true
