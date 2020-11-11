@@ -1,5 +1,5 @@
-import { IRenderer } from '@artgen/renderer';
 import { ISymbol } from '../../iml/interfaces/symbol.interface';
+import { IRenderer } from '../../renderer';
 
 export interface IBackend {
   render(renderer: IRenderer, symbol: ISymbol): Promise<void>;

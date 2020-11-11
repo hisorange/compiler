@@ -1,6 +1,6 @@
-import { ISmartString } from '@artgen/smart-string';
 import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
 import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
+import { ISmartString } from '../../../../../components/smart-string';
 
 @Template({
   reference: 'artgen.template',
@@ -21,7 +21,7 @@ export class TemplateTemplate implements ITemplate {
   }
 
   render() {
-    return `import { ISmartString } from '@artgen/smart-string';
+    return `import { ISmartString } from '@app';
 import { Template, ITemplate } from '@artgen/kernel';
 
 @Template({

@@ -1,9 +1,10 @@
-import { FileSystem, IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
 import { IFactory } from '../container/interfaces/factory.interface';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
+import { FileSystem } from './file-system';
+import { IFileSystem } from './file-system.interface';
 
 export class FileSystemFactory implements IFactory<null, IFileSystem> {
   /**

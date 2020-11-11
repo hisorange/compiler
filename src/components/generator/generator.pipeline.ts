@@ -1,6 +1,6 @@
-import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
+import { IFileSystem } from '../file-system';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { IGeneratorJob } from './generator-job.interface';
 import { GeneratorPipe } from './generator.pipe';

@@ -1,4 +1,4 @@
-import { SmartString } from '@artgen/smart-string';
+import { SmartString } from '../smart-string';
 import { ISymbolName } from './interfaces/symbol-name.interface';
 import { ISymbol } from './interfaces/symbol.interface';
 

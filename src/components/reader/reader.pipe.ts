@@ -1,10 +1,10 @@
-import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
 import { Events } from '../event-handler/events';
 import { ReadEvent } from '../event-handler/events/read.event';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
+import { IFileSystem } from '../file-system';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
 import { Character } from '../models/character';

@@ -1,4 +1,4 @@
-import { ISmartString } from '@artgen/smart-string';
+import { ISmartString } from '../../smart-string';
 
 export interface ISymbolName extends ISmartString {
   /**

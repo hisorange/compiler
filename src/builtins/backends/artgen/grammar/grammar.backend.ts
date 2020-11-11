@@ -1,7 +1,7 @@
-import { IRenderer } from '@artgen/renderer';
 import { ISymbol } from '../../../../components/iml/interfaces/symbol.interface';
 import { Backend } from '../../../../components/module-handler/decorators/backend.decorator';
 import { IBackend } from '../../../../components/module-handler/interfaces/backend.interface';
+import { IRenderer } from '../../../../components/renderer';
 import { GrammarSymbol } from '../../../frontends/wsn/symbols/grammar.symbol';
 import { GrammarTemplate } from './templates/grammar.template';
 import { IdentifierTemplate } from './templates/identifier.template';

@@ -1,10 +1,10 @@
-import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from './components/container/bindings';
 import { Container } from './components/container/container';
 import { ContainerProvider } from './components/container/container.provider';
 import { KernelException } from './components/container/exceptions/kernel.exception';
 import { MissingBindingExceptionContext } from './components/container/interfaces/missing-binding.exception-context';
 import { Timings } from './components/event-handler/timings';
+import { IFileSystem } from './components/file-system';
 import { IGeneratorInput } from './components/generator/generator-input.interface';
 import { ILogger } from './components/logger/interfaces/logger.interface';
 import { IPath } from './components/models/interfaces/path.interface';

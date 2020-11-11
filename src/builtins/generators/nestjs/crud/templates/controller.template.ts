@@ -1,6 +1,6 @@
-import { ISmartString } from '@artgen/smart-string';
 import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
 import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
+import { ISmartString } from '../../../../../components/smart-string';
 
 @Template({
   reference: 'nestjs.crud.controller',

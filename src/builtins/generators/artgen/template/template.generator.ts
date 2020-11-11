@@ -1,7 +1,7 @@
-import { IRenderer } from '@artgen/renderer';
-import { SmartString } from '@artgen/smart-string';
 import { Generator } from '../../../../components/module-handler/decorators/generator.decorator';
 import { IGenerator } from '../../../../components/module-handler/interfaces/backend.interface';
+import { IRenderer } from '../../../../components/renderer';
+import { SmartString } from '../../../../components/smart-string';
 import { TemplateTemplate } from './templates/template.template';
 
 @Generator({

@@ -1,10 +1,9 @@
-import { IFileSystem } from '@artgen/file-system';
-import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
 import { Events } from '../event-handler/events';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
+import { IFileSystem } from '../file-system';
 import { ISymbol } from '../iml/interfaces/symbol.interface';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
@@ -13,6 +12,7 @@ import { IBackend } from '../module-handler/interfaces/backend.interface';
 import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
 import { IModule } from '../module-handler/interfaces/module.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
+import { IRenderer } from '../renderer';
 import { IPipe } from './interfaces/pipe.interface';
 
 type IBackendModule = IModule<IBackendMeta, IBackend>;

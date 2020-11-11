@@ -1,5 +1,5 @@
 import { ITemplate, Template } from '@artgen/kernel';
-import { ISmartString } from '@artgen/smart-string';
+import { ISmartString } from '../../../../components/smart-string';
 
 @Template({
   reference: 'nestjs.readme',

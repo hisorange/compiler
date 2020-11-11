@@ -1,9 +1,9 @@
-import { IRenderer } from '@artgen/renderer';
-import { SmartString } from '@artgen/smart-string';
 import { Bindings, IModuleHandler, Inject } from '../../../components';
 import { ISymbol } from '../../../components/iml/interfaces/symbol.interface';
 import { Backend } from '../../../components/module-handler/decorators/backend.decorator';
 import { IBackend } from '../../../components/module-handler/interfaces/backend.interface';
+import { IRenderer } from '../../../components/renderer';
+import { SmartString } from '../../../components/smart-string';
 import { GrammarSymbol } from '../../frontends/wsn/symbols/grammar.symbol';
 import { ReadMeTemplate } from './templates/readme.template';
 

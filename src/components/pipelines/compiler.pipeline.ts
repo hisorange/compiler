@@ -1,7 +1,7 @@
-import { IFileSystem } from '@artgen/file-system';
 import { Bindings } from '../container/bindings';
 import { Container } from '../container/container';
 import { Inject } from '../container/decorators/inject.decorator';
+import { IFileSystem } from '../file-system';
 import { IPath } from '../models/interfaces/path.interface';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
 

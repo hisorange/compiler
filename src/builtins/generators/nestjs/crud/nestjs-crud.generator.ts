@@ -1,8 +1,8 @@
-import { IRenderer } from '@artgen/renderer';
-import { SmartString } from '@artgen/smart-string';
 import { join } from 'path';
 import { Generator } from '../../../../components/module-handler/decorators/generator.decorator';
 import { IGenerator } from '../../../../components/module-handler/interfaces/backend.interface';
+import { IRenderer } from '../../../../components/renderer';
+import { SmartString } from '../../../../components/smart-string';
 import { ControllerTemplate } from './templates/controller.template';
 import { CreateDtoTemplate } from './templates/dto/create-dto.template';
 import { ReadDtoTemplate } from './templates/dto/read-dto.template';

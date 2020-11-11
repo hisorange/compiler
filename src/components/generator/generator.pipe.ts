@@ -1,15 +1,15 @@
-import { IFileSystem } from '@artgen/file-system';
-import { IRenderer } from '@artgen/renderer';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators/inject.decorator';
 import { Events } from '../event-handler/events';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
+import { IFileSystem } from '../file-system';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
 import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
+import { IRenderer } from '../renderer';
 import { IGeneratorJob } from './generator-job.interface';
 
 export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>> {

@@ -1,4 +1,4 @@
-import { IFileSystem } from '@artgen/file-system';
+import { IFileSystem } from './components/file-system';
 import { IGeneratorInput } from './components/generator/generator-input.interface';
 import { ILogger } from './components/logger/interfaces/logger.interface';
 import { IPath } from './components/models/interfaces/path.interface';

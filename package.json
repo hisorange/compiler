@@ -1,6 +1,6 @@
 {
-  "name": "@artgen/kernel",
-  "version": "0.0.11",
+  "name": "@hisorange/artgen",
+  "version": "0.0.1",
   "description": "Work less, do More!",
   "main": "build/index.js",
   "scripts": {
@@ -32,15 +32,26 @@
   },
   "homepage": "https://artgen.io",
   "dependencies": {
-    "@artgen/file-system": "^1.0.0",
-    "@artgen/renderer": "^3.0.0",
-    "@artgen/smart-string": "^1.0.7",
     "@loopback/context": "^3.1.0",
     "crisphooks": "^2.0.1",
     "reflect-metadata": "^0.1.13",
     "signale": "^1.4.0",
     "tslib": "^1.11.1",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.2",
+    "@artgen/kernel": "^0.0.11",
+    "deepmerge": "^4.2.2",
+    "ejs": "^3.1.5",
+    "handlebars": "^4.7.6",
+    "is-plain-object": "^5.0.0",
+    "walkdir": "^0.4.1",
+    "memfs": "^3.2.0",
+    "inflection": "^1.12.0",
+    "strman.isuppercase": "^2.0.0",
+    "strman.removespaces": "^2.0.0",
+    "strman.tocamelcase": "^2.0.0",
+    "strman.tokebabcase": "^2.0.0",
+    "strman.tosnakecase": "^2.0.0",
+    "strman.tostudlycaps": "^2.0.0"
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",
@@ -53,6 +64,13 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "^2.1.2"
   }
 }

@@ -1,7 +1,6 @@
-import { IFileSystem } from '@artgen/file-system';
-import { IRenderer } from '@artgen/renderer';
 import { BindingKey } from '@loopback/context';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
+import { IFileSystem } from '../file-system';
 import { FileSystemFactory } from '../file-system/file-system.factory';
 import { GeneratorPipe } from '../generator/generator.pipe';
 import { GeneratorPipeline } from '../generator/generator.pipeline';
@@ -18,6 +17,7 @@ import { ILexer } from '../pipes/interfaces/lexer.interface';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
 import { ReaderPipe } from '../reader/reader.pipe';
+import { IRenderer } from '../renderer';
 import { Container } from './container';
 import { IConfig } from './interfaces/config.interface';
 

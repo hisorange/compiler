@@ -1,4 +1,3 @@
-import { Renderer } from '@artgen/renderer';
 import { BindingScope, Provider } from '@loopback/context';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
@@ -15,6 +14,7 @@ import { CompilerPipe } from '../pipes/compiler.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
 import { ReaderPipe } from '../reader/reader.pipe';
+import { Renderer } from '../renderer';
 import { Bindings } from './bindings';
 import { Container } from './container';
 import sessionGenerator = require('uuid');
