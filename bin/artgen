@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+const { CLI } = require('../build/cli');
+const app = new CLI(process.argv.slice(2));
+
+module.exports = app.start();

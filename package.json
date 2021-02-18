@@ -18,6 +18,9 @@
     "type": "git",
     "url": "git+https://github.com/hisorange/artgen.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "artgen",
     "compiler",
@@ -33,15 +36,20 @@
   "homepage": "https://artgen.io",
   "dependencies": {
     "@loopback/context": "^3.1.0",
+    "@sentry/node": "^5.14.2",
+    "chalk": "^4.1.0",
     "crisphooks": "^2.0.1",
     "deepmerge": "^4.2.2",
     "ejs": "^3.1.5",
     "handlebars": "^4.7.6",
     "inflection": "^1.12.0",
+    "inquirer": "^7.3.3",
     "is-plain-object": "^5.0.0",
     "memfs": "^3.2.0",
     "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
     "signale": "^1.4.0",
+    "simple-git": "^2.20.1",
     "strman.isuppercase": "^2.0.0",
     "strman.removespaces": "^2.0.0",
     "strman.tocamelcase": "^2.0.0",
@@ -50,26 +58,30 @@
     "strman.tostudlycaps": "^2.0.0",
     "tslib": "^1.11.1",
     "uuid": "^7.0.2",
-    "walkdir": "^0.4.1"
+    "walkdir": "^0.4.1",
+    "yargonaut": "^1.1.4",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "@sentry/types": "^5.14.2",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
-    "@types/signale": "^1.4.0",
+    "@types/signale": "^1.4.1",
     "@types/uuid": "^7.0.2",
+    "@types/yargs": "^15.0.4",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "coveralls": "^3.1.0",
-    "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-import": "^2.22.1",
+    "eslint": "^7.10.0",
     "jest": "^25.1.0",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.2",
     "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node": "^8.6.2",
     "typescript": "^4.0.0"
   }
 }

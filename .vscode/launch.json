@@ -11,6 +11,15 @@
       "internalConsoleOptions": "neverOpen",
       "disableOptimisticBPs": true,
       "program": "${workspaceFolder}/node_modules/jest/bin/jest"
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Learn WSN",
+      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}/bin/",
+      "program": "${workspaceFolder}/bin/artgen",
+      "args": ["learn", "--dry-mode", "--no-logo", "--no-color"]
+    },
   ]
 }

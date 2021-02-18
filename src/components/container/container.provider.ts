@@ -1,4 +1,5 @@
 import { BindingScope, Provider } from '@loopback/context';
+import { GrammarBackend, NestJSBackend, NestJSCrudGenerator } from '../../builtins';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
 import { FileSystemProvider } from '../file-system/file-system.provider';
@@ -7,6 +8,7 @@ import { GeneratorPipeline } from '../generator/generator.pipeline';
 import { SymbolTable } from '../iml/symbol-table';
 import { LoggerFactory } from '../logger/logger.factory';
 import { LoggerProvider } from '../logger/logger.provider';
+import { ModuleType } from '../module-handler';
 import { ModuleHandler } from '../module-handler/module-handler';
 import { ParserPipe } from '../parser/parser.pipe';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
@@ -44,6 +46,8 @@ export class ContainerProvider implements Provider<Container> {
     this.bindPipes(container);
     this.bindPipelines(container);
     this.bindComponents(container);
+
+    this.bindBuiltIns(container);
 
     return container;
   }
@@ -176,5 +180,12 @@ export class ContainerProvider implements Provider<Container> {
     container.bind(namespace.EventEmitter).toClass(EventEmitter).inScope(BindingScope.CONTEXT);
     container.bind(namespace.SymbolTable).toClass(SymbolTable).inScope(BindingScope.CONTEXT);
     container.bind(namespace.Renderer).toClass(Renderer);
+  }
+
+  protected bindBuiltIns(container: Container) {
+    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, GrammarBackend);
+    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, NestJSBackend);
+
+    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, NestJSCrudGenerator);
   }
 }
