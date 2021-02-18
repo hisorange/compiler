@@ -1,4 +1,4 @@
-import { ITemplate, Template } from '@artgen/kernel';
+import { ITemplate, Template } from '../../../../components';
 import { ISmartString } from '../../../../components/smart-string';
 
 @Template({

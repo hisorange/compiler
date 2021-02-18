@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/artgenio/kernel.git"
+    "url": "git+https://github.com/hisorange/artgen.git"
   },
   "keywords": [
     "artgen",
@@ -28,49 +28,48 @@
   "author": "Varga Zsolt <hello@hisorange.me>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/artgenio/kernel/issues"
+    "url": "https://github.com/hisorange/artgen/issues"
   },
   "homepage": "https://artgen.io",
   "dependencies": {
     "@loopback/context": "^3.1.0",
     "crisphooks": "^2.0.1",
-    "reflect-metadata": "^0.1.13",
-    "signale": "^1.4.0",
-    "tslib": "^1.11.1",
-    "uuid": "^7.0.2",
-    "@artgen/kernel": "^0.0.11",
     "deepmerge": "^4.2.2",
     "ejs": "^3.1.5",
     "handlebars": "^4.7.6",
-    "is-plain-object": "^5.0.0",
-    "walkdir": "^0.4.1",
-    "memfs": "^3.2.0",
     "inflection": "^1.12.0",
+    "is-plain-object": "^5.0.0",
+    "memfs": "^3.2.0",
+    "reflect-metadata": "^0.1.13",
+    "signale": "^1.4.0",
     "strman.isuppercase": "^2.0.0",
     "strman.removespaces": "^2.0.0",
     "strman.tocamelcase": "^2.0.0",
     "strman.tokebabcase": "^2.0.0",
     "strman.tosnakecase": "^2.0.0",
-    "strman.tostudlycaps": "^2.0.0"
+    "strman.tostudlycaps": "^2.0.0",
+    "tslib": "^1.11.1",
+    "uuid": "^7.0.2",
+    "walkdir": "^0.4.1"
   },
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
     "@types/signale": "^1.4.0",
     "@types/uuid": "^7.0.2",
-    "jest": "^25.1.0",
-    "rimraf": "^3.0.2",
-    "ts-jest": "^25.2.1",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.2",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "coveralls": "^3.1.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-import": "^2.22.1",
-    "prettier": "^2.1.2"
+    "jest": "^25.1.0",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.2.1",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^4.0.0"
   }
 }

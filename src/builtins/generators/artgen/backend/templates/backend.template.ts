@@ -20,7 +20,7 @@ export class BackendTemplate implements ITemplate {
 
   render() {
     return `import { SmartString } from '@app';
-import { Backend, IBackend, IRenderer } from '@artgen/kernel';
+import { Backend, IBackend, IRenderer } from '@hisorange/artgen';
 
 @Backend({
   name: '<%- backend.name %>',

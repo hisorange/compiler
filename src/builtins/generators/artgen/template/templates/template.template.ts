@@ -22,7 +22,7 @@ export class TemplateTemplate implements ITemplate {
 
   render() {
     return `import { ISmartString } from '@app';
-import { Template, ITemplate } from '@artgen/kernel';
+import { Template, ITemplate } from '@hisorange/artgen';
 
 @Template({
   reference: 'artgen.<?- template.namespace ?>',
