@@ -1,10 +1,12 @@
 import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
 import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
 import { ISmartString } from '../../../../../components/smart-string';
+import { ReadDtoTemplate } from './dto/read-dto.template';
 
 @Template({
   reference: 'nestjs.crud.schema',
   path: `<%- schema.path %>`,
+  depends: [ReadDtoTemplate],
 })
 export class SchemaTemplate implements ITemplate {
   data(input: { $name: ISmartString }) {

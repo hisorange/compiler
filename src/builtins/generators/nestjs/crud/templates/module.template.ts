@@ -1,12 +1,15 @@
 import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
 import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
 import { ISmartString } from '../../../../../components/smart-string';
+import { ControllerTemplate } from './controller.template';
+import { ModelTemplate } from './model.template';
+import { SchemaTemplate } from './schema.template';
 import { ServiceTemplate } from './service.template';
 
 @Template({
   reference: 'nestjs.crud.module',
   path: `<%- module.path %>`,
-  depends: [ServiceTemplate],
+  depends: [ControllerTemplate, SchemaTemplate, ModelTemplate, ServiceTemplate],
 })
 export class ModuleTemplate implements ITemplate {
   data(input: { $name: ISmartString }) {

@@ -1,16 +1,17 @@
+import { forwardRef } from '../../../../../components/container/forward-ref';
 import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
 import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
 import { ISmartString } from '../../../../../components/smart-string';
+import { CreateDtoTemplate } from './dto/create-dto.template';
+import { ReadDtoTemplate } from './dto/read-dto.template';
+import { ServiceTemplate } from './service.template';
 
 @Template({
   reference: 'nestjs.crud.controller',
   path: `<%- controller.path %>`,
+  depends: [forwardRef(() => ServiceTemplate), CreateDtoTemplate, ReadDtoTemplate],
 })
 export class ControllerTemplate implements ITemplate {
-  props() {
-    return {};
-  }
-
   data(input: { $name: ISmartString }) {
     return {
       controller: {

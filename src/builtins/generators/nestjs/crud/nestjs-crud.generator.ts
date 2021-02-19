@@ -3,26 +3,12 @@ import { Generator } from '../../../../components/module-handler/decorators/gene
 import { IGenerator } from '../../../../components/module-handler/interfaces/backend.interface';
 import { IRenderer } from '../../../../components/renderer';
 import { SmartString } from '../../../../components/smart-string';
-import { ControllerTemplate } from './templates/controller.template';
-import { CreateDtoTemplate } from './templates/dto/create-dto.template';
-import { ReadDtoTemplate } from './templates/dto/read-dto.template';
-import { ModelTemplate } from './templates/model.template';
 import { ModuleTemplate } from './templates/module.template';
-import { SchemaTemplate } from './templates/schema.template';
-import { ServiceTemplate } from './templates/service.template';
 
 @Generator({
   name: 'NestJS Module',
   reference: 'nestjs.crud',
-  templates: [
-    ControllerTemplate,
-    CreateDtoTemplate,
-    ModelTemplate,
-    ModuleTemplate,
-    ReadDtoTemplate,
-    SchemaTemplate,
-    ServiceTemplate,
-  ],
+  templates: [ModuleTemplate],
   input: [
     {
       message: `What is module's name?`,
