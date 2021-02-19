@@ -1,5 +1,13 @@
 import { BindingScope, Provider } from '@loopback/context';
-import { GrammarBackend, NestJSBackend, NestJSCrudGenerator } from '../../builtins';
+import {
+  AMLFrontend,
+  BackendGenerator,
+  GrammarBackend,
+  NestJSBackend,
+  NestJSCrudGenerator,
+  TemplateGenerator,
+  WSNFrontend,
+} from '../../builtins';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
 import { FileSystemProvider } from '../file-system/file-system.provider';
@@ -183,9 +191,17 @@ export class ContainerProvider implements Provider<Container> {
   }
 
   protected bindBuiltIns(container: Container) {
+    // Frontends
+    container.getSync(Bindings.Module.Handler).register(ModuleType.FRONTEND, AMLFrontend);
+    container.getSync(Bindings.Module.Handler).register(ModuleType.FRONTEND, WSNFrontend);
+
+    // Backends
     container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, GrammarBackend);
     container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, NestJSBackend);
 
+    // Generators
+    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, TemplateGenerator);
+    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, BackendGenerator);
     container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, NestJSCrudGenerator);
   }
 }

@@ -74,7 +74,7 @@ export class GenerateCommand implements CommandModule<IGlobalOptions, IGenerator
 
         if (use.useRc) {
           const config = JSON.parse(fs.readFileSync(join(cwd, '.artgenrc')).toString());
-          args.template = config.reference;
+          args.generator = config.reference;
           input = config.input;
         }
       }
