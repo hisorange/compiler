@@ -30,7 +30,7 @@ export class <%- tokenizer.clss %> extends Tokenizer implements ITokenizer {
   prepare() {
     const T = this;
     <% for(const expr of tokenizer.expressions) { -%>
-    <%- include('artgen.frontend.token-parser', { expression: expr, identifier }); %>
+<%- include('artgen.frontend.token-parser', { expression: expr, identifier }); _%>
     <% } -%>
   }
 }

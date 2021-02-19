@@ -18,35 +18,35 @@ export class TokenParserTemplate implements ITemplate {
 
   render() {
     return `
-<% if(expression.type === 'IDENTIFIER') { %>
-  <% if(expression.getChildren().length) { %>
-      T.identifier(<%- identifier.clss %>.<%- expression.value %>,
-        <%_ for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %><% } -%>
-      );
-    <% } else { %>
-      T.resolve(<%- identifier.clss %>.<%- expression.value %>)
-    <% } %>
-<% } else if (expression.type === 'ALIAS') { %>
-  T.alias(\`<%- expression.value %>\`)
-<% } else if (expression.type === 'LITERAL') { %>
-  T.literal(\`<%- expression.value %>\`)
-<% } else if (expression.type === 'OR_GROUP') { %>
+<%_if(expression.type === 'IDENTIFIER') { _%>
+  <%_if(expression.getChildren().length) { _%>
+T.identifier(<%- identifier.clss_%>.<%- expression.value -%>,
+<%_ for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%><%_} _%>
+);
+    <%_} else { _%>
+      T.resolve(<%- identifier.clss_%>.<%- expression.value_%>)
+    <%_} _%>
+<%_} else if (expression.type === 'ALIAS') {_%>
+  T.alias(<%- identifier.clss_%>.<%- expression.value_%>)
+<%_} else if (expression.type === 'LITERAL') {_%>
+  T.literal(\`<%- expression.value_%>\`)
+<%_} else if (expression.type === 'OR_GROUP') {_%>
   T.or([
-    <% for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %>,<% } %>
+    <%_for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%>,<%_}_%>
   ])
-<% } else if (expression.type === 'REPETITION') { %>
+<%_} else if (expression.type === 'REPETITION') {_%>
   T.repetition(
-    <% for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %>,<% } %>
+    <%_for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%>,<%_}_%>
   )
-<% } else if (expression.type === 'OPTIONAL') { %>
+<%_} else if (expression.type === 'OPTIONAL') {_%>
   T.optional(
-    <% for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %>,<% } %>
+    <%_for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%>,<%_}_%>
   )
-<% } else if (expression.type === 'CONCAT') { %>
+<%_} else if (expression.type === 'CONCAT') {_%>
   T.concat([
-    <% for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %>,<% } %>
+    <%_for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%>,<%_}_%>
   ])
-<% } %>
+<%_}_%>
       `.trim();
   }
 }

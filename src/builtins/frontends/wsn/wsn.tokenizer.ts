@@ -1,29 +1,26 @@
 import { ITokenizer } from '../../../components/parser/interfaces/tokenizer.interface';
 import { Tokenizer } from '../../../components/parser/tokenizer';
+import { WSNIdentifier } from './wsn.identifier';
 
 export class WSNTokenizer extends Tokenizer implements ITokenizer {
   prepare() {
     const T = this;
-
-    // Identifiers
-    T.identifier(`EOL`, T.literal(`\n`));
-
-    T.identifier(`SPACE`, T.literal(` `));
-
-    T.identifier(`TAB`, T.literal(`\t`));
-
-    T.identifier(`WS`, T.repetition(T.or([T.alias(`SPACE`), T.alias(`EOL`), T.alias(`TAB`)])));
-
-    T.identifier(`UNDERSCORE`, T.literal(`_`));
-
-    T.identifier(`SINGLE_QUOTE`, T.literal(`'`));
-
-    T.identifier(`DOUBLE_QUOTE`, T.literal(`"`));
-
-    T.identifier(`QUOTES`, T.or([T.alias(`SINGLE_QUOTE`), T.alias(`DOUBLE_QUOTE`)]));
-
+    T.identifier(WSNIdentifier.EOL, T.literal(`\n`));
+    T.identifier(WSNIdentifier.SPACE, T.literal(` `));
+    T.identifier(WSNIdentifier.TAB, T.literal(`\t`));
     T.identifier(
-      `LETTER`,
+      WSNIdentifier.WS,
+      T.repetition(T.or([T.resolve(WSNIdentifier.SPACE), T.resolve(WSNIdentifier.EOL), T.resolve(WSNIdentifier.TAB)])),
+    );
+    T.identifier(WSNIdentifier.UNDERSCORE, T.literal(`_`));
+    T.identifier(WSNIdentifier.SINGLE_QUOTE, T.literal(`'`));
+    T.identifier(WSNIdentifier.DOUBLE_QUOTE, T.literal(`"`));
+    T.identifier(
+      WSNIdentifier.QUOTES,
+      T.or([T.resolve(WSNIdentifier.SINGLE_QUOTE), T.resolve(WSNIdentifier.DOUBLE_QUOTE)]),
+    );
+    T.identifier(
+      WSNIdentifier.LETTER,
       T.or([
         T.literal(`A`),
         T.literal(`a`),
@@ -79,9 +76,8 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`z`),
       ]),
     );
-
     T.identifier(
-      `DIGIT`,
+      WSNIdentifier.DIGIT,
       T.or([
         T.literal(`0`),
         T.literal(`1`),
@@ -95,9 +91,8 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`9`),
       ]),
     );
-
     T.identifier(
-      `SYMBOL`,
+      WSNIdentifier.SYMBOL,
       T.or([
         T.literal(`=`),
         T.literal(`;`),
@@ -118,111 +113,132 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`/`),
         T.literal(`:`),
         T.literal(`-`),
+        T.literal(`~`),
+        T.literal(`&`),
       ]),
     );
-
-    T.identifier(`CHARACTER`, T.or([T.alias(`LETTER`), T.alias(`DIGIT`), T.alias(`SYMBOL`)]));
-
     T.identifier(
-      `TEXT`,
+      WSNIdentifier.CHARACTER,
+      T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.DIGIT), T.resolve(WSNIdentifier.SYMBOL)]),
+    );
+    T.identifier(
+      WSNIdentifier.TEXT,
       T.or([
-        T.alias(`LETTER`),
-        T.alias(`DIGIT`),
-        T.alias(`SYMBOL`),
-        T.alias(`SPACE`),
-        T.alias(`TAB`),
-        T.alias(`QUOTES`),
+        T.resolve(WSNIdentifier.LETTER),
+        T.resolve(WSNIdentifier.DIGIT),
+        T.resolve(WSNIdentifier.SYMBOL),
+        T.resolve(WSNIdentifier.SPACE),
+        T.resolve(WSNIdentifier.TAB),
+        T.resolve(WSNIdentifier.QUOTES),
       ]),
     );
-
+    T.identifier(WSNIdentifier.ALIAS, T.concat([T.literal(`&`), T.resolve(WSNIdentifier.IDENTIFIER)]));
     T.identifier(
-      `IDENTIFIER`,
-      T.concat([T.resolve(`LETTER`), T.repetition(T.or([T.alias(`LETTER`), T.alias(`UNDERSCORE`)]))]),
+      WSNIdentifier.IDENTIFIER,
+      T.concat([
+        T.resolve(WSNIdentifier.LETTER),
+        T.repetition(T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.UNDERSCORE)])),
+      ]),
     );
-
     T.identifier(
-      `LITERAL`,
+      WSNIdentifier.LITERAL,
       T.or([
         T.concat([
-          T.resolve(`SINGLE_QUOTE`),
+          T.resolve(WSNIdentifier.SINGLE_QUOTE),
           T.repetition(
             T.or([
-              T.alias(`CHARACTER`),
-              T.alias(`SPACE`),
-              T.alias(`SYMBOL`),
-              T.alias(`UNDERSCORE`),
-              T.alias(`DOUBLE_QUOTE`),
+              T.resolve(WSNIdentifier.CHARACTER),
+              T.resolve(WSNIdentifier.SPACE),
+              T.resolve(WSNIdentifier.SYMBOL),
+              T.resolve(WSNIdentifier.UNDERSCORE),
+              T.resolve(WSNIdentifier.DOUBLE_QUOTE),
             ]),
           ),
-          T.resolve(`SINGLE_QUOTE`),
+          T.resolve(WSNIdentifier.SINGLE_QUOTE),
         ]),
         T.concat([
-          T.resolve(`DOUBLE_QUOTE`),
+          T.resolve(WSNIdentifier.DOUBLE_QUOTE),
           T.repetition(
             T.or([
-              T.alias(`CHARACTER`),
-              T.alias(`SPACE`),
-              T.alias(`SYMBOL`),
-              T.alias(`UNDERSCORE`),
-              T.alias(`SINGLE_QUOTE`),
+              T.resolve(WSNIdentifier.CHARACTER),
+              T.resolve(WSNIdentifier.SPACE),
+              T.resolve(WSNIdentifier.SYMBOL),
+              T.resolve(WSNIdentifier.UNDERSCORE),
+              T.resolve(WSNIdentifier.SINGLE_QUOTE),
             ]),
           ),
-          T.resolve(`DOUBLE_QUOTE`),
+          T.resolve(WSNIdentifier.DOUBLE_QUOTE),
         ]),
       ]),
     );
-
     T.identifier(
-      `FACTOR`,
+      WSNIdentifier.FACTOR,
       T.or([
-        T.concat([T.literal(`{`), T.resolve(`EXPRESSION`), T.literal(`}`)]),
-        T.concat([T.literal(`(`), T.resolve(`EXPRESSION`), T.literal(`)`)]),
-        T.concat([T.literal(`[`), T.resolve(`EXPRESSION`), T.literal(`]`)]),
-        T.concat([
-          T.literal(`/`),
-          T.concat([T.resolve(`CHARACTER`), T.repetition(T.resolve(`CHARACTER`))]),
-          T.literal(`/`),
-        ]),
-        T.alias(`LITERAL`),
-        T.alias(`IDENTIFIER`),
+        T.concat([T.literal(`{`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`}`)]),
+        T.concat([T.literal(`(`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`)`)]),
+        T.concat([T.literal(`[`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`]`)]),
+        T.alias(WSNIdentifier.LITERAL),
+        T.resolve(WSNIdentifier.LITERAL),
+        T.alias(WSNIdentifier.IDENTIFIER),
+        T.resolve(WSNIdentifier.IDENTIFIER),
+        T.alias(WSNIdentifier.ALIAS),
+        T.resolve(WSNIdentifier.ALIAS),
       ]),
     );
-
     T.identifier(
-      `TERM`,
+      WSNIdentifier.TERM,
       T.concat([
-        T.resolve(`WS`),
-        T.resolve(`FACTOR`),
-        T.repetition(T.concat([T.resolve(`WS`), T.resolve(`FACTOR`)])),
-        T.resolve(`WS`),
+        T.resolve(WSNIdentifier.WS),
+        T.resolve(WSNIdentifier.FACTOR),
+        T.repetition(T.concat([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.FACTOR)])),
+        T.resolve(WSNIdentifier.WS),
       ]),
     );
-
     T.identifier(
-      `EXPRESSION`,
-      T.concat([T.resolve(`TERM`), T.repetition(T.concat([T.literal(`|`), T.resolve(`TERM`)]))]),
-    );
-
-    T.identifier(
-      `PRODUCTION`,
+      WSNIdentifier.EXPRESSION,
       T.concat([
-        T.repetition(T.or([T.alias(`WS`), T.alias(`COMMENT`)])),
-        T.resolve(`IDENTIFIER`),
-        T.resolve(`WS`),
+        T.resolve(WSNIdentifier.TERM),
+        T.repetition(T.concat([T.literal(`|`), T.resolve(WSNIdentifier.TERM)])),
+      ]),
+    );
+    T.identifier(
+      WSNIdentifier.CHANNEL,
+      T.concat([
+        T.literal(`->`),
+        T.resolve(WSNIdentifier.WS),
+        T.resolve(WSNIdentifier.LETTER),
+        T.repetition(T.resolve(WSNIdentifier.LETTER)),
+      ]),
+    );
+    T.identifier(
+      WSNIdentifier.PRODUCTION,
+      T.concat([
+        T.repetition(T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)])),
+        T.resolve(WSNIdentifier.IDENTIFIER),
+        T.resolve(WSNIdentifier.WS),
         T.literal(`=`),
-        T.resolve(`EXPRESSION`),
+        T.resolve(WSNIdentifier.EXPRESSION),
+        T.repetition(T.resolve(WSNIdentifier.CHANNEL)),
         T.literal(`.`),
-        T.repetition(T.or([T.alias(`WS`), T.alias(`COMMENT`)])),
+        T.repetition(T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)])),
       ]),
     );
-
-    T.identifier(`SYNTAX`, T.concat([T.optional(T.resolve(`GRAMMAR`)), T.repetition(T.resolve(`PRODUCTION`))]));
-
     T.identifier(
-      `GRAMMAR`,
-      T.concat([T.literal(`:`), T.resolve(`LETTER`), T.repetition(T.resolve(`LETTER`)), T.literal(`:`)]),
+      WSNIdentifier.SYNTAX,
+      T.concat([T.optional(T.resolve(WSNIdentifier.GRAMMAR)), T.repetition(T.resolve(WSNIdentifier.PRODUCTION))]),
     );
-
-    T.identifier(`COMMENT`, T.concat([T.literal(`#`), T.repetition(T.resolve(`TEXT`)), T.optional(T.resolve(`EOL`))]));
+    T.identifier(
+      WSNIdentifier.GRAMMAR,
+      T.concat([
+        T.literal(`:`),
+        T.resolve(WSNIdentifier.LETTER),
+        T.repetition(T.resolve(WSNIdentifier.LETTER)),
+        T.literal(`:`),
+      ]),
+    );
+    T.identifier(
+      WSNIdentifier.COMMENT,
+      T.concat([T.literal(`#`), T.repetition(T.resolve(WSNIdentifier.TEXT)), T.optional(T.resolve(WSNIdentifier.EOL))]),
+    );
   }
 }

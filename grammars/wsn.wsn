@@ -24,7 +24,7 @@ LETTER =  "A" | "a" | "B" | "b" |
           "W" | "w" | "X" | "x" |
           "Y" | "y" | "Z" | "z" .
 DIGIT     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .
-SYMBOL    = "=" | ";" | "[" | "]" | "{" | "}" | "(" | ")" | "." | "|" | "\\" | "#" | "," | "!" | "<" | ">" | "/" | ":" | "-" .
+SYMBOL    = "=" | ";" | "[" | "]" | "{" | "}" | "(" | ")" | "." | "|" | "\\" | "#" | "," | "!" | "<" | ">" | "/" | ":" | "-" | "~" | "&" .
 
 # Raising the complexity into logical groups.
 
@@ -33,14 +33,16 @@ TEXT = LETTER | DIGIT | SYMBOL | SPACE | TAB | QUOTES .
 
 # Defining the language elements.
 
+ALIAS      = "&" IDENTIFIER .
 IDENTIFIER = LETTER { LETTER | UNDERSCORE } .
-LITERAL =
+LITERAL    =
   SINGLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | DOUBLE_QUOTE } SINGLE_QUOTE |
   DOUBLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | SINGLE_QUOTE } DOUBLE_QUOTE .
-FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | LITERAL | IDENTIFIER .
+FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | &LITERAL | &IDENTIFIER | &ALIAS .
 TERM       = WS FACTOR { WS FACTOR } WS .
 EXPRESSION = TERM { "|" TERM } .
-PRODUCTION = { WS | COMMENT } IDENTIFIER WS "=" EXPRESSION "." { WS | COMMENT } .
+CHANNEL    = "->" WS LETTER { LETTER } .
+PRODUCTION = { WS | COMMENT } IDENTIFIER WS "=" EXPRESSION { CHANNEL } "." { WS | COMMENT } .
 SYNTAX     = [GRAMMAR] { PRODUCTION } .
 
 # Custom syntax extensions over the WSN definition.
