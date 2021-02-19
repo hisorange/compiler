@@ -84,7 +84,7 @@ export class GenerateCommand implements CommandModule<IGlobalOptions, IGenerator
           type: 'list',
           message: 'Which generator You wana use?',
           name: 'gen',
-          choices: ['artgen.template', 'artgen.grammar', 'artgen.backend', 'nestjs.crud'],
+          choices: ['artgen.template', 'artgen.frontend', 'artgen.backend', 'nestjs.crud'],
         });
 
         args.generator = res.gen;

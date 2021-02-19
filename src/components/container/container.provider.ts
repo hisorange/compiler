@@ -2,7 +2,7 @@ import { BindingScope, Provider } from '@loopback/context';
 import {
   AMLFrontend,
   BackendGenerator,
-  GrammarBackend,
+  FrontendBackend,
   NestJSBackend,
   NestJSCrudGenerator,
   TemplateGenerator,
@@ -196,7 +196,7 @@ export class ContainerProvider implements Provider<Container> {
     container.getSync(Bindings.Module.Handler).register(ModuleType.FRONTEND, WSNFrontend);
 
     // Backends
-    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, GrammarBackend);
+    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, FrontendBackend);
     container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, NestJSBackend);
 
     // Generators

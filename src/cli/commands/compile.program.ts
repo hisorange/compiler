@@ -56,7 +56,7 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
       .option('backend', {
         demandOption: true,
         type: 'array',
-        choices: ['artgen.grammar', 'nestjs'],
+        choices: ['artgen.frontend', 'nestjs'],
         string: true,
       })
       .option('grammar', {
@@ -66,7 +66,7 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
         string: true,
       })
       .example('compile', 'my-shop.aml . --backend moleculer --backend docker')
-      .example('compile', 'sql.wsn my-sql-grammar --backend artgen.grammar')
+      .example('compile', 'sql.wsn my-sql-grammar --backend artgen.frontend')
       .example('compile', 'my-shop.sql my-shop.aml --backend negtra.sql --backend artgen.aml')
       .default('dry-mode', false, 'Not writing the output to disk');
   }

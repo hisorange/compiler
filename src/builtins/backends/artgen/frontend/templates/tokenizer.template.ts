@@ -4,13 +4,14 @@ import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol'
 import { ProductionSymbol } from '../../../../frontends/wsn/symbols/production.symbol';
 
 @Template({
-  reference: 'artgen.grammar.tokenizer',
+  reference: 'artgen.frontend.tokenizer',
   path: `./<%- tokenizer.path %>`,
 })
 export class TokenizerTemplate implements ITemplate {
   data(ctx: { $symbol: GrammarSymbol }) {
     return {
       tokenizer: {
+        clss: ctx.$symbol.name.upperCase.suffix('Tokenizer'),
         path: ctx.$symbol.name.kebabCase.suffix('.tokenizer.ts'),
         expressions: ctx.$symbol
           .getChildren()
@@ -21,13 +22,17 @@ export class TokenizerTemplate implements ITemplate {
   }
 
   render() {
-    return `import { Tokenizer } from '../../../components/components/tokenizer';
+    return `import { ITokenizer } from '../../../components/parser/interfaces/tokenizer.interface';
+import { Tokenizer } from '../../../components/parser/tokenizer';
 import { <%- identifier.clss %> } from './<%- identifier.path.toString().replace('.ts', '') %>';
 
-export function createTokenizer(T: Tokenizer) {
-  <% for(const expr of tokenizer.expressions) { -%>
-  <%- include('artgen.grammar.token-parser', { expression: expr, identifier }); %>
-  <% } -%>
+export class <%- tokenizer.clss %> extends Tokenizer implements ITokenizer {
+  prepare() {
+    const T = this;
+    <% for(const expr of tokenizer.expressions) { -%>
+    <%- include('artgen.frontend.token-parser', { expression: expr, identifier }); %>
+    <% } -%>
+  }
 }
 `;
   }

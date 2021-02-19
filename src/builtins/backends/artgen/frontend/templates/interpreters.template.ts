@@ -3,7 +3,7 @@ import { ITemplate } from '../../../../../components/module-handler/interfaces/t
 import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol';
 
 @Template({
-  reference: 'artgen.grammar.interpreters',
+  reference: 'artgen.frontend.interpreters',
   path: `./<%- interpreters.path %>`,
 })
 export class InterpretersTemplate implements ITemplate {

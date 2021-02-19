@@ -1,5 +1,5 @@
 // BuiltIns
-export * from './backends/artgen/grammar/grammar.backend';
+export * from './backends/artgen/frontend/frontend.backend';
 export * from './backends/nestjs/nestjs.backend';
 export * from './frontends/aml/aml.frontend';
 export * from './frontends/wsn/wsn.frontend';

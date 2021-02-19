@@ -1,5 +1,4 @@
-import { Frontend } from '../../../components/module-handler/decorators/frontend.decorator';
-import { IFrontend } from '../../../components/module-handler/interfaces/frontend.interface';
+import { Frontend, IFrontend } from '../../../components';
 import { IdentifierInterpreter } from './interpreters/identifier.interpreter';
 import { ProductionInterpreter } from './interpreters/production.interpreter';
 import { SyntaxInterpreter } from './interpreters/syntax.interpreter';
