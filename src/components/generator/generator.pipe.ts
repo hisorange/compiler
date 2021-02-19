@@ -52,7 +52,7 @@ export class GeneratorPipe implements IPipe<IGeneratorJob, Promise<IFileSystem>>
       }
     }
 
-    await generator.module.render(this.renderer, job.input);
+    await generator.module.render(this.renderer, input);
 
     if (generator.meta.author) {
       this.logger.fav(`Thanks for ${generator.meta.author.name} for this awesome generator!`);
