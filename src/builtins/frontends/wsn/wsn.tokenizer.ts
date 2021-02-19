@@ -5,19 +5,21 @@ import { WSNIdentifier } from './wsn.identifier';
 export class WSNTokenizer extends Tokenizer implements ITokenizer {
   prepare() {
     const T = this;
-    T.identifier(WSNIdentifier.EOL, T.literal(`\n`));
-    T.identifier(WSNIdentifier.SPACE, T.literal(` `));
-    T.identifier(WSNIdentifier.TAB, T.literal(`\t`));
+    T.identifier(WSNIdentifier.EOL, T.literal(`\n`), `whitespace`);
+    T.identifier(WSNIdentifier.SPACE, T.literal(` `), `whitespace`);
+    T.identifier(WSNIdentifier.TAB, T.literal(`\t`), `whitespace`);
     T.identifier(
       WSNIdentifier.WS,
       T.repetition(T.or([T.resolve(WSNIdentifier.SPACE), T.resolve(WSNIdentifier.EOL), T.resolve(WSNIdentifier.TAB)])),
+      `whitespace`,
     );
-    T.identifier(WSNIdentifier.UNDERSCORE, T.literal(`_`));
-    T.identifier(WSNIdentifier.SINGLE_QUOTE, T.literal(`'`));
-    T.identifier(WSNIdentifier.DOUBLE_QUOTE, T.literal(`"`));
+    T.identifier(WSNIdentifier.UNDERSCORE, T.literal(`_`), `main`);
+    T.identifier(WSNIdentifier.SINGLE_QUOTE, T.literal(`'`), `main`);
+    T.identifier(WSNIdentifier.DOUBLE_QUOTE, T.literal(`"`), `main`);
     T.identifier(
       WSNIdentifier.QUOTES,
       T.or([T.resolve(WSNIdentifier.SINGLE_QUOTE), T.resolve(WSNIdentifier.DOUBLE_QUOTE)]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.LETTER,
@@ -75,6 +77,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`Z`),
         T.literal(`z`),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.DIGIT,
@@ -90,6 +93,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`8`),
         T.literal(`9`),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.SYMBOL,
@@ -116,10 +120,29 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`~`),
         T.literal(`&`),
       ]),
+      `main`,
+    );
+    T.identifier(
+      WSNIdentifier.REGEXP,
+      T.concat([
+        T.literal(`/`),
+        T.repetition(
+          T.or([
+            T.resolve(WSNIdentifier.LETTER),
+            T.literal(`-`),
+            T.literal(`[`),
+            T.literal(`]`),
+            T.resolve(WSNIdentifier.DIGIT),
+          ]),
+        ),
+        T.literal(`/`),
+      ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.CHARACTER,
       T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.DIGIT), T.resolve(WSNIdentifier.SYMBOL)]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.TEXT,
@@ -131,14 +154,16 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.resolve(WSNIdentifier.TAB),
         T.resolve(WSNIdentifier.QUOTES),
       ]),
+      `main`,
     );
-    T.identifier(WSNIdentifier.ALIAS, T.concat([T.literal(`&`), T.resolve(WSNIdentifier.IDENTIFIER)]));
+    T.identifier(WSNIdentifier.ALIAS, T.concat([T.literal(`&`), T.resolve(WSNIdentifier.IDENTIFIER)]), `main`);
     T.identifier(
       WSNIdentifier.IDENTIFIER,
       T.concat([
         T.resolve(WSNIdentifier.LETTER),
         T.repetition(T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.UNDERSCORE)])),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.LITERAL,
@@ -170,6 +195,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
           T.resolve(WSNIdentifier.DOUBLE_QUOTE),
         ]),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.FACTOR,
@@ -177,6 +203,8 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.concat([T.literal(`{`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`}`)]),
         T.concat([T.literal(`(`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`)`)]),
         T.concat([T.literal(`[`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`]`)]),
+        T.alias(WSNIdentifier.REGEXP),
+        T.resolve(WSNIdentifier.REGEXP),
         T.alias(WSNIdentifier.LITERAL),
         T.resolve(WSNIdentifier.LITERAL),
         T.alias(WSNIdentifier.IDENTIFIER),
@@ -184,6 +212,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.alias(WSNIdentifier.ALIAS),
         T.resolve(WSNIdentifier.ALIAS),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.TERM,
@@ -193,6 +222,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.repetition(T.concat([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.FACTOR)])),
         T.resolve(WSNIdentifier.WS),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.EXPRESSION,
@@ -200,15 +230,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.resolve(WSNIdentifier.TERM),
         T.repetition(T.concat([T.literal(`|`), T.resolve(WSNIdentifier.TERM)])),
       ]),
-    );
-    T.identifier(
-      WSNIdentifier.CHANNEL,
-      T.concat([
-        T.literal(`->`),
-        T.resolve(WSNIdentifier.WS),
-        T.resolve(WSNIdentifier.LETTER),
-        T.repetition(T.resolve(WSNIdentifier.LETTER)),
-      ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.PRODUCTION,
@@ -222,10 +244,12 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`.`),
         T.repetition(T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)])),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.SYNTAX,
       T.concat([T.optional(T.resolve(WSNIdentifier.GRAMMAR)), T.repetition(T.resolve(WSNIdentifier.PRODUCTION))]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.GRAMMAR,
@@ -235,10 +259,23 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.repetition(T.resolve(WSNIdentifier.LETTER)),
         T.literal(`:`),
       ]),
+      `main`,
     );
     T.identifier(
       WSNIdentifier.COMMENT,
       T.concat([T.literal(`#`), T.repetition(T.resolve(WSNIdentifier.TEXT)), T.optional(T.resolve(WSNIdentifier.EOL))]),
+      `comment`,
+    );
+    T.identifier(
+      WSNIdentifier.CHANNEL,
+      T.concat([
+        T.literal(`->`),
+        T.resolve(WSNIdentifier.WS),
+        T.resolve(WSNIdentifier.LETTER),
+        T.repetition(T.resolve(WSNIdentifier.LETTER)),
+        T.resolve(WSNIdentifier.WS),
+      ]),
+      `main`,
     );
   }
 }

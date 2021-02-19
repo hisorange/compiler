@@ -21,15 +21,17 @@ export class TokenParserTemplate implements ITemplate {
 <%_if(expression.type === 'IDENTIFIER') { _%>
   <%_if(expression.getChildren().length) { _%>
 T.identifier(<%- identifier.clss_%>.<%- expression.value -%>,
-<%_ for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%><%_} _%>
+<%_ for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%><%_} _%>, \`<%- expression.channel -%>\`
 );
     <%_} else { _%>
-      T.resolve(<%- identifier.clss_%>.<%- expression.value_%>)
+      T.resolve(<%- identifier.clss_%>.<%- expression.value %>)
     <%_} _%>
 <%_} else if (expression.type === 'ALIAS') {_%>
-  T.alias(<%- identifier.clss_%>.<%- expression.value_%>)
+  T.alias(<%- identifier.clss_%>.<%- expression.value %>)
+<%_} else if (expression.type === 'REGEXP') {_%>
+  T.regexp(<%- expression.value %>)
 <%_} else if (expression.type === 'LITERAL') {_%>
-  T.literal(\`<%- expression.value_%>\`)
+  T.literal(\`<%- expression.value %>\`)
 <%_} else if (expression.type === 'OR_GROUP') {_%>
   T.or([
     <%_for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child });_%>,<%_}_%>

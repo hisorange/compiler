@@ -10,6 +10,7 @@ export enum WSNIdentifier {
   LETTER = `LETTER`,
   DIGIT = `DIGIT`,
   SYMBOL = `SYMBOL`,
+  REGEXP = `REGEXP`,
   CHARACTER = `CHARACTER`,
   TEXT = `TEXT`,
   ALIAS = `ALIAS`,
@@ -18,9 +19,9 @@ export enum WSNIdentifier {
   FACTOR = `FACTOR`,
   TERM = `TERM`,
   EXPRESSION = `EXPRESSION`,
-  CHANNEL = `CHANNEL`,
   PRODUCTION = `PRODUCTION`,
   SYNTAX = `SYNTAX`,
   GRAMMAR = `GRAMMAR`,
   COMMENT = `COMMENT`,
+  CHANNEL = `CHANNEL`,
 }

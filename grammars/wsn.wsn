@@ -2,10 +2,10 @@
 
 # Defining the used building blocks of the language.
 
-EOL = "\n" .
-SPACE = " " .
-TAB = "\t" .
-WS = { SPACE | EOL | TAB } .
+EOL = "\n" -> whitespace .
+SPACE = " " -> whitespace .
+TAB = "\t" -> whitespace .
+WS = { SPACE | EOL | TAB } -> whitespace .
 UNDERSCORE = "_" .
 SINGLE_QUOTE = "'" .
 DOUBLE_QUOTE = '"' .
@@ -25,6 +25,7 @@ LETTER =  "A" | "a" | "B" | "b" |
           "Y" | "y" | "Z" | "z" .
 DIGIT     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .
 SYMBOL    = "=" | ";" | "[" | "]" | "{" | "}" | "(" | ")" | "." | "|" | "\\" | "#" | "," | "!" | "<" | ">" | "/" | ":" | "-" | "~" | "&" .
+REGEXP    = "/" { LETTER | "-" | "[" | "]" | DIGIT } "/" .
 
 # Raising the complexity into logical groups.
 
@@ -38,10 +39,9 @@ IDENTIFIER = LETTER { LETTER | UNDERSCORE } .
 LITERAL    =
   SINGLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | DOUBLE_QUOTE } SINGLE_QUOTE |
   DOUBLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | SINGLE_QUOTE } DOUBLE_QUOTE .
-FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | &LITERAL | &IDENTIFIER | &ALIAS .
+FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | &REGEXP | &LITERAL | &IDENTIFIER | &ALIAS .
 TERM       = WS FACTOR { WS FACTOR } WS .
 EXPRESSION = TERM { "|" TERM } .
-CHANNEL    = "->" WS LETTER { LETTER } .
 PRODUCTION = { WS | COMMENT } IDENTIFIER WS "=" EXPRESSION { CHANNEL } "." { WS | COMMENT } .
 SYNTAX     = [GRAMMAR] { PRODUCTION } .
 
@@ -51,4 +51,8 @@ SYNTAX     = [GRAMMAR] { PRODUCTION } .
 GRAMMAR = ":" LETTER { LETTER } ":" .
 
 # The comment rule and logic was created without coding!
-COMMENT = "#" { TEXT } [ EOL ] .
+COMMENT = "#" { TEXT } [ EOL ] -> comment .
+
+# Parsing channel, can route a production into different channels.
+# Useful to send misc like comment and whitespace into the void :D
+CHANNEL    = "->" WS LETTER { LETTER } WS .

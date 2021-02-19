@@ -42,7 +42,7 @@ export abstract class Tokenizer implements ITokenizer {
     return new Token(characters, type);
   }
 
-  identifier(reference: string, parser: IParser): IParser {
+  identifier(reference: string, parser: IParser, channel?: string): IParser {
     if (this.symbolMap.has(reference)) {
       throw new ParserException(`Type [${reference}] is already registered!`);
     }

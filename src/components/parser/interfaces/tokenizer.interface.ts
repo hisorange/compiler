@@ -10,7 +10,7 @@ export interface ITokenizer {
    * @returns {IParser}
    * @memberof ITokenizer
    */
-  identifier(reference: string, parser: IParser): IParser;
+  identifier(reference: string, parser: IParser, channel?: string): IParser;
 
   /**
    * Make the parser result optional for other parser's conditions.
