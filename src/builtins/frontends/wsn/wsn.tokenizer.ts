@@ -7,94 +7,15 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
 
     // Identifiers
     T.identifier(`EOL`, T.literal(`\n`));
-
     T.identifier(`SPACE`, T.literal(` `));
-
     T.identifier(`TAB`, T.literal(`\t`));
-
     T.identifier(`WS`, T.repetition(T.or([T.alias(`SPACE`), T.alias(`EOL`), T.alias(`TAB`)])));
-
     T.identifier(`UNDERSCORE`, T.literal(`_`));
-
     T.identifier(`SINGLE_QUOTE`, T.literal(`'`));
-
     T.identifier(`DOUBLE_QUOTE`, T.literal(`"`));
-
     T.identifier(`QUOTES`, T.or([T.alias(`SINGLE_QUOTE`), T.alias(`DOUBLE_QUOTE`)]));
-
-    T.identifier(
-      `LETTER`,
-      T.or([
-        T.literal(`A`),
-        T.literal(`a`),
-        T.literal(`B`),
-        T.literal(`b`),
-        T.literal(`C`),
-        T.literal(`c`),
-        T.literal(`D`),
-        T.literal(`d`),
-        T.literal(`E`),
-        T.literal(`e`),
-        T.literal(`F`),
-        T.literal(`f`),
-        T.literal(`G`),
-        T.literal(`g`),
-        T.literal(`H`),
-        T.literal(`h`),
-        T.literal(`I`),
-        T.literal(`i`),
-        T.literal(`J`),
-        T.literal(`j`),
-        T.literal(`K`),
-        T.literal(`k`),
-        T.literal(`L`),
-        T.literal(`l`),
-        T.literal(`M`),
-        T.literal(`m`),
-        T.literal(`N`),
-        T.literal(`n`),
-        T.literal(`O`),
-        T.literal(`o`),
-        T.literal(`P`),
-        T.literal(`p`),
-        T.literal(`Q`),
-        T.literal(`q`),
-        T.literal(`R`),
-        T.literal(`r`),
-        T.literal(`S`),
-        T.literal(`s`),
-        T.literal(`T`),
-        T.literal(`t`),
-        T.literal(`U`),
-        T.literal(`u`),
-        T.literal(`V`),
-        T.literal(`v`),
-        T.literal(`W`),
-        T.literal(`w`),
-        T.literal(`X`),
-        T.literal(`x`),
-        T.literal(`Y`),
-        T.literal(`y`),
-        T.literal(`Z`),
-        T.literal(`z`),
-      ]),
-    );
-
-    T.identifier(
-      `DIGIT`,
-      T.or([
-        T.literal(`0`),
-        T.literal(`1`),
-        T.literal(`2`),
-        T.literal(`3`),
-        T.literal(`4`),
-        T.literal(`5`),
-        T.literal(`6`),
-        T.literal(`7`),
-        T.literal(`8`),
-        T.literal(`9`),
-      ]),
-    );
+    T.identifier(`LETTER`, T.regexp(/[a-zA-Z]/));
+    T.identifier(`DIGIT`, T.regexp(/[0-9]/));
 
     T.identifier(
       `SYMBOL`,
@@ -118,6 +39,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`/`),
         T.literal(`:`),
         T.literal(`-`),
+        T.literal(`^`),
       ]),
     );
 
@@ -172,17 +94,15 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
       ]),
     );
 
+    T.identifier(`REGEXP`, T.concat([T.literal(`/`), T.repetition(T.regexp(/[^\/]/)), T.literal(`/`)]));
+
     T.identifier(
       `FACTOR`,
       T.or([
         T.concat([T.literal(`{`), T.resolve(`EXPRESSION`), T.literal(`}`)]),
         T.concat([T.literal(`(`), T.resolve(`EXPRESSION`), T.literal(`)`)]),
         T.concat([T.literal(`[`), T.resolve(`EXPRESSION`), T.literal(`]`)]),
-        T.concat([
-          T.literal(`/`),
-          T.concat([T.resolve(`CHARACTER`), T.repetition(T.resolve(`CHARACTER`))]),
-          T.literal(`/`),
-        ]),
+        T.alias(`REGEXP`),
         T.alias(`LITERAL`),
         T.alias(`IDENTIFIER`),
       ]),

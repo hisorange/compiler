@@ -10,20 +10,8 @@ UNDERSCORE = "_" .
 SINGLE_QUOTE = "'" .
 DOUBLE_QUOTE = '"' .
 QUOTES = SINGLE_QUOTE | DOUBLE_QUOTE .
-LETTER =  "A" | "a" | "B" | "b" |
-          "C" | "c" | "D" | "d" |
-          "E" | "e" | "F" | "f" |
-          "G" | "g" | "H" | "h" |
-          "I" | "i" | "J" | "j" |
-          "K" | "k" | "L" | "l" |
-          "M" | "m" | "N" | "n" |
-          "O" | "o" | "P" | "p" |
-          "Q" | "q" | "R" | "r" |
-          "S" | "s" | "T" | "t" |
-          "U" | "u" | "V" | "v" |
-          "W" | "w" | "X" | "x" |
-          "Y" | "y" | "Z" | "z" .
-DIGIT     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .
+LETTER    = /[a-zA-Z]/ .
+DIGIT     = /[0-9]/ .
 SYMBOL    = "=" | ";" | "[" | "]" | "{" | "}" | "(" | ")" | "." | "|" | "\\" | "#" | "," | "!" | "<" | ">" | "/" | ":" | "-" .
 
 # Raising the complexity into logical groups.
@@ -37,7 +25,8 @@ IDENTIFIER = LETTER { LETTER | UNDERSCORE } .
 LITERAL =
   SINGLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | DOUBLE_QUOTE } SINGLE_QUOTE |
   DOUBLE_QUOTE { CHARACTER | SPACE | SYMBOL | UNDERSCORE | SINGLE_QUOTE } DOUBLE_QUOTE .
-FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | LITERAL | IDENTIFIER .
+REGEXP     = "/" { /[^/]/ } "/" .
+FACTOR     = "{" EXPRESSION "}" | "(" EXPRESSION ")" | "[" EXPRESSION "]" | REGEXP | LITERAL | IDENTIFIER .
 TERM       = WS FACTOR { WS FACTOR } WS .
 EXPRESSION = TERM { "|" TERM } .
 PRODUCTION = { WS | COMMENT } IDENTIFIER WS "=" EXPRESSION "." { WS | COMMENT } .

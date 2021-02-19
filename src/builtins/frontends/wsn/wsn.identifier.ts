@@ -15,6 +15,7 @@ export enum WSNIdentifier {
   TEXT = 'TEXT',
   IDENTIFIER = 'IDENTIFIER',
   LITERAL = 'LITERAL',
+  REGEXP = 'REGEXP',
   FACTOR = 'FACTOR',
   TERM = 'TERM',
   EXPRESSION = 'EXPRESSION',

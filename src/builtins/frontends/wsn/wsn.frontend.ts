@@ -7,6 +7,7 @@ import { IdentifierLexer } from './lexers/identifier.lexer';
 import { LiteralLexer } from './lexers/literal.lexer';
 import { LogicalLexer } from './lexers/logical.lexer';
 import { ProductionLexer } from './lexers/production.lexer';
+import { RegexpLexer } from './lexers/regexp.lexer';
 import { WSNTokenizer } from './wsn.tokenizer';
 
 @Frontend({
@@ -14,7 +15,7 @@ import { WSNTokenizer } from './wsn.tokenizer';
   reference: 'wsn',
   extensions: ['wsn'],
   tokenizer: WSNTokenizer,
-  lexers: [GrammarLexer, LiteralLexer, LogicalLexer, IdentifierLexer, ProductionLexer],
+  lexers: [GrammarLexer, LiteralLexer, LogicalLexer, IdentifierLexer, ProductionLexer, RegexpLexer],
   interpreters: [SyntaxInterpreter, ProductionInterpreter, IdentifierInterpreter],
 })
 export class WSNFrontend implements IFrontend {}

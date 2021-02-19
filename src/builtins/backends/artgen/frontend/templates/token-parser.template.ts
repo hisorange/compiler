@@ -46,6 +46,8 @@ export class TokenParserTemplate implements ITemplate {
   T.concat([
     <% for(const child of expression.getChildren()) { -%><%- include('artgen.frontend.token-parser', { expression: child }); %>,<% } %>
   ])
+<% } else if (expression.type === 'REGEXP') { %>
+  T.regexp(<%- expression.value %>)
 <% } %>
       `.trim();
   }
