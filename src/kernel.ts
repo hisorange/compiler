@@ -72,17 +72,17 @@ export class Kernel implements IKernel {
     }
   }
 
-  async compile(path: IPath | string): Promise<IFileSystem> {
+  async compile(input: IPath | string, backendRefs: string[]): Promise<IFileSystem> {
     // Convert the path into a Path object if it's provided as a string.
-    if (typeof path === 'string') {
-      path = new Path(path);
+    if (typeof input === 'string') {
+      input = new Path(input);
     }
 
     this.logger.time(Timings.OVERALL);
-    this.logger.start('Compiling input path', { path });
+    this.logger.start('Compiling input path', { path: input });
 
     try {
-      const output = await this.ctx.getSync(Bindings.Pipeline.Compiler).pipe(path);
+      const output = await this.ctx.getSync(Bindings.Pipeline.Compiler).pipe({ input, backendRefs });
       this.logger.timeEnd(Timings.OVERALL);
 
       // All pipe finished, display the elapsed time.

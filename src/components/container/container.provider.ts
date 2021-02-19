@@ -8,6 +8,7 @@ import {
   TemplateGenerator,
   WSNFrontend,
 } from '../../builtins';
+import { CompilerPipe } from '../compiler/compiler.pipe';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
 import { FileSystemProvider } from '../file-system/file-system.provider';
@@ -20,7 +21,6 @@ import { ModuleType } from '../module-handler';
 import { ModuleHandler } from '../module-handler/module-handler';
 import { ParserPipe } from '../parser/parser.pipe';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
-import { CompilerPipe } from '../pipes/compiler.pipe';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';
 import { LexerPipe } from '../pipes/lexer.pipe';
 import { ReaderPipe } from '../reader/reader.pipe';

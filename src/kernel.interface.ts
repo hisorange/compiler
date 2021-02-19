@@ -38,5 +38,5 @@ export interface IKernel {
    * Compile an input file into a virtual file system output,
    * this executes a full compiler pipeline and expects at least one frontend.
    */
-  compile(path: IPath | string): Promise<IFileSystem>;
+  compile(input: IPath | string, backendRefs: string[]): Promise<IFileSystem>;
 }

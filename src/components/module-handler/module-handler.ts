@@ -64,6 +64,9 @@ export class ModuleHandler implements IModuleHandler {
       case ModuleType.TEMPLATE:
         this.onRegisterTemplate(meta as ITemplateMeta);
         break;
+      case ModuleType.BACKEND:
+        this.onRegisterBackend(meta as IBackendMeta);
+        break;
     }
   }
 
@@ -76,9 +79,15 @@ export class ModuleHandler implements IModuleHandler {
     const dataRef = this.createDataReference(type, reference);
 
     if (!this.ctx.contains(dataRef)) {
+      const available = this.ctx
+        .findByTag(`${type}-meta`)
+        .map(metaRef => this.retrive(type as any, metaRef.getValue(this.ctx).reference))
+        .map(r => r.meta.reference);
+
       throw new ModuleException<MissingModuleBindingExceptionContext>(`Module is not registered`, {
         type,
         reference,
+        available,
       });
     }
 
@@ -137,6 +146,17 @@ export class ModuleHandler implements IModuleHandler {
         }
 
         this.register(ModuleType.TEMPLATE, dependency);
+      }
+    }
+  }
+
+  /**
+   * Hook to handle special cases when registering a backend module.
+   */
+  protected onRegisterBackend(meta: IBackendMeta): void {
+    if (meta.templates) {
+      for (const template of meta.templates) {
+        this.register(ModuleType.TEMPLATE, template);
       }
     }
   }

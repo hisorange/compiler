@@ -8,8 +8,8 @@ import { GrammarSymbol } from '../../frontends/wsn/symbols/grammar.symbol';
 import { ReadMeTemplate } from './templates/readme.template';
 
 @Backend({
-  name: 'Input',
-  reference: 'input',
+  name: 'NestJS Application',
+  reference: 'nestjs',
   templates: [ReadMeTemplate],
   interest: (symbol: ISymbol) => symbol instanceof GrammarSymbol,
 })

@@ -7,12 +7,20 @@ import { GrammarTemplate } from './templates/grammar.template';
 import { IdentifierTemplate } from './templates/identifier.template';
 import { InterpretersTemplate } from './templates/interpreters.template';
 import { LexersTemplate } from './templates/lexers.template';
+import { TokenParserTemplate } from './templates/token-parser.template';
 import { TokenizerTemplate } from './templates/tokenizer.template';
 
 @Backend({
   name: 'Grammar Backend',
   reference: 'artgen.grammar',
-  templates: [GrammarTemplate, IdentifierTemplate, InterpretersTemplate, LexersTemplate, TokenizerTemplate],
+  templates: [
+    GrammarTemplate,
+    IdentifierTemplate,
+    InterpretersTemplate,
+    LexersTemplate,
+    TokenizerTemplate,
+    TokenParserTemplate,
+  ],
   interest: (symbol: ISymbol) => symbol instanceof GrammarSymbol,
 })
 export class GrammarBackend implements IBackend {

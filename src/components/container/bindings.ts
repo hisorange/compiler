@@ -1,4 +1,5 @@
 import { BindingKey } from '@loopback/context';
+import { CompilerPipe } from '../compiler/compiler.pipe';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { IFileSystem } from '../file-system';
 import { FileSystemFactory } from '../file-system/file-system.factory';
@@ -11,7 +12,6 @@ import { LoggerFactory } from '../logger/logger.factory';
 import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
 import { ParserPipe } from '../parser/parser.pipe';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
-import { CompilerPipe } from '../pipes/compiler.pipe';
 import { IInterpreter } from '../pipes/interfaces/interpreter.interface';
 import { ILexer } from '../pipes/interfaces/lexer.interface';
 import { InterpreterPipe } from '../pipes/interpreter.pipe';

@@ -3,6 +3,7 @@ import { Inject } from '../container/decorators/inject.decorator';
 import { Events } from '../event-handler/events';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
+import { CompilerException } from '../exceptions/compiler.exception';
 import { IFileSystem } from '../file-system';
 import { ISymbol } from '../iml/interfaces/symbol.interface';
 import { ILogger } from '../logger/interfaces/logger.interface';
@@ -12,12 +13,13 @@ import { IBackend } from '../module-handler/interfaces/backend.interface';
 import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
 import { IModule } from '../module-handler/interfaces/module.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
+import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { IRenderer } from '../renderer';
-import { IPipe } from './interfaces/pipe.interface';
+import { ICompilerInput } from './compiler-input.interface';
 
 type IBackendModule = IModule<IBackendMeta, IBackend>;
 
-export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
+export class CompilerPipe implements IPipe<ICompilerInput, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
 
   public constructor(
@@ -37,11 +39,28 @@ export class CompilerPipe implements IPipe<ISymbol, Promise<IFileSystem>> {
     });
   }
 
-  public async pipe(symbol: ISymbol): Promise<IFileSystem> {
+  public async pipe(input: ICompilerInput): Promise<IFileSystem> {
+    const symbol = input.symbol;
+
     this.logger.time(Timings.COMPILING);
     this.logger.info('Compiling from the root symbol');
 
-    this.traverse(symbol, this.module.search(ModuleType.BACKEND));
+    const backends = [];
+
+    for (const backend of this.module.search(ModuleType.BACKEND)) {
+      if (input.backendRefs.includes(backend.meta.reference)) {
+        backends.push(backend);
+      }
+    }
+
+    if (!backends.length) {
+      throw new CompilerException('No backend loaded', {
+        requested: input.backendRefs,
+        available: this.module.search(ModuleType.BACKEND).map(b => b.meta.reference),
+      });
+    }
+
+    this.traverse(symbol, backends);
 
     this.eventEmitter.publish(Events.COMPILED, symbol);
     this.logger.timeEnd(Timings.COMPILING);

@@ -67,16 +67,28 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
     for (const frontendMod of frontends) {
       for (const ext of frontendMod.meta.extensions) {
         if (ext.toLowerCase() === extension.toLowerCase()) {
+          this.logger.info('Loading frontend', {
+            name: frontendMod.meta.name,
+            extension: ext,
+          });
+
           const tknCls = frontendMod.meta.tokenizer;
           const tokenizer = new tknCls(this.loggerFactory);
 
           grammar = new Grammar(frontendMod.meta.name, tokenizer);
 
+          // Load the parsers.
+          grammar.tokenizer.prepare();
+          this.logger.info('Parsers loaded');
+
+          // Load the lexers.
           if (frontendMod.meta.lexers) {
             this.container.getSync(Bindings.Collection.Lexer).push(...frontendMod.meta.lexers.map(l => new l()));
             this.container
               .getSync(Bindings.Collection.Interpreter)
               .push(...frontendMod.meta.interpreters.map(i => new i()));
+
+            this.logger.info('Lexers loaded');
           }
         }
       }

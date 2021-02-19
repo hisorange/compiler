@@ -54,9 +54,9 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
       .default('git', false)
       .boolean('dry-mode')
       .option('backend', {
-        demandOption: false,
+        demandOption: true,
         type: 'array',
-        choices: ['artgen.grammar', 'moleculer', 'artgen.aml'],
+        choices: ['artgen.grammar', 'nestjs'],
         string: true,
       })
       .option('grammar', {
@@ -93,7 +93,7 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
 
       kernel.mount(fs as any);
 
-      const product = await kernel.compile(input);
+      const product = await kernel.compile(input, args.backend);
       let gitHandler;
 
       if (args.git) {
