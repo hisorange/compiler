@@ -133,7 +133,7 @@ export class CLI {
    * @memberof CLI
    */
   protected setErrorHandler(): void {
-    this.getProgram().fail(this.onFail.bind(this));
+    //this.getProgram().fail(this.onFail.bind(this));
   }
 
   /**
