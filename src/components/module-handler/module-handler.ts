@@ -2,6 +2,7 @@ import { MetadataInspector } from '@loopback/context';
 import { Bindings } from '../container/bindings';
 import { Container } from '../container/container';
 import { Inject } from '../container/decorators/inject.decorator';
+import { ReferenceResolver } from '../container/forward-ref';
 import { Constructor } from '../container/interfaces/constructor.interface';
 import { IBackendMeta } from './decorators/backend.decorator';
 import { IFrontendMeta } from './decorators/frontend.decorator';
@@ -46,6 +47,11 @@ export class ModuleHandler implements IModuleHandler {
     const metaRef = this.createMetaReference(type, meta.reference);
     const dataRef = this.createDataReference(type, meta.reference);
 
+    // Break dependency loop.
+    if (this.ctx.contains(metaRef)) {
+      return;
+    }
+
     // Register the implementations before the special hooks.
     this.ctx.bind(dataRef).toClass(module).tag(`${type}-data`);
     this.ctx.bind(metaRef).to(meta).tag(`${type}-meta`);
@@ -54,6 +60,9 @@ export class ModuleHandler implements IModuleHandler {
     switch (type) {
       case ModuleType.GENERATOR:
         this.onRegisterGenerator(meta as IGeneratorMeta);
+        break;
+      case ModuleType.TEMPLATE:
+        this.onRegisterTemplate(meta as ITemplateMeta);
         break;
     }
   }
@@ -98,6 +107,14 @@ export class ModuleHandler implements IModuleHandler {
       .map(metaRef => this.retrive(type as any, metaRef.getValue(this.ctx).reference));
   }
 
+  meta(type: ModuleType.FRONTEND, mod: Constructor<IFrontend>): IFrontendMeta;
+  meta(type: ModuleType.TEMPLATE, mod: Constructor<ITemplate>): ITemplateMeta;
+  meta(type: ModuleType.GENERATOR, mod: Constructor<IGenerator>): IGeneratorMeta;
+  meta(type: ModuleType.BACKEND, mod: Constructor<IBackend>): IBackendMeta;
+  meta(type: ModuleType, module: Constructor<ModuleData>): ModuleMeta {
+    return this.readMeta<ModuleMeta>(type, module);
+  }
+
   /**
    * Hook to handle special cases when registering a generator module.
    */
@@ -105,6 +122,21 @@ export class ModuleHandler implements IModuleHandler {
     if (meta.templates) {
       for (const template of meta.templates) {
         this.register(ModuleType.TEMPLATE, template);
+      }
+    }
+  }
+
+  /**
+   * Hook to handle special cases when registering a template module.
+   */
+  protected onRegisterTemplate(meta: ITemplateMeta): void {
+    if (meta.depends) {
+      for (let dependency of meta.depends) {
+        if (dependency instanceof ReferenceResolver) {
+          dependency = (dependency as ReferenceResolver<Constructor<ITemplate>>).resolve();
+        }
+
+        this.register(ModuleType.TEMPLATE, dependency);
       }
     }
   }

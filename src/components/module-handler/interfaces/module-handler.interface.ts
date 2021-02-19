@@ -24,4 +24,9 @@ export interface IModuleHandler {
   search(type: ModuleType.TEMPLATE): IModule<ITemplateMeta, ITemplate>[];
   search(type: ModuleType.GENERATOR): IModule<IGeneratorMeta, IGenerator>[];
   search(type: ModuleType.BACKEND): IModule<IBackendMeta, IBackend>[];
+
+  meta(type: ModuleType.FRONTEND, module: Constructor<IFrontend>): IFrontendMeta;
+  meta(type: ModuleType.TEMPLATE, module: Constructor<ITemplate>): ITemplateMeta;
+  meta(type: ModuleType.GENERATOR, module: Constructor<IGenerator>): IGeneratorMeta;
+  meta(type: ModuleType.BACKEND, module: Constructor<IBackend>): IBackendMeta;
 }

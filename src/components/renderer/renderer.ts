@@ -1,9 +1,10 @@
 import { dirname, extname, join } from 'path';
-import { Bindings, Inject } from '../container';
+import { Bindings, Constructor, Inject } from '../container';
+import { ReferenceResolver } from '../container/forward-ref';
 import { IEventEmitter } from '../event-handler';
 import { IFileSystem } from '../file-system';
 import { ILogger, LoggerFactory } from '../logger';
-import { IModuleHandler, ModuleType } from '../module-handler';
+import { IModuleHandler, ITemplate, ITemplateMeta, ModuleType } from '../module-handler';
 import { RendererEvents } from './contants/events';
 import { EJSEngine } from './engines/ejs.engine';
 import { IEngine } from './interfaces/engine.interface';
@@ -142,6 +143,9 @@ export class Renderer implements IRenderer {
   render(templateRef: string) {
     const template = this.module.retrive(ModuleType.TEMPLATE, templateRef);
 
+    // Safely resolve dependencies to fill up the context.
+    this.resolveTemplateDependencies(template.meta, []);
+
     this.context = merge(this.context, template.module.data(this.context), {
       isMergeableObject: isPlainObject,
     });
@@ -150,6 +154,32 @@ export class Renderer implements IRenderer {
       this.renderString(template.meta.path, this.context, template.meta.engine),
       this.renderString(template.module.render(), this.context, template.meta.engine),
     );
+  }
+
+  protected resolveTemplateDependencies(meta: ITemplateMeta, trace: string[]) {
+    if (meta?.depends?.length) {
+      for (let dependency of meta.depends) {
+        if (dependency instanceof ReferenceResolver) {
+          dependency = (dependency as ReferenceResolver<Constructor<ITemplate>>).resolve();
+        }
+
+        const dMeta = this.module.meta(ModuleType.TEMPLATE, dependency);
+        const dInst = this.module.retrive(ModuleType.TEMPLATE, dMeta.reference);
+
+        // Load the dependency's data to context.
+        this.context = merge(this.context, dInst.module.data(this.context), {
+          isMergeableObject: isPlainObject,
+        });
+
+        // Check for dependency loop.
+        if (!trace.includes(dMeta.reference)) {
+          trace.push(dMeta.reference);
+
+          // Resolve nested dependency.
+          this.resolveTemplateDependencies(dMeta, trace);
+        }
+      }
+    }
   }
 
   /**

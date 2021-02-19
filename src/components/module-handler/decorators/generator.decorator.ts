@@ -2,11 +2,18 @@ import { ClassDecoratorFactory } from '@loopback/metadata';
 import { Constructor } from '../../container/interfaces/constructor.interface';
 import { ITemplate } from '../interfaces/template.interface';
 
+interface InputRecord {
+  name: string;
+  type: 'text';
+  message: string;
+  default?: string;
+}
+
 export interface IGeneratorMeta {
   name: string;
   reference: string;
   templates: Constructor<ITemplate>[];
-  input: Object[];
+  input: InputRecord[];
   // <3
   author?: {
     name: string;
