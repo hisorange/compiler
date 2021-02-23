@@ -34,7 +34,10 @@ export abstract class Tokenizer implements ITokenizer {
     if (characters.length) {
       const lastChar = characters[characters.length - 1];
 
-      if (!this.lastChar || lastChar.position.index > this.lastChar.position.index) {
+      if (
+        !this.lastChar ||
+        lastChar.position.index > this.lastChar.position.index
+      ) {
         this.lastChar = lastChar;
       }
     }
@@ -58,7 +61,10 @@ export abstract class Tokenizer implements ITokenizer {
         this.logger.info('Token created', {
           type: reference,
           size: tokenLength,
-          content: tokenLength > 12 ? result.token.content.substr(0, 12) + '...' : result.token.content,
+          content:
+            tokenLength > 12
+              ? result.token.content.substr(0, 12) + '...'
+              : result.token.content,
         });
       }
 
@@ -95,7 +101,10 @@ export abstract class Tokenizer implements ITokenizer {
             .map(character => character.value)
             .join('')
       ) {
-        token = this.createToken(characters.slice(characters.cursor, length), '$LITERAL');
+        token = this.createToken(
+          characters.slice(characters.cursor, length),
+          '$LITERAL',
+        );
         characters.advance(length);
       }
 
@@ -142,7 +151,9 @@ export abstract class Tokenizer implements ITokenizer {
 
   or(parsers: IParser[]): IParser {
     if (parsers.length < 2) {
-      throw new ParserException(`At least 2 parser is required for or operation`);
+      throw new ParserException(
+        `At least 2 parser is required for or operation`,
+      );
     }
 
     return (characters: ICollection<ICharacter>) => {
@@ -160,7 +171,9 @@ export abstract class Tokenizer implements ITokenizer {
 
   concat(parsers: IParser[]): IParser {
     if (parsers.length < 2) {
-      throw new ParserException(`At least 2 parser is required for concatanation`);
+      throw new ParserException(
+        `At least 2 parser is required for concatanation`,
+      );
     }
 
     return (characters: ICollection<ICharacter>) => {

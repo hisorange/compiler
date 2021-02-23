@@ -19,7 +19,8 @@ import { ICompilerInput } from './compiler-input.interface';
 
 type IBackendModule = IModule<IBackendMeta, IBackend>;
 
-export class CompilerPipe implements IPipe<ICompilerInput, Promise<IFileSystem>> {
+export class CompilerPipe
+  implements IPipe<ICompilerInput, Promise<IFileSystem>> {
   protected readonly logger: ILogger;
 
   public constructor(
@@ -56,7 +57,9 @@ export class CompilerPipe implements IPipe<ICompilerInput, Promise<IFileSystem>>
     if (!backends.length) {
       throw new CompilerException('No backend loaded', {
         requested: input.backendRefs,
-        available: this.module.search(ModuleType.BACKEND).map(b => b.meta.reference),
+        available: this.module
+          .search(ModuleType.BACKEND)
+          .map(b => b.meta.reference),
       });
     }
 

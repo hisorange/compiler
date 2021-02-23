@@ -1,9 +1,17 @@
 import { CompilerException } from '../exceptions/compiler.exception';
 import { ISymbolDataProvider } from './interfaces/symbol-data-provider.interface';
-import { ISymbolData, ISymbolDataCreator, ISymbolDataTypes } from './interfaces/symbol-data.interface';
+import {
+  ISymbolData,
+  ISymbolDataCreator,
+  ISymbolDataTypes,
+} from './interfaces/symbol-data.interface';
 import { ISymbol } from './interfaces/symbol.interface';
 
-export function SymbolDataProxy(symbol: ISymbol, providers: ISymbolDataProvider[] = [], base = {}): ISymbolData {
+export function SymbolDataProxy(
+  symbol: ISymbol,
+  providers: ISymbolDataProvider[] = [],
+  base = {},
+): ISymbolData {
   for (const provider of providers) {
     // Check if the provider is intersted in this type of symbol.
     if (provider.filter(symbol)) {
@@ -31,7 +39,10 @@ export function SymbolDataProxy(symbol: ISymbol, providers: ISymbolDataProvider[
 
           switch (typeof value) {
             case 'function':
-              return (value as ISymbolDataCreator<ISymbolDataTypes>)(symbol, providers);
+              return (value as ISymbolDataCreator<ISymbolDataTypes>)(
+                symbol,
+                providers,
+              );
             case 'string':
             case 'number':
               return value;

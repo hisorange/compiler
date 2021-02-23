@@ -9,7 +9,10 @@ export class ProductionLexer implements ILexer {
   }
 
   enter(ctx: Node, token: IToken) {
-    return new Node('PRODUCTION', token.getChildren().find(t => t.type === 'IDENTIFIER').content).setParent(ctx);
+    return new Node(
+      'PRODUCTION',
+      token.getChildren().find(t => t.type === 'IDENTIFIER').content,
+    ).setParent(ctx);
   }
 
   exit(ctx: Node, token: IToken) {
@@ -57,7 +60,14 @@ export class ProductionLexer implements ILexer {
 
   concat(ctx: Node) {
     const testConcat = (c: INode) =>
-      ['LITERAL', 'IDENTIFIER', 'REPETITION', 'CONCAT', 'OPTIONAL', 'LOGICAL_GROUP'].includes(c.type);
+      [
+        'LITERAL',
+        'IDENTIFIER',
+        'REPETITION',
+        'CONCAT',
+        'OPTIONAL',
+        'LOGICAL_GROUP',
+      ].includes(c.type);
 
     // Concatante
     if (ctx.getChildren().filter(testConcat).length > 1) {
@@ -100,6 +110,8 @@ export class ProductionLexer implements ILexer {
       ctx.setChildren(...newChildren);
     }
 
-    ctx.getChildren().forEach(c => c.getChildren().forEach(b => this.concat(b)));
+    ctx
+      .getChildren()
+      .forEach(c => c.getChildren().forEach(b => this.concat(b)));
   }
 }

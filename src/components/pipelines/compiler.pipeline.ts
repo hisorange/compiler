@@ -5,7 +5,8 @@ import { Inject } from '../container/decorators/inject.decorator';
 import { IFileSystem } from '../file-system';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
 
-export class CompilerPipeline implements IPipe<ICompilerJob, Promise<IFileSystem>> {
+export class CompilerPipeline
+  implements IPipe<ICompilerJob, Promise<IFileSystem>> {
   constructor(
     @Inject(Bindings.Container)
     protected readonly container: Container,
@@ -19,7 +20,9 @@ export class CompilerPipeline implements IPipe<ICompilerJob, Promise<IFileSystem
     const compiler = this.container.getSync(Bindings.Pipe.Compiler);
 
     return compiler.pipe({
-      symbol: await intepreter.pipe(await lexer.pipe(await parser.pipe(await reader.pipe(job.input)))),
+      symbol: await intepreter.pipe(
+        await lexer.pipe(await parser.pipe(await reader.pipe(job.input))),
+      ),
       backendRefs: job.backendRefs,
     });
   }

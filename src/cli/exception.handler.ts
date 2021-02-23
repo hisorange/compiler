@@ -1,7 +1,9 @@
 import { IParserExceptionContext, ParserException } from '..';
 import chalk = require('chalk');
 
-export async function drawParserException(exception: ParserException<IParserExceptionContext>) {
+export async function drawParserException(
+  exception: ParserException<IParserExceptionContext>,
+) {
   const characters = exception.context.characters;
   let character = characters.current;
 
@@ -35,7 +37,10 @@ export async function drawParserException(exception: ParserException<IParserExce
   const separatorLine = chalk.magenta('-'.repeat(80));
 
   console.log('\r\n');
-  console.log(chalk.underline('File') + ':', character.path.realPath + ':' + character.position.line + ':' + errCol);
+  console.log(
+    chalk.underline('File') + ':',
+    character.path.realPath + ':' + character.position.line + ':' + errCol,
+  );
   console.log(separatorLine);
   console.log('\r\n');
 
@@ -50,7 +55,11 @@ export async function drawParserException(exception: ParserException<IParserExce
       console.log(line.trimRight());
 
       if (index === errLine) {
-        console.log(' '.repeat(Math.max(errCol - 2, 0)), chalk.red('^---'), chalk.yellow('Unexpected character'));
+        console.log(
+          ' '.repeat(Math.max(errCol - 2, 0)),
+          chalk.red('^---'),
+          chalk.yellow('Unexpected character'),
+        );
       }
     }
   });

@@ -8,7 +8,10 @@ export class ChannelLexer implements ILexer {
   }
 
   enter(ctx: Node, token: IToken) {
-    new Node('CHANNEL', token.content.replace(/^\s*\-\>\s*/, '').trim()).setParent(ctx);
+    new Node(
+      'CHANNEL',
+      token.content.replace(/^\s*\-\>\s*/, '').trim(),
+    ).setParent(ctx);
 
     return ctx;
   }

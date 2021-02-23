@@ -1,11 +1,20 @@
-import { forwardRef, ISmartString, ITemplate, Template } from '../../../../../components';
+import {
+  forwardRef,
+  ISmartString,
+  ITemplate,
+  Template,
+} from '../../../../../components';
 import { CreateDtoTemplate, ReadDtoTemplate } from './dto';
 import { ServiceTemplate } from './service.template';
 
 @Template({
   reference: 'nestjs.crud.controller',
   path: `<%- controller.path %>`,
-  depends: [forwardRef(() => ServiceTemplate), CreateDtoTemplate, ReadDtoTemplate],
+  depends: [
+    forwardRef(() => ServiceTemplate),
+    CreateDtoTemplate,
+    ReadDtoTemplate,
+  ],
 })
 export class ControllerTemplate implements ITemplate {
   data(input: { $name: ISmartString }) {

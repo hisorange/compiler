@@ -16,7 +16,8 @@ import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { ReaderException } from './exceptions/reader.exception';
 import { FileNotFoundExcetionContext } from './interfaces/file-not-found.exception-context';
 
-export class ReaderPipe implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
+export class ReaderPipe
+  implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
   protected readonly logger: ILogger;
 
   constructor(
@@ -39,7 +40,10 @@ export class ReaderPipe implements IPipe<IPath, Promise<ICollection<ICharacter>>
     this.logger.info(`Verifying the input path's existence`);
 
     if (!this.fileSystem.existsSync(path.realPath)) {
-      throw new ReaderException<FileNotFoundExcetionContext>('Path does not exists on the volume!', { path });
+      throw new ReaderException<FileNotFoundExcetionContext>(
+        'Path does not exists on the volume!',
+        { path },
+      );
     }
 
     this.logger.success('Path verified, starting to read characters');
@@ -65,7 +69,11 @@ export class ReaderPipe implements IPipe<IPath, Promise<ICollection<ICharacter>>
 
       // Step up the line counter.
       if (value === '\n') {
-        this.logger.complete('Read line', { file: path.baseName, byteIndex: cursor, line });
+        this.logger.complete('Read line', {
+          file: path.baseName,
+          byteIndex: cursor,
+          line,
+        });
 
         column = 0;
         line++;

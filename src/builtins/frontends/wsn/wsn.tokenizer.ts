@@ -10,7 +10,13 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     T.identifier(WSNIdentifier.TAB, T.literal(`\t`), `whitespace`);
     T.identifier(
       WSNIdentifier.WS,
-      T.repetition(T.or([T.resolve(WSNIdentifier.SPACE), T.resolve(WSNIdentifier.EOL), T.resolve(WSNIdentifier.TAB)])),
+      T.repetition(
+        T.or([
+          T.resolve(WSNIdentifier.SPACE),
+          T.resolve(WSNIdentifier.EOL),
+          T.resolve(WSNIdentifier.TAB),
+        ]),
+      ),
       `whitespace`,
     );
     T.identifier(WSNIdentifier.UNDERSCORE, T.literal(`_`), `main`);
@@ -18,7 +24,10 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     T.identifier(WSNIdentifier.DOUBLE_QUOTE, T.literal(`"`), `main`);
     T.identifier(
       WSNIdentifier.QUOTES,
-      T.or([T.resolve(WSNIdentifier.SINGLE_QUOTE), T.resolve(WSNIdentifier.DOUBLE_QUOTE)]),
+      T.or([
+        T.resolve(WSNIdentifier.SINGLE_QUOTE),
+        T.resolve(WSNIdentifier.DOUBLE_QUOTE),
+      ]),
       `main`,
     );
     T.identifier(
@@ -141,7 +150,11 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     );
     T.identifier(
       WSNIdentifier.CHARACTER,
-      T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.DIGIT), T.resolve(WSNIdentifier.SYMBOL)]),
+      T.or([
+        T.resolve(WSNIdentifier.LETTER),
+        T.resolve(WSNIdentifier.DIGIT),
+        T.resolve(WSNIdentifier.SYMBOL),
+      ]),
       `main`,
     );
     T.identifier(
@@ -156,12 +169,21 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(WSNIdentifier.ALIAS, T.concat([T.literal(`&`), T.resolve(WSNIdentifier.IDENTIFIER)]), `main`);
+    T.identifier(
+      WSNIdentifier.ALIAS,
+      T.concat([T.literal(`&`), T.resolve(WSNIdentifier.IDENTIFIER)]),
+      `main`,
+    );
     T.identifier(
       WSNIdentifier.IDENTIFIER,
       T.concat([
         T.resolve(WSNIdentifier.LETTER),
-        T.repetition(T.or([T.resolve(WSNIdentifier.LETTER), T.resolve(WSNIdentifier.UNDERSCORE)])),
+        T.repetition(
+          T.or([
+            T.resolve(WSNIdentifier.LETTER),
+            T.resolve(WSNIdentifier.UNDERSCORE),
+          ]),
+        ),
       ]),
       `main`,
     );
@@ -200,9 +222,21 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     T.identifier(
       WSNIdentifier.FACTOR,
       T.or([
-        T.concat([T.literal(`{`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`}`)]),
-        T.concat([T.literal(`(`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`)`)]),
-        T.concat([T.literal(`[`), T.resolve(WSNIdentifier.EXPRESSION), T.literal(`]`)]),
+        T.concat([
+          T.literal(`{`),
+          T.resolve(WSNIdentifier.EXPRESSION),
+          T.literal(`}`),
+        ]),
+        T.concat([
+          T.literal(`(`),
+          T.resolve(WSNIdentifier.EXPRESSION),
+          T.literal(`)`),
+        ]),
+        T.concat([
+          T.literal(`[`),
+          T.resolve(WSNIdentifier.EXPRESSION),
+          T.literal(`]`),
+        ]),
         T.alias(WSNIdentifier.REGEXP),
         T.resolve(WSNIdentifier.REGEXP),
         T.alias(WSNIdentifier.LITERAL),
@@ -219,7 +253,12 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
       T.concat([
         T.resolve(WSNIdentifier.WS),
         T.resolve(WSNIdentifier.FACTOR),
-        T.repetition(T.concat([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.FACTOR)])),
+        T.repetition(
+          T.concat([
+            T.resolve(WSNIdentifier.WS),
+            T.resolve(WSNIdentifier.FACTOR),
+          ]),
+        ),
         T.resolve(WSNIdentifier.WS),
       ]),
       `main`,
@@ -235,20 +274,27 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     T.identifier(
       WSNIdentifier.PRODUCTION,
       T.concat([
-        T.repetition(T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)])),
+        T.repetition(
+          T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)]),
+        ),
         T.resolve(WSNIdentifier.IDENTIFIER),
         T.resolve(WSNIdentifier.WS),
         T.literal(`=`),
         T.resolve(WSNIdentifier.EXPRESSION),
         T.repetition(T.resolve(WSNIdentifier.CHANNEL)),
         T.literal(`.`),
-        T.repetition(T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)])),
+        T.repetition(
+          T.or([T.resolve(WSNIdentifier.WS), T.resolve(WSNIdentifier.COMMENT)]),
+        ),
       ]),
       `main`,
     );
     T.identifier(
       WSNIdentifier.SYNTAX,
-      T.concat([T.optional(T.resolve(WSNIdentifier.GRAMMAR)), T.repetition(T.resolve(WSNIdentifier.PRODUCTION))]),
+      T.concat([
+        T.optional(T.resolve(WSNIdentifier.GRAMMAR)),
+        T.repetition(T.resolve(WSNIdentifier.PRODUCTION)),
+      ]),
       `main`,
     );
     T.identifier(
@@ -263,7 +309,11 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
     );
     T.identifier(
       WSNIdentifier.COMMENT,
-      T.concat([T.literal(`#`), T.repetition(T.resolve(WSNIdentifier.TEXT)), T.optional(T.resolve(WSNIdentifier.EOL))]),
+      T.concat([
+        T.literal(`#`),
+        T.repetition(T.resolve(WSNIdentifier.TEXT)),
+        T.optional(T.resolve(WSNIdentifier.EOL)),
+      ]),
       `comment`,
     );
     T.identifier(

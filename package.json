@@ -12,7 +12,8 @@
     "lint:test": "true",
     "build": "rimraf build && tsc",
     "build:watch": "rimraf build && tsc --watch",
-    "build:prod": "rimraf build && tsc -p tsconfig.prod.json"
+    "build:prod": "rimraf build && tsc -p tsconfig.prod.json",
+    "prettify": "prettier --write ./src"
   },
   "repository": {
     "type": "git",

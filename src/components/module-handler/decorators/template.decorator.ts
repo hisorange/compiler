@@ -17,5 +17,9 @@ export interface ITemplateMeta {
 }
 
 export function Template(spec: ITemplateMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<ITemplateMeta>('artgen.template', spec, { decoratorName: '@Template' });
+  return ClassDecoratorFactory.createDecorator<ITemplateMeta>(
+    'artgen.template',
+    spec,
+    { decoratorName: '@Template' },
+  );
 }

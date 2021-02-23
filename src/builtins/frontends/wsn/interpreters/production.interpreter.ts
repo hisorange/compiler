@@ -15,9 +15,15 @@ export class ProductionInterpreter implements IInterpreter {
     const sym = new ProductionSymbol(name);
     ctx.addChildren(sym);
 
-    let channel = node.getChildren().find(c => c.type === WSNIdentifier.CHANNEL);
+    let channel = node
+      .getChildren()
+      .find(c => c.type === WSNIdentifier.CHANNEL);
 
-    let expr: ExpressionTree = new ExpressionTree('IDENTIFIER', name, channel ? channel.content : `main`);
+    let expr: ExpressionTree = new ExpressionTree(
+      'IDENTIFIER',
+      name,
+      channel ? channel.content : `main`,
+    );
     sym.expressions = expr;
 
     node.getChildren().forEach(child => this.convert(expr, child));

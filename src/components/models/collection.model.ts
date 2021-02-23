@@ -127,7 +127,10 @@ export class Collection<T> implements ICollection<T> {
    * @inheritdoc
    */
   consume(amount: number = 1): T[] {
-    return this.advance(amount)._items.slice(this._cursor - amount, this._cursor);
+    return this.advance(amount)._items.slice(
+      this._cursor - amount,
+      this._cursor,
+    );
   }
 
   /**

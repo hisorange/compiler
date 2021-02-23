@@ -44,7 +44,10 @@ export class ContainerProvider implements Provider<Container> {
   value(): Container {
     const container = new Container('kernel');
 
-    container.bind(Bindings.Module.Handler).toClass(ModuleHandler).inScope(BindingScope.SINGLETON);
+    container
+      .bind(Bindings.Module.Handler)
+      .toClass(ModuleHandler)
+      .inScope(BindingScope.SINGLETON);
 
     this.bindSelf(container);
     this.bindSession(container);
@@ -122,9 +125,18 @@ export class ContainerProvider implements Provider<Container> {
   protected bindProviders(container: Container): void {
     const namespace = Bindings.Provider;
 
-    container.bind(namespace.Logger).toProvider(LoggerProvider).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.InputFileSystem).toProvider(FileSystemProvider).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.OutputFileSystem).toProvider(FileSystemProvider).inScope(BindingScope.CONTEXT);
+    container
+      .bind(namespace.Logger)
+      .toProvider(LoggerProvider)
+      .inScope(BindingScope.CONTEXT);
+    container
+      .bind(namespace.InputFileSystem)
+      .toProvider(FileSystemProvider)
+      .inScope(BindingScope.CONTEXT);
+    container
+      .bind(namespace.OutputFileSystem)
+      .toProvider(FileSystemProvider)
+      .inScope(BindingScope.CONTEXT);
   }
 
   /**
@@ -185,23 +197,43 @@ export class ContainerProvider implements Provider<Container> {
   protected bindComponents(container: Container): void {
     const namespace = Bindings.Components;
 
-    container.bind(namespace.EventEmitter).toClass(EventEmitter).inScope(BindingScope.CONTEXT);
-    container.bind(namespace.SymbolTable).toClass(SymbolTable).inScope(BindingScope.CONTEXT);
+    container
+      .bind(namespace.EventEmitter)
+      .toClass(EventEmitter)
+      .inScope(BindingScope.CONTEXT);
+    container
+      .bind(namespace.SymbolTable)
+      .toClass(SymbolTable)
+      .inScope(BindingScope.CONTEXT);
     container.bind(namespace.Renderer).toClass(Renderer);
   }
 
   protected bindBuiltIns(container: Container) {
     // Frontends
-    container.getSync(Bindings.Module.Handler).register(ModuleType.FRONTEND, AMLFrontend);
-    container.getSync(Bindings.Module.Handler).register(ModuleType.FRONTEND, WSNFrontend);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.FRONTEND, AMLFrontend);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.FRONTEND, WSNFrontend);
 
     // Backends
-    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, FrontendBackend);
-    container.getSync(Bindings.Module.Handler).register(ModuleType.BACKEND, NestJSBackend);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.BACKEND, FrontendBackend);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.BACKEND, NestJSBackend);
 
     // Generators
-    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, TemplateGenerator);
-    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, BackendGenerator);
-    container.getSync(Bindings.Module.Handler).register(ModuleType.GENERATOR, NestJSCrudGenerator);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.GENERATOR, TemplateGenerator);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.GENERATOR, BackendGenerator);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.GENERATOR, NestJSCrudGenerator);
   }
 }

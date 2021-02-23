@@ -20,5 +20,9 @@ export interface IFrontendMeta {
 }
 
 export function Frontend(spec: IFrontendMeta): ClassDecorator {
-  return ClassDecoratorFactory.createDecorator<IFrontendMeta>('artgen.frontend', spec, { decoratorName: '@Frontend' });
+  return ClassDecoratorFactory.createDecorator<IFrontendMeta>(
+    'artgen.frontend',
+    spec,
+    { decoratorName: '@Frontend' },
+  );
 }

@@ -1,5 +1,10 @@
 import { join } from 'path';
-import { Generator, IGenerator, IRenderer, SmartString } from '../../../../components';
+import {
+  Generator,
+  IGenerator,
+  IRenderer,
+  SmartString,
+} from '../../../../components';
 import { ModuleTemplate } from './templates';
 
 @Generator({
@@ -29,7 +34,10 @@ export class NestJSCrudGenerator implements IGenerator {
     const context = { $name: new SmartString(input.moduleName) };
 
     renderer.setContext(context);
-    renderer.outputBaseDirectory = join(input.baseDirectory, context.$name.kebabCase.toString());
+    renderer.outputBaseDirectory = join(
+      input.baseDirectory,
+      context.$name.kebabCase.toString(),
+    );
 
     renderer.render(`nestjs.crud.dto.read`);
     renderer.render(`nestjs.crud.dto.create`);

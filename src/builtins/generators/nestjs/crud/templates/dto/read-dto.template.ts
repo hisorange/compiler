@@ -1,4 +1,8 @@
-import { ISmartString, ITemplate, Template } from '../../../../../../components';
+import {
+  ISmartString,
+  ITemplate,
+  Template,
+} from '../../../../../../components';
 
 @Template({
   reference: 'nestjs.crud.dto.read',

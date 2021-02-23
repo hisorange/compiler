@@ -1,6 +1,7 @@
 import { ITreeModel } from './interfaces/tree.interface';
 
-export abstract class TreeModel<T extends ITreeModel<T>> implements ITreeModel<T> {
+export abstract class TreeModel<T extends ITreeModel<T>>
+  implements ITreeModel<T> {
   protected parent: T = null;
   protected children: T[] = [];
 

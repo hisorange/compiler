@@ -18,14 +18,17 @@ import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { ExtensionExceptionContext } from './interfaces/extension.exception-context';
 import { IParserExceptionContext } from './interfaces/parser.exception-context';
 
-export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
+export class ParserPipe
+  implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
   protected readonly logger: ILogger;
 
   public constructor(
-    @Inject(Bindings.Factory.Logger) protected readonly loggerFactory: LoggerFactory,
+    @Inject(Bindings.Factory.Logger)
+    protected readonly loggerFactory: LoggerFactory,
     @Inject(Bindings.Module.Handler) protected readonly module: IModuleHandler,
     @Inject(Bindings.Container) protected readonly container: Container,
-    @Inject(Bindings.Components.EventEmitter) protected readonly event: IEventEmitter,
+    @Inject(Bindings.Components.EventEmitter)
+    protected readonly event: IEventEmitter,
   ) {
     this.logger = loggerFactory.create({ label: 'Parser' });
   }
@@ -37,7 +40,10 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
     const grammar = this.loadGrammar(extension);
 
     if (!grammar) {
-      throw new ParserException<ExtensionExceptionContext>('No frontend for given extension', { extension });
+      throw new ParserException<ExtensionExceptionContext>(
+        'No frontend for given extension',
+        { extension },
+      );
     }
 
     // TODO: Get the Tokenizer, load the parsers and then run for the longest, then run again until the content is finished or no change is detected
@@ -46,10 +52,13 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
     const result = grammar.parse(characters);
 
     if (!result.token || result.characters.isValid) {
-      throw new ParserException<IParserExceptionContext>('Unexpected character', {
-        grammar: grammar,
-        characters: result.characters,
-      });
+      throw new ParserException<IParserExceptionContext>(
+        'Unexpected character',
+        {
+          grammar: grammar,
+          characters: result.characters,
+        },
+      );
     }
 
     // Publish the result, here the subscribers can even optimize or change the tokens.
@@ -88,7 +97,9 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
 
           // Load the lexers.
           if (frontendMod.meta.lexers) {
-            this.container.getSync(Bindings.Collection.Lexer).push(...frontendMod.meta.lexers.map(l => new l()));
+            this.container
+              .getSync(Bindings.Collection.Lexer)
+              .push(...frontendMod.meta.lexers.map(l => new l()));
             this.container
               .getSync(Bindings.Collection.Interpreter)
               .push(...frontendMod.meta.interpreters.map(i => new i()));

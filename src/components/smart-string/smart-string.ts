@@ -1,4 +1,10 @@
-import { capitalize, humanize, pluralize, singularize, titleize } from 'inflection';
+import {
+  capitalize,
+  humanize,
+  pluralize,
+  singularize,
+  titleize,
+} from 'inflection';
 import { ISmartString } from './smart-string.interface';
 
 import toStudlyCaps = require('strman.tostudlycaps');
@@ -15,7 +21,9 @@ export class SmartString implements ISmartString {
     if (typeof subject === 'string') {
       subject = subject.trim();
     } else {
-      throw new Error('Smart String received a non string variable: ' + subject);
+      throw new Error(
+        'Smart String received a non string variable: ' + subject,
+      );
     }
 
     this.subject = subject.toString();
@@ -103,6 +111,8 @@ export class SmartString implements ISmartString {
    * @memberof StringTransformer
    */
   protected normalize(): string {
-    return toSnakeCase(isUpperCase(this.subject) ? this.subject.toLowerCase() : this.subject).toLowerCase();
+    return toSnakeCase(
+      isUpperCase(this.subject) ? this.subject.toLowerCase() : this.subject,
+    ).toLowerCase();
   }
 }

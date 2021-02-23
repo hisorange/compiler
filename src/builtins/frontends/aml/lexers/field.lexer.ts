@@ -11,7 +11,9 @@ export class FieldLexer implements ILexer {
   enter(ctx: Node, token: IToken) {
     return new Node(
       AMLIdentifier.FIELD,
-      token.getChildren().find(t => t.type === AMLIdentifier.FIELD_NAME)?.content,
+      token
+        .getChildren()
+        .find(t => t.type === AMLIdentifier.FIELD_NAME)?.content,
     ).setParent(ctx);
   }
 

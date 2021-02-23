@@ -7,7 +7,8 @@ import { IGeneratorOptions } from '../interfaces/generator-options.interface';
 import { IGlobalOptions } from '../interfaces/global-options.inteface';
 import { drawLogo } from '../utils/draw-logo';
 
-export class GenerateCommand implements CommandModule<IGlobalOptions, IGeneratorOptions> {
+export class GenerateCommand
+  implements CommandModule<IGlobalOptions, IGeneratorOptions> {
   /**
    * @type {string}
    * @memberof CompileCommand
@@ -73,7 +74,9 @@ export class GenerateCommand implements CommandModule<IGlobalOptions, IGenerator
         });
 
         if (use.useRc) {
-          const config = JSON.parse(fs.readFileSync(join(cwd, '.artgenrc')).toString());
+          const config = JSON.parse(
+            fs.readFileSync(join(cwd, '.artgenrc')).toString(),
+          );
           args.generator = config.reference;
           input = config.input;
         }
@@ -84,7 +87,12 @@ export class GenerateCommand implements CommandModule<IGlobalOptions, IGenerator
           type: 'list',
           message: 'Which generator You wana use?',
           name: 'gen',
-          choices: ['artgen.template', 'artgen.frontend', 'artgen.backend', 'nestjs.crud'],
+          choices: [
+            'artgen.template',
+            'artgen.frontend',
+            'artgen.backend',
+            'nestjs.crud',
+          ],
         });
 
         args.generator = res.gen;

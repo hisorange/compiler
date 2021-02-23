@@ -70,10 +70,22 @@ export class ModuleHandler implements IModuleHandler {
     }
   }
 
-  retrive(type: ModuleType.FRONTEND, reference: string): IModule<IFrontendMeta, IFrontend>;
-  retrive(type: ModuleType.TEMPLATE, reference: string): IModule<ITemplateMeta, ITemplate>;
-  retrive(type: ModuleType.GENERATOR, reference: string): IModule<IGeneratorMeta, IGenerator>;
-  retrive(type: ModuleType.BACKEND, reference: string): IModule<IBackendMeta, IBackend>;
+  retrive(
+    type: ModuleType.FRONTEND,
+    reference: string,
+  ): IModule<IFrontendMeta, IFrontend>;
+  retrive(
+    type: ModuleType.TEMPLATE,
+    reference: string,
+  ): IModule<ITemplateMeta, ITemplate>;
+  retrive(
+    type: ModuleType.GENERATOR,
+    reference: string,
+  ): IModule<IGeneratorMeta, IGenerator>;
+  retrive(
+    type: ModuleType.BACKEND,
+    reference: string,
+  ): IModule<IBackendMeta, IBackend>;
   retrive(type: ModuleType, reference: string): RetriveReturn {
     const metaRef = this.createMetaReference(type, reference);
     const dataRef = this.createDataReference(type, reference);
@@ -81,22 +93,30 @@ export class ModuleHandler implements IModuleHandler {
     if (!this.ctx.contains(dataRef)) {
       const available = this.ctx
         .findByTag(`${type}-meta`)
-        .map(metaRef => this.retrive(type as any, metaRef.getValue(this.ctx).reference))
+        .map(metaRef =>
+          this.retrive(type as any, metaRef.getValue(this.ctx).reference),
+        )
         .map(r => r.meta.reference);
 
-      throw new ModuleException<MissingModuleBindingExceptionContext>(`Module is not registered`, {
-        type,
-        reference,
-        available,
-      });
+      throw new ModuleException<MissingModuleBindingExceptionContext>(
+        `Module is not registered`,
+        {
+          type,
+          reference,
+          available,
+        },
+      );
     }
 
     // Normaly this could not happen, but we check for consistence.
     if (!this.ctx.contains(metaRef)) {
-      throw new ModuleException<MissingModuleBindingExceptionContext>(`Module meta is not registered`, {
-        type,
-        reference,
-      });
+      throw new ModuleException<MissingModuleBindingExceptionContext>(
+        `Module meta is not registered`,
+        {
+          type,
+          reference,
+        },
+      );
     }
 
     // Retrive the implementations.
@@ -113,12 +133,17 @@ export class ModuleHandler implements IModuleHandler {
   search(type: ModuleType): RetriveReturn[] {
     return this.ctx
       .findByTag(`${type}-meta`)
-      .map(metaRef => this.retrive(type as any, metaRef.getValue(this.ctx).reference));
+      .map(metaRef =>
+        this.retrive(type as any, metaRef.getValue(this.ctx).reference),
+      );
   }
 
   meta(type: ModuleType.FRONTEND, mod: Constructor<IFrontend>): IFrontendMeta;
   meta(type: ModuleType.TEMPLATE, mod: Constructor<ITemplate>): ITemplateMeta;
-  meta(type: ModuleType.GENERATOR, mod: Constructor<IGenerator>): IGeneratorMeta;
+  meta(
+    type: ModuleType.GENERATOR,
+    mod: Constructor<IGenerator>,
+  ): IGeneratorMeta;
   meta(type: ModuleType.BACKEND, mod: Constructor<IBackend>): IBackendMeta;
   meta(type: ModuleType, module: Constructor<ModuleData>): ModuleMeta {
     return this.readMeta<ModuleMeta>(type, module);
@@ -142,7 +167,9 @@ export class ModuleHandler implements IModuleHandler {
     if (meta.depends) {
       for (let dependency of meta.depends) {
         if (dependency instanceof ReferenceResolver) {
-          dependency = (dependency as ReferenceResolver<Constructor<ITemplate>>).resolve();
+          dependency = (dependency as ReferenceResolver<
+            Constructor<ITemplate>
+          >).resolve();
         }
 
         this.register(ModuleType.TEMPLATE, dependency);
@@ -183,10 +210,13 @@ export class ModuleHandler implements IModuleHandler {
 
     // Happens when a class is registered as kernel module but does not have the right or any decorator for it.
     if (typeof meta === 'undefined') {
-      throw new ModuleException<MissingMetaDataExceptionContext>('Module missing the required decorator', {
-        type,
-        module,
-      });
+      throw new ModuleException<MissingMetaDataExceptionContext>(
+        'Module missing the required decorator',
+        {
+          type,
+          module,
+        },
+      );
     }
 
     return meta;

@@ -4,7 +4,12 @@ import { ReferenceResolver } from '../container/forward-ref';
 import { IEventEmitter } from '../event-handler';
 import { IFileSystem } from '../file-system';
 import { ILogger, LoggerFactory } from '../logger';
-import { IModuleHandler, ITemplate, ITemplateMeta, ModuleType } from '../module-handler';
+import {
+  IModuleHandler,
+  ITemplate,
+  ITemplateMeta,
+  ModuleType,
+} from '../module-handler';
 import { RendererEvents } from './contants/events';
 import { EJSEngine } from './engines/ejs.engine';
 import { IEngine } from './interfaces/engine.interface';
@@ -152,7 +157,11 @@ export class Renderer implements IRenderer {
 
     this.write(
       this.renderString(template.meta.path, this.context, template.meta.engine),
-      this.renderString(template.module.render(), this.context, template.meta.engine),
+      this.renderString(
+        template.module.render(),
+        this.context,
+        template.meta.engine,
+      ),
     );
   }
 
@@ -160,7 +169,9 @@ export class Renderer implements IRenderer {
     if (meta?.depends?.length) {
       for (let dependency of meta.depends) {
         if (dependency instanceof ReferenceResolver) {
-          dependency = (dependency as ReferenceResolver<Constructor<ITemplate>>).resolve();
+          dependency = (dependency as ReferenceResolver<
+            Constructor<ITemplate>
+          >).resolve();
         }
 
         const dMeta = this.module.meta(ModuleType.TEMPLATE, dependency);
@@ -219,7 +230,11 @@ export class Renderer implements IRenderer {
   /**
    * Render the given string with the context.
    */
-  protected renderString(input: string, context: any, options?: Object): string {
+  protected renderString(
+    input: string,
+    context: any,
+    options?: Object,
+  ): string {
     const baseOptions = {
       engine: 'ejs',
     };
@@ -230,6 +245,8 @@ export class Renderer implements IRenderer {
       options = baseOptions;
     }
 
-    return this.engines.get((options as any).engine).render(input, context, options);
+    return this.engines
+      .get((options as any).engine)
+      .render(input, context, options);
   }
 }

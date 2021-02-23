@@ -1,4 +1,9 @@
-import { captureException, captureMessage, init as sentryInit, Severity } from '@sentry/node';
+import {
+  captureException,
+  captureMessage,
+  init as sentryInit,
+  Severity,
+} from '@sentry/node';
 import { join } from 'path';
 import yargonaut from 'yargonaut';
 import yargs, { Argv } from 'yargs';

@@ -10,8 +10,10 @@ export class GenericSymbolDataResolver implements ISymbolDataProvider {
   resolve(providers: ISymbolDataProvider[]): ISymbolData {
     return {
       $name: (context: ISymbol) => context.name,
-      $parent: (context: ISymbol) => (context.hasParent() ? context.getParent().getData(providers) : null),
-      $children: (context: ISymbol) => context.getChildren().map(c => c.getData(providers)),
+      $parent: (context: ISymbol) =>
+        context.hasParent() ? context.getParent().getData(providers) : null,
+      $children: (context: ISymbol) =>
+        context.getChildren().map(c => c.getData(providers)),
       $unique: (context: ISymbol) => context.name.toString(),
     };
   }

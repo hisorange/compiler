@@ -5,7 +5,8 @@ import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { IGeneratorJob } from './generator-job.interface';
 import { GeneratorPipe } from './generator.pipe';
 
-export class GeneratorPipeline implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
+export class GeneratorPipeline
+  implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
   constructor(
     @Inject(Bindings.Pipe.Generator)
     protected readonly generator: GeneratorPipe,

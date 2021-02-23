@@ -36,7 +36,9 @@ export const Bindings = {
   Provider: {
     Logger: BindingKey.create<ILogger>('Provider.Logger'),
     InputFileSystem: BindingKey.create<IFileSystem>('Provider.InputFileSystem'),
-    OutputFileSystem: BindingKey.create<IFileSystem>('Provider.OutputFileSystem'),
+    OutputFileSystem: BindingKey.create<IFileSystem>(
+      'Provider.OutputFileSystem',
+    ),
   },
   Factory: {
     FileSystem: BindingKey.create<FileSystemFactory>('Factory.FileSystem'),

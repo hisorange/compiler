@@ -1,14 +1,21 @@
 import * as fs from 'fs';
 import { dirname, join } from 'path';
 import { Arguments, Argv, CommandModule } from 'yargs';
-import { AMLFrontend, Kernel, ModuleType, ParserException, WSNFrontend } from '../../';
+import {
+  AMLFrontend,
+  Kernel,
+  ModuleType,
+  ParserException,
+  WSNFrontend,
+} from '../../';
 import { drawParserException } from '../exception.handler';
 import { ICompileOptions } from '../interfaces/compile-options.interface';
 import { IGlobalOptions } from '../interfaces/global-options.inteface';
 import { drawLogo } from '../utils/draw-logo';
 import { GitHandler } from '../utils/git-handler';
 
-export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOptions> {
+export class CompileCommand
+  implements CommandModule<IGlobalOptions, ICompileOptions> {
   /**
    * Command grammar display in the CLI help.
    *
@@ -67,7 +74,10 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
       })
       .example('compile', 'my-shop.aml . --backend moleculer --backend docker')
       .example('compile', 'sql.wsn my-sql-grammar --backend artgen.frontend')
-      .example('compile', 'my-shop.sql my-shop.aml --backend negtra.sql --backend artgen.aml')
+      .example(
+        'compile',
+        'my-shop.sql my-shop.aml --backend negtra.sql --backend artgen.aml',
+      )
       .default('dry-mode', false, 'Not writing the output to disk');
   }
 
@@ -89,7 +99,8 @@ export class CompileCommand implements CommandModule<IGlobalOptions, ICompileOpt
     try {
       const cwd = process.cwd();
       const input = args.input[0] === '/' ? args.input : join(cwd, args.input);
-      const output = args.output[0] === '/' ? args.output : join(cwd, args.output);
+      const output =
+        args.output[0] === '/' ? args.output : join(cwd, args.output);
 
       kernel.mount(fs as any);
 

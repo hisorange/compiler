@@ -31,7 +31,9 @@ export class Kernel implements IKernel {
       debug: true,
     });
 
-    this.logger = this.ctx.getSync(Bindings.Factory.Logger).create({ label: 'Kernel' });
+    this.logger = this.ctx
+      .getSync(Bindings.Factory.Logger)
+      .create({ label: 'Kernel' });
     this.module = this.ctx.getSync(Bindings.Module.Handler);
 
     this.logger.info('System is ready to rock!');
@@ -39,9 +41,12 @@ export class Kernel implements IKernel {
 
   createFileSystem(): IFileSystem {
     if (this.ctx.contains(Bindings.Factory.FileSystem)) {
-      throw new KernelException<MissingBindingExceptionContext>(`Missing kernel binding`, {
-        binding: Bindings.Factory.FileSystem.key,
-      });
+      throw new KernelException<MissingBindingExceptionContext>(
+        `Missing kernel binding`,
+        {
+          binding: Bindings.Factory.FileSystem.key,
+        },
+      );
     }
 
     return this.ctx.getSync(Bindings.Factory.FileSystem).create();
@@ -51,12 +56,17 @@ export class Kernel implements IKernel {
     this.ctx.bind(Bindings.Provider.InputFileSystem).to(input);
   }
 
-  async generate(reference: string, input: IGeneratorInput = {}): Promise<IFileSystem> {
+  async generate(
+    reference: string,
+    input: IGeneratorInput = {},
+  ): Promise<IFileSystem> {
     this.logger.time(Timings.OVERALL);
     this.logger.start('Generate job starts');
 
     try {
-      const output = await this.ctx.getSync(Bindings.Pipeline.Generator).pipe({ reference, input });
+      const output = await this.ctx
+        .getSync(Bindings.Pipeline.Generator)
+        .pipe({ reference, input });
       this.logger.timeEnd(Timings.OVERALL);
 
       // All pipe finished, display the elapsed time.
@@ -72,7 +82,10 @@ export class Kernel implements IKernel {
     }
   }
 
-  async compile(input: IPath | string, backendRefs: string[]): Promise<IFileSystem> {
+  async compile(
+    input: IPath | string,
+    backendRefs: string[],
+  ): Promise<IFileSystem> {
     // Convert the path into a Path object if it's provided as a string.
     if (typeof input === 'string') {
       input = new Path(input);
@@ -82,7 +95,9 @@ export class Kernel implements IKernel {
     this.logger.start('Compiling input path', { path: input });
 
     try {
-      const output = await this.ctx.getSync(Bindings.Pipeline.Compiler).pipe({ input, backendRefs });
+      const output = await this.ctx
+        .getSync(Bindings.Pipeline.Compiler)
+        .pipe({ input, backendRefs });
       this.logger.timeEnd(Timings.OVERALL);
 
       // All pipe finished, display the elapsed time.

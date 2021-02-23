@@ -1,5 +1,9 @@
 import { Frontend, IFrontend } from '../../../components';
-import { IdentifierInterpreter, ProductionInterpreter, SyntaxInterpreter } from './interpreters';
+import {
+  IdentifierInterpreter,
+  ProductionInterpreter,
+  SyntaxInterpreter,
+} from './interpreters';
 import {
   AliasLexer,
   ChannelLexer,
@@ -27,7 +31,11 @@ import { WSNTokenizer } from './wsn.tokenizer';
     RegexpLexer,
     LogicalLexer,
   ],
-  interpreters: [SyntaxInterpreter, ProductionInterpreter, IdentifierInterpreter],
+  interpreters: [
+    SyntaxInterpreter,
+    ProductionInterpreter,
+    IdentifierInterpreter,
+  ],
 })
 export class WSNFrontend implements IFrontend {
   onInit() {}

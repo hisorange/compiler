@@ -10,7 +10,12 @@ export class AMLTokenizer extends Tokenizer {
 
     T.identifier(AMLIdentifier.SPACE, T.literal(` `));
 
-    T.identifier(AMLIdentifier.WS, T.repetition(T.or([T.resolve(AMLIdentifier.SPACE), T.resolve(AMLIdentifier.EOL)])));
+    T.identifier(
+      AMLIdentifier.WS,
+      T.repetition(
+        T.or([T.resolve(AMLIdentifier.SPACE), T.resolve(AMLIdentifier.EOL)]),
+      ),
+    );
 
     T.identifier(
       AMLIdentifier.LETTER,
@@ -72,9 +77,19 @@ export class AMLTokenizer extends Tokenizer {
 
     T.identifier(AMLIdentifier.TYPE_NAME, T.resolve(AMLIdentifier.SYMBOL_NAME));
 
-    T.identifier(AMLIdentifier.TYPE, T.concat([T.literal(`<`), T.resolve(AMLIdentifier.TYPE_NAME), T.literal(`>`)]));
+    T.identifier(
+      AMLIdentifier.TYPE,
+      T.concat([
+        T.literal(`<`),
+        T.resolve(AMLIdentifier.TYPE_NAME),
+        T.literal(`>`),
+      ]),
+    );
 
-    T.identifier(AMLIdentifier.FIELD_NAME, T.resolve(AMLIdentifier.SYMBOL_NAME));
+    T.identifier(
+      AMLIdentifier.FIELD_NAME,
+      T.resolve(AMLIdentifier.SYMBOL_NAME),
+    );
 
     T.identifier(
       AMLIdentifier.FIELD,
@@ -88,7 +103,10 @@ export class AMLTokenizer extends Tokenizer {
       ]),
     );
 
-    T.identifier(AMLIdentifier.MESSAGE_NAME, T.resolve(AMLIdentifier.SYMBOL_NAME));
+    T.identifier(
+      AMLIdentifier.MESSAGE_NAME,
+      T.resolve(AMLIdentifier.SYMBOL_NAME),
+    );
 
     T.identifier(
       AMLIdentifier.MESSAGE,
@@ -98,7 +116,9 @@ export class AMLTokenizer extends Tokenizer {
         T.resolve(AMLIdentifier.MESSAGE_NAME),
         T.resolve(AMLIdentifier.SPACE),
         T.literal(`{`),
-        T.repetition(T.or([T.resolve(AMLIdentifier.FIELD), T.resolve(AMLIdentifier.WS)])),
+        T.repetition(
+          T.or([T.resolve(AMLIdentifier.FIELD), T.resolve(AMLIdentifier.WS)]),
+        ),
         T.literal(`}`),
       ]),
     );
@@ -134,7 +154,10 @@ export class AMLTokenizer extends Tokenizer {
       ]),
     );
 
-    T.identifier(AMLIdentifier.SERVICE_NAME, T.resolve(AMLIdentifier.SYMBOL_NAME));
+    T.identifier(
+      AMLIdentifier.SERVICE_NAME,
+      T.resolve(AMLIdentifier.SYMBOL_NAME),
+    );
 
     T.identifier(
       AMLIdentifier.SERVICE,
@@ -144,7 +167,9 @@ export class AMLTokenizer extends Tokenizer {
         T.resolve(AMLIdentifier.SERVICE_NAME),
         T.resolve(AMLIdentifier.SPACE),
         T.literal(`{`),
-        T.repetition(T.or([T.resolve(AMLIdentifier.RPC), T.resolve(AMLIdentifier.WS)])),
+        T.repetition(
+          T.or([T.resolve(AMLIdentifier.RPC), T.resolve(AMLIdentifier.WS)]),
+        ),
         T.literal(`}`),
       ]),
     );
@@ -153,14 +178,22 @@ export class AMLTokenizer extends Tokenizer {
       AMLIdentifier.COMMENT,
       T.concat([
         T.literal(`#`),
-        T.repetition(T.or([T.resolve(AMLIdentifier.LETTER), T.resolve(AMLIdentifier.SPACE)])),
+        T.repetition(
+          T.or([
+            T.resolve(AMLIdentifier.LETTER),
+            T.resolve(AMLIdentifier.SPACE),
+          ]),
+        ),
         T.resolve(AMLIdentifier.EOL),
       ]),
     );
 
     T.identifier(
       AMLIdentifier.SYMBOL_NAME,
-      T.concat([T.resolve(AMLIdentifier.LETTER), T.repetition(T.resolve(AMLIdentifier.LETTER))]),
+      T.concat([
+        T.resolve(AMLIdentifier.LETTER),
+        T.repetition(T.resolve(AMLIdentifier.LETTER)),
+      ]),
     );
 
     T.identifier(

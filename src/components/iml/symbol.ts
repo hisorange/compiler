@@ -47,7 +47,10 @@ export class Symbol extends TreeModel<Symbol> implements ISymbol {
 
   get name(): ISymbolName {
     if (typeof this.symbolName === 'undefined') {
-      this.symbolName = new SymbolName(this, 'NA' + Math.random().toString().replace('.', ''));
+      this.symbolName = new SymbolName(
+        this,
+        'NA' + Math.random().toString().replace('.', ''),
+      );
     }
 
     return this.symbolName;

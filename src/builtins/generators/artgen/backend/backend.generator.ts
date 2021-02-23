@@ -1,4 +1,9 @@
-import { Generator, IGenerator, IRenderer, SmartString } from '../../../../components';
+import {
+  Generator,
+  IGenerator,
+  IRenderer,
+  SmartString,
+} from '../../../../components';
 import { BackendTemplate } from './templates';
 
 @Generator({
