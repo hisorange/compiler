@@ -1,6 +1,5 @@
-import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
-import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
-import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol';
+import { ITemplate, Template } from '../../../../../components/';
+import { GrammarSymbol } from '../../../../frontends/wsn';
 
 @Template({
   reference: 'artgen.frontend.grammar',
