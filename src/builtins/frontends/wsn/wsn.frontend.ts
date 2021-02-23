@@ -29,4 +29,6 @@ import { WSNTokenizer } from './wsn.tokenizer';
   ],
   interpreters: [SyntaxInterpreter, ProductionInterpreter, IdentifierInterpreter],
 })
-export class WSNFrontend implements IFrontend {}
+export class WSNFrontend implements IFrontend {
+  onInit() {}
+}

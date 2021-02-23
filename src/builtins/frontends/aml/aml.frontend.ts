@@ -12,4 +12,6 @@ import { AMLTokenizer } from './aml.tokenizer';
   interpreters: AMLInterpreters,
   lexers: AMLLexers,
 })
-export class AMLFrontend implements IFrontend {}
+export class AMLFrontend implements IFrontend {
+  onInit() {}
+}

@@ -34,6 +34,7 @@ import { <%- 'INTP'  %>Interpreters } from './<%- frontend.$name.kebabCase %>.in
   interpreters: [],
 })
 export class <%- frontend.clss %> implements IFrontend {
+  onInit() {}
 }
 `;
   }

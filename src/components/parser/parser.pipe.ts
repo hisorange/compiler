@@ -72,6 +72,11 @@ export class ParserPipe implements IPipe<ICollection<ICharacter>, Promise<IToken
             extension: ext,
           });
 
+          this.event.publish(Events.EXTENSION_MATCHED, ext);
+
+          // Initialize the frontend module.
+          frontendMod.module.onInit();
+
           const tknCls = frontendMod.meta.tokenizer;
           const tokenizer = new tknCls(this.loggerFactory);
 
