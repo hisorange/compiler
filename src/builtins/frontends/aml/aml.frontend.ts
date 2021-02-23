@@ -1,5 +1,4 @@
-import { Frontend } from '../../../components/module-handler/decorators/frontend.decorator';
-import { IFrontend } from '../../../components/module-handler/interfaces/frontend.interface';
+import { Frontend, IFrontend } from '../../../components';
 import { AMLInterpreters } from './aml.interpreters';
 import { AMLLexers } from './aml.lexers';
 import { AMLTokenizer } from './aml.tokenizer';

@@ -1,5 +1,5 @@
-export * from './decorators/frontend.decorator';
-export * from './decorators/template.decorator';
+export * from './decorators';
+export * from './interfaces/backend.interface';
 export * from './interfaces/frontend.interface';
 export * from './interfaces/module-handler.interface';
 export * from './interfaces/module.interface';

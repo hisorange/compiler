@@ -1,8 +1,5 @@
-import { Generator } from '../../../../components/module-handler/decorators/generator.decorator';
-import { IGenerator } from '../../../../components/module-handler/interfaces/backend.interface';
-import { IRenderer } from '../../../../components/renderer';
-import { SmartString } from '../../../../components/smart-string';
-import { TemplateTemplate } from './templates/template.template';
+import { Generator, IGenerator, IRenderer, SmartString } from '../../../../components';
+import { TemplateTemplate } from './templates';
 
 @Generator({
   name: 'Component Backend',

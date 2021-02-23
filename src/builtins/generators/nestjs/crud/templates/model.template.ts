@@ -1,6 +1,4 @@
-import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
-import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
-import { ISmartString } from '../../../../../components/smart-string';
+import { ISmartString, ITemplate, Template } from '../../../../../components';
 
 @Template({
   reference: 'nestjs.crud.model',

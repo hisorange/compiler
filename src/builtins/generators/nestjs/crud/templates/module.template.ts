@@ -1,6 +1,4 @@
-import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
-import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
-import { ISmartString } from '../../../../../components/smart-string';
+import { ISmartString, ITemplate, Template } from '../../../../../components';
 import { ControllerTemplate } from './controller.template';
 import { ModelTemplate } from './model.template';
 import { SchemaTemplate } from './schema.template';

@@ -1,9 +1,5 @@
-import { forwardRef } from '../../../../../components/container/forward-ref';
-import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
-import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
-import { ISmartString } from '../../../../../components/smart-string';
-import { CreateDtoTemplate } from './dto/create-dto.template';
-import { ReadDtoTemplate } from './dto/read-dto.template';
+import { forwardRef, ISmartString, ITemplate, Template } from '../../../../../components';
+import { CreateDtoTemplate, ReadDtoTemplate } from './dto';
 import { ServiceTemplate } from './service.template';
 
 @Template({

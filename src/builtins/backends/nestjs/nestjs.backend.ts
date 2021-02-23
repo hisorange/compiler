@@ -1,11 +1,15 @@
-import { Bindings, IModuleHandler, Inject } from '../../../components';
-import { ISymbol } from '../../../components/iml/interfaces/symbol.interface';
-import { Backend } from '../../../components/module-handler/decorators/backend.decorator';
-import { IBackend } from '../../../components/module-handler/interfaces/backend.interface';
-import { IRenderer } from '../../../components/renderer';
-import { SmartString } from '../../../components/smart-string';
-import { GrammarSymbol } from '../../frontends/wsn/symbols/grammar.symbol';
-import { ReadMeTemplate } from './templates/readme.template';
+import {
+  Backend,
+  Bindings,
+  IBackend,
+  IModuleHandler,
+  Inject,
+  IRenderer,
+  ISymbol,
+  SmartString,
+} from '../../../components';
+import { GrammarSymbol } from '../../frontends/wsn';
+import { ReadMeTemplate } from './templates';
 
 @Backend({
   name: 'NestJS Application',

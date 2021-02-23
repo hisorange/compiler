@@ -1,9 +1,6 @@
 import { join } from 'path';
-import { Generator } from '../../../../components/module-handler/decorators/generator.decorator';
-import { IGenerator } from '../../../../components/module-handler/interfaces/backend.interface';
-import { IRenderer } from '../../../../components/renderer';
-import { SmartString } from '../../../../components/smart-string';
-import { ModuleTemplate } from './templates/module.template';
+import { Generator, IGenerator, IRenderer, SmartString } from '../../../../components';
+import { ModuleTemplate } from './templates';
 
 @Generator({
   name: 'NestJS Module',

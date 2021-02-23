@@ -1,14 +1,13 @@
-import { ISymbol } from '../../../../components/iml/interfaces/symbol.interface';
-import { Backend } from '../../../../components/module-handler/decorators/backend.decorator';
-import { IBackend } from '../../../../components/module-handler/interfaces/backend.interface';
-import { IRenderer } from '../../../../components/renderer';
-import { GrammarSymbol } from '../../../frontends/wsn/symbols/grammar.symbol';
-import { FrontendTemplate } from './templates/frontend.template';
-import { IdentifierTemplate } from './templates/identifier.template';
-import { InterpretersTemplate } from './templates/interpreters.template';
-import { LexersTemplate } from './templates/lexers.template';
-import { TokenParserTemplate } from './templates/token-parser.template';
-import { TokenizerTemplate } from './templates/tokenizer.template';
+import { Backend, IBackend, IRenderer, ISymbol } from '../../../../components';
+import { GrammarSymbol } from '../../../frontends/wsn';
+import {
+  FrontendTemplate,
+  IdentifierTemplate,
+  InterpretersTemplate,
+  LexersTemplate,
+  TokenizerTemplate,
+  TokenParserTemplate,
+} from './templates';
 
 @Backend({
   name: 'Frontend Backend',

@@ -1,7 +1,5 @@
-import { Template } from '../../../../../components/module-handler/decorators/template.decorator';
-import { ITemplate } from '../../../../../components/module-handler/interfaces/template.interface';
-import { ISmartString } from '../../../../../components/smart-string';
-import { ReadDtoTemplate } from './dto/read-dto.template';
+import { ISmartString, ITemplate, Template } from '../../../../../components';
+import { ReadDtoTemplate } from './dto';
 
 @Template({
   reference: 'nestjs.crud.schema',
