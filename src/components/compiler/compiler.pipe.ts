@@ -20,7 +20,8 @@ import { ICompilerInput } from './compiler-input.interface';
 type IBackendModule = IModule<IBackendMeta, IBackend>;
 
 export class CompilerPipe
-  implements IPipe<ICompilerInput, Promise<IFileSystem>> {
+  implements IPipe<ICompilerInput, Promise<IFileSystem>>
+{
   protected readonly logger: ILogger;
 
   public constructor(
@@ -63,7 +64,7 @@ export class CompilerPipe
       });
     }
 
-    this.traverse(symbol, backends);
+    await this.traverse(symbol, backends);
 
     this.eventEmitter.publish(Events.COMPILED, symbol);
     this.logger.timeEnd(Timings.COMPILING);
@@ -71,15 +72,15 @@ export class CompilerPipe
     return this.output;
   }
 
-  protected traverse(symbol: ISymbol, backends: IBackendModule[]) {
+  protected async traverse(symbol: ISymbol, backends: IBackendModule[]) {
     for (const module of backends) {
       if (module.meta.interest(symbol)) {
-        module.module.render(this.renderer, symbol);
+        await module.module.render(this.renderer, symbol);
       }
     }
 
     for (const child of symbol.getChildren()) {
-      this.traverse(child, backends);
+      await this.traverse(child, backends);
     }
   }
 }
