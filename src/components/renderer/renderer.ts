@@ -145,7 +145,16 @@ export class Renderer implements IRenderer {
   /**
    * @inheritdoc
    */
-  render(templateRef: string) {
+  async renderGenerator(ref: string, ctx: Object = {}) {
+    const generator = this.module.retrive(ModuleType.GENERATOR, ref);
+
+    await generator.module.render(this, ctx);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  renderTemplate(templateRef: string) {
     const template = this.module.retrive(ModuleType.TEMPLATE, templateRef);
 
     // Safely resolve dependencies to fill up the context.
@@ -169,9 +178,9 @@ export class Renderer implements IRenderer {
     if (meta?.depends?.length) {
       for (let dependency of meta.depends) {
         if (dependency instanceof ReferenceResolver) {
-          dependency = (dependency as ReferenceResolver<
-            Constructor<ITemplate>
-          >).resolve();
+          dependency = (
+            dependency as ReferenceResolver<Constructor<ITemplate>>
+          ).resolve();
         }
 
         const dMeta = this.module.meta(ModuleType.TEMPLATE, dependency);

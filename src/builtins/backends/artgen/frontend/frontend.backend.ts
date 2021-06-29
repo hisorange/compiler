@@ -28,10 +28,10 @@ export class FrontendBackend implements IBackend {
 
     renderer.setContext(context);
 
-    renderer.render('artgen.frontend.interpreters');
-    renderer.render('artgen.frontend.lexers');
-    renderer.render('artgen.frontend.identifier');
-    renderer.render('artgen.frontend.tokenizer');
-    renderer.render('artgen.frontend.grammar');
+    renderer.renderTemplate('artgen.frontend.interpreters');
+    renderer.renderTemplate('artgen.frontend.lexers');
+    renderer.renderTemplate('artgen.frontend.identifier');
+    renderer.renderTemplate('artgen.frontend.tokenizer');
+    renderer.renderTemplate('artgen.frontend.grammar');
   }
 }

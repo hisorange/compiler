@@ -1,7 +1,8 @@
 import { ITreeModel } from './interfaces/tree.interface';
 
 export abstract class TreeModel<T extends ITreeModel<T>>
-  implements ITreeModel<T> {
+  implements ITreeModel<T>
+{
   protected parent: T = null;
   protected children: T[] = [];
 
@@ -38,6 +39,10 @@ export abstract class TreeModel<T extends ITreeModel<T>>
 
   getChildren(): T[] {
     return this.children;
+  }
+
+  findChildren(clause: (child: T) => boolean): T[] {
+    return this.children.filter(clause);
   }
 
   setChildren(...children: T[]): this {

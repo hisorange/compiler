@@ -34,6 +34,6 @@ export class BackendGenerator implements IGenerator {
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory ?? '.';
 
-    renderer.render(`artgen.backend.backend`);
+    renderer.renderTemplate(`artgen.backend.backend`);
   }
 }

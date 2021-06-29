@@ -39,5 +39,7 @@ export interface IRenderer {
    */
   write(path: string, content: string): void;
 
-  render(template: string): void;
+  renderTemplate(template: string): void;
+
+  renderGenerator(ref: string, ctx?: Object): Promise<void>;
 }

@@ -34,6 +34,6 @@ export class TemplateGenerator implements IGenerator {
     renderer.setContext(context);
     renderer.outputBaseDirectory = input.baseDirectory || '.';
 
-    renderer.render(`artgen.template`);
+    renderer.renderTemplate(`artgen.template`);
   }
 }
