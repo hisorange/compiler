@@ -1,4 +1,4 @@
-import { Path } from '../../src/dtos/path';
+import { Path } from '../../src/';
 
 describe('Path', () => {
   test('should parse the input', () => {

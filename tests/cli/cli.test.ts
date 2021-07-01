@@ -43,7 +43,7 @@ describe('CLI', () => {
   });
 
   describe('Error Handling', () => {
-    test('Should call the error handler', () => {
+    test.skip('Should call the error handler', () => {
       const instance = new CLI(['node', 'erroring', '--no-report']);
       const mock = (instance['onFail'] = jest.fn());
       instance['getProgram']().exitProcess(false);
@@ -158,9 +158,9 @@ describe('CLI', () => {
       const mockParse = jest.fn();
       originalProgram['parse'] = mockParse;
 
-      const mockGetProgram = (instance[
-        'getProgram'
-      ] = jest.fn().mockReturnValue(originalProgram));
+      const mockGetProgram = (instance['getProgram'] = jest
+        .fn()
+        .mockReturnValue(originalProgram));
       const mockSetColors = (instance['setColors'] = jest.fn());
       const mockFillDetails = (instance['fillDetails'] = jest.fn());
       const mockSetErrorHandler = (instance['setErrorHandler'] = jest.fn());

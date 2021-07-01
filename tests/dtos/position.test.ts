@@ -1,5 +1,4 @@
-import { Position } from '../../src/dtos/position';
-import { InvalidPositionException } from '../../src/exceptions/invalid-position.exception';
+import { InvalidPositionException, Position } from '../../src/';
 
 describe('Position', () => {
   test('should initialize and store the column and line values', () => {

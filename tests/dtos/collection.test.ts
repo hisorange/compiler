@@ -1,4 +1,4 @@
-import { Collection } from '../../src/models/collection.model';
+import { Collection } from '../../src';
 
 describe('Collection', () => {
   describe('.construct()', () => {

@@ -1,8 +1,4 @@
-import { Tokenizer } from '../../src/components/tokenizer.old';
-import { Character } from '../../src/dtos/character';
-import { Path } from '../../src/dtos/path';
-import { ICharacter } from '../../src/interfaces/dtos/character.interface';
-import { Collection } from '../../src/models/collection.model';
+import { Character, Collection, ICharacter, Path, Tokenizer } from '../../src/';
 
 class TokenizerTestImpl extends Tokenizer {
   prepare(): void {}
@@ -96,7 +92,10 @@ describe('Parsers', () => {
       const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters(input);
 
-      const parser = T.identifier(input, T.or([T.literal('a'), T.literal('b'), T.literal('c')]));
+      const parser = T.identifier(
+        input,
+        T.or([T.literal('a'), T.literal('b'), T.literal('c')]),
+      );
       const match = parser(characters);
 
       expect(match.token).toBeDefined();
@@ -304,16 +303,19 @@ describe('Parsers', () => {
       expect(match.characters.cursor).toBe(2);
     });
 
-    test.each([`\\`, `|`, `=`, `;`, ` `])('should match literal (%s)', input => {
-      const T = new TokenizerTestImpl(loggerFactory);
-      const characters = createCharacters(input);
+    test.each([`\\`, `|`, `=`, `;`, ` `])(
+      'should match literal (%s)',
+      input => {
+        const T = new TokenizerTestImpl(loggerFactory);
+        const characters = createCharacters(input);
 
-      const parser = T.literal(input);
-      const match = parser(characters);
+        const parser = T.literal(input);
+        const match = parser(characters);
 
-      expect(match.token).toBeDefined();
-      expect(match.token.content).toBe(input);
-    });
+        expect(match.token).toBeDefined();
+        expect(match.token.content).toBe(input);
+      },
+    );
   });
 
   describe('.opt', () => {
@@ -321,7 +323,11 @@ describe('Parsers', () => {
       const T = new TokenizerTestImpl(loggerFactory);
       const characters = createCharacters('a b');
 
-      const parser = T.concat([T.literal('a'), T.optional(T.literal(' ')), T.literal('b')]);
+      const parser = T.concat([
+        T.literal('a'),
+        T.optional(T.literal(' ')),
+        T.literal('b'),
+      ]);
       const match = parser(characters);
 
       expect(match.token).toBeDefined();

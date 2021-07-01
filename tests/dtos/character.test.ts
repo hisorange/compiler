@@ -1,6 +1,4 @@
-import { Character } from '../../src/dtos/character';
-import { Path } from '../../src/dtos/path';
-import { CharacterLengthException } from '../../src/exceptions/character-length.exception';
+import { Character, CharacterLengthException, Path } from '../../src';
 
 describe('Character', () => {
   describe('.construct()', () => {
