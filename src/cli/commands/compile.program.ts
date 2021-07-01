@@ -1,13 +1,7 @@
 import * as fs from 'fs';
 import { dirname, join } from 'path';
 import { Arguments, Argv, CommandModule } from 'yargs';
-import {
-  AMLFrontend,
-  Kernel,
-  ModuleType,
-  ParserException,
-  WSNFrontend,
-} from '../../';
+import { Kernel, ModuleType, ParserException } from '../../';
 import { drawParserException } from '../exception.handler';
 import { ICompileOptions } from '../interfaces/compile-options.interface';
 import { IGlobalOptions } from '../interfaces/global-options.inteface';
@@ -95,9 +89,6 @@ export class CompileCommand
 
     const kernel = new Kernel();
     const logger = kernel.logger.scope('CLI');
-
-    kernel.module.register(ModuleType.FRONTEND, AMLFrontend);
-    kernel.module.register(ModuleType.FRONTEND, WSNFrontend);
 
     try {
       const cwd = process.cwd();
