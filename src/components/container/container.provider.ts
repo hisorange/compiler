@@ -3,6 +3,7 @@ import {
   AMLFrontend,
   BackendGenerator,
   FrontendBackend,
+  HighlightBackend,
   NestJSBackend,
   NestJSCrudGenerator,
   TemplateGenerator,
@@ -224,6 +225,9 @@ export class ContainerProvider implements Provider<Container> {
     container
       .getSync(Bindings.Module.Handler)
       .register(ModuleType.BACKEND, NestJSBackend);
+    container
+      .getSync(Bindings.Module.Handler)
+      .register(ModuleType.BACKEND, HighlightBackend);
 
     // Generators
     container

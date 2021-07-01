@@ -8,7 +8,8 @@ import { IGlobalOptions } from '../interfaces/global-options.inteface';
 import { drawLogo } from '../utils/draw-logo';
 
 export class GenerateCommand
-  implements CommandModule<IGlobalOptions, IGeneratorOptions> {
+  implements CommandModule<IGlobalOptions, IGeneratorOptions>
+{
   /**
    * @type {string}
    * @memberof CompileCommand
@@ -91,6 +92,7 @@ export class GenerateCommand
             'artgen.template',
             'artgen.frontend',
             'artgen.backend',
+            'artgen.highlight',
             'nestjs.crud',
           ],
         });

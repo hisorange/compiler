@@ -15,7 +15,8 @@ import { drawLogo } from '../utils/draw-logo';
 import { GitHandler } from '../utils/git-handler';
 
 export class CompileCommand
-  implements CommandModule<IGlobalOptions, ICompileOptions> {
+  implements CommandModule<IGlobalOptions, ICompileOptions>
+{
   /**
    * Command grammar display in the CLI help.
    *
@@ -63,7 +64,7 @@ export class CompileCommand
       .option('backend', {
         demandOption: true,
         type: 'array',
-        choices: ['artgen.frontend', 'nestjs'],
+        choices: ['artgen.frontend', 'artgen.highlight', 'nestjs'],
         string: true,
       })
       .option('grammar', {
