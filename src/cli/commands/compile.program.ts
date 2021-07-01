@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { dirname, join } from 'path';
 import { Arguments, Argv, CommandModule } from 'yargs';
-import { Kernel, ModuleType, ParserException } from '../../';
+import { Kernel, ParserException } from '../../';
 import { drawParserException } from '../exception.handler';
 import { ICompileOptions } from '../interfaces/compile-options.interface';
 import { IGlobalOptions } from '../interfaces/global-options.inteface';
@@ -58,9 +58,7 @@ export class CompileCommand
       .option('backend', {
         demandOption: true,
         type: 'array',
-        choices: new Kernel().module
-          .search(ModuleType.BACKEND)
-          .map(m => m.meta.reference),
+        choices: ['artgen.frontend', 'artgen.hightlight', 'nestjs'],
         string: true,
       })
       .option('grammar', {
@@ -135,7 +133,7 @@ export class CompileCommand
 
         await drawParserException(e);
       } else {
-        console.error('Unhandler exception!');
+        console.error('Unhandled exception!');
         console.error(e);
       }
     }
