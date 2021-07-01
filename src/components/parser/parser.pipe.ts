@@ -19,7 +19,8 @@ import { ExtensionExceptionContext } from './interfaces/extension.exception-cont
 import { IParserExceptionContext } from './interfaces/parser.exception-context';
 
 export class ParserPipe
-  implements IPipe<ICollection<ICharacter>, Promise<IToken>> {
+  implements IPipe<ICollection<ICharacter>, Promise<IToken>>
+{
   protected readonly logger: ILogger;
 
   public constructor(
@@ -37,6 +38,9 @@ export class ParserPipe
     this.logger.time(Timings.PARSING);
 
     const extension = characters.current.path.extension;
+
+    this.logger.info('Extracted extension from path', { extension });
+
     const grammar = this.loadGrammar(extension);
 
     if (!grammar) {
@@ -69,42 +73,85 @@ export class ParserPipe
   }
 
   protected loadGrammar(extension: string): IGrammar {
+    this.logger.info('Searching for frontend based on the extension');
+
     let grammar: IGrammar;
 
+    this.logger.info('Loading frontends...');
     const frontends = this.module.search(ModuleType.FRONTEND);
 
     for (const frontendMod of frontends) {
+      this.logger.debug('Testing frontend for extension', {
+        frontend: frontendMod.meta.reference,
+        accepts: frontendMod.meta.extensions,
+      });
+
       for (const ext of frontendMod.meta.extensions) {
         if (ext.toLowerCase() === extension.toLowerCase()) {
-          this.logger.info('Loading frontend', {
-            name: frontendMod.meta.name,
-            extension: ext,
+          this.logger.info('Found handler', {
+            frontend: frontendMod.meta.reference,
           });
 
           this.event.publish(Events.EXTENSION_MATCHED, ext);
 
           // Initialize the frontend module.
+          this.logger.info('Calling initialization on the frontend');
           frontendMod.module.onInit();
 
+          this.logger.info('Initializing the tokenizer');
           const tknCls = frontendMod.meta.tokenizer;
           const tokenizer = new tknCls(this.loggerFactory);
 
           grammar = new Grammar(frontendMod.meta.name, tokenizer);
+          this.logger.success('Grammar is ready for parsing');
 
           // Load the parsers.
+          this.logger.info('Preparing parsers');
           grammar.tokenizer.prepare();
-          this.logger.info('Parsers loaded');
+          this.logger.info('Parsers are ready');
+
+          this.logger.info('Checking for lexers');
+          // Load the lexers.
+          if (frontendMod.meta.lexers && frontendMod.meta.lexers.length) {
+            this.logger.info('Found lexers, registering into the container');
+
+            const lexers = this.container.getSync(Bindings.Collection.Lexer);
+
+            for (const l of frontendMod.meta.lexers) {
+              this.logger.debug('Registering lexer', {
+                lexer: l.constructor.name,
+              });
+
+              lexers.push(new l());
+            }
+
+            this.logger.info('Lexers registered');
+          }
+
+          this.logger.info('Checking for interpreters');
 
           // Load the lexers.
-          if (frontendMod.meta.lexers) {
-            this.container
-              .getSync(Bindings.Collection.Lexer)
-              .push(...frontendMod.meta.lexers.map(l => new l()));
-            this.container
-              .getSync(Bindings.Collection.Interpreter)
-              .push(...frontendMod.meta.interpreters.map(i => new i()));
+          if (
+            frontendMod.meta.interpreters &&
+            frontendMod.meta.interpreters.length
+          ) {
+            this.logger.info(
+              'Found interpreters, registering into the container',
+            );
 
-            this.logger.info('Lexers loaded');
+            const interpreters = this.container.getSync(
+              Bindings.Collection.Interpreter,
+            );
+
+            for (const i of frontendMod.meta.interpreters) {
+              this.logger.debug('Registering interpreter', {
+                ip: i.constructor.name,
+              });
+
+              interpreters.push(new i());
+            }
+
+            this.logger.info('Interpreters registered');
           }
         }
       }
