@@ -18,7 +18,7 @@ import { GeneratorPipeline } from '../generator/generator.pipeline';
 import { SymbolTable } from '../iml/symbol-table';
 import { LoggerFactory } from '../logger/logger.factory';
 import { LoggerProvider } from '../logger/logger.provider';
-import { ModuleType } from '../module-handler';
+import { IBackend, IFrontend, IGenerator, ModuleType } from '../module-handler';
 import { ModuleHandler } from '../module-handler/module-handler';
 import { ParserPipe } from '../parser/parser.pipe';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
@@ -28,6 +28,7 @@ import { ReaderPipe } from '../reader/reader.pipe';
 import { Renderer } from '../renderer';
 import { Bindings } from './bindings';
 import { Container } from './container';
+import { Constructor } from './interfaces';
 import sessionGenerator = require('uuid');
 
 /**
@@ -209,35 +210,34 @@ export class ContainerProvider implements Provider<Container> {
     container.bind(namespace.Renderer).toClass(Renderer);
   }
 
+  /**
+   * Register the built in modules
+   *
+   * @param {Container} container
+   */
   protected bindBuiltIns(container: Container) {
-    // Frontends
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.FRONTEND, AMLFrontend);
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.FRONTEND, WSNFrontend);
+    const moduleHandler = container.getSync(Bindings.Module.Handler);
 
-    // Backends
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.BACKEND, FrontendBackend);
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.BACKEND, NestJSBackend);
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.BACKEND, HighlightBackend);
+    // Built in FRONTENDS
+    const frontends: Constructor<IFrontend>[] = [AMLFrontend, WSNFrontend];
 
-    // Generators
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.GENERATOR, TemplateGenerator);
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.GENERATOR, BackendGenerator);
-    container
-      .getSync(Bindings.Module.Handler)
-      .register(ModuleType.GENERATOR, NestJSCrudGenerator);
+    // Built in BACKENDS
+    const backends: Constructor<IBackend>[] = [
+      FrontendBackend,
+      NestJSBackend,
+      HighlightBackend,
+    ];
+
+    // Built in GENERATORS
+    const generators: Constructor<IGenerator>[] = [
+      TemplateGenerator,
+      BackendGenerator,
+      NestJSCrudGenerator,
+    ];
+
+    // Register each type of built in modules
+    frontends.forEach(i => moduleHandler.register(ModuleType.FRONTEND, i));
+    backends.forEach(i => moduleHandler.register(ModuleType.BACKEND, i));
+    generators.forEach(i => moduleHandler.register(ModuleType.GENERATOR, i));
   }
 }
