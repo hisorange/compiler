@@ -1,2 +1,2 @@
+export * from './parser-manager';
 export * from './parser.pipe';
-export * from './tokenizer';

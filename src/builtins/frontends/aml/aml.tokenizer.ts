@@ -1,20 +1,20 @@
-import { ITokenizer } from '../../../components/parser/interfaces/tokenizer.interface';
-import { AbstractTokenizer } from '../../../components/parser/tokenizer';
+import { IParserManager } from '../../../components/parser/interfaces/parser-manager.interface';
+import { AbstractParserManager } from '../../../components/parser/parser-manager';
 import { AMLIdentifier } from './aml.identifier';
 
-export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
+export class AMLParser extends AbstractParserManager implements IParserManager {
   prepare() {
     const T = this;
-    T.identifier(AMLIdentifier.EOL, T.literal(`\n`), `main`);
-    T.identifier(AMLIdentifier.SPACE, T.literal(` `), `main`);
-    T.identifier(
+    T.addSyntax(AMLIdentifier.EOL, T.literal(`\n`), `main`);
+    T.addSyntax(AMLIdentifier.SPACE, T.literal(` `), `main`);
+    T.addSyntax(
       AMLIdentifier.WS,
       T.repetition(
         T.or([T.resolve(AMLIdentifier.SPACE), T.resolve(AMLIdentifier.EOL)]),
       ),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.LETTER,
       T.or([
         T.literal(`A`),
@@ -72,12 +72,12 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.TYPE_NAME,
       T.resolve(AMLIdentifier.SYMBOL_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.TYPE,
       T.concat([
         T.literal(`<`),
@@ -86,17 +86,17 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.FIELD_NAME,
       T.resolve(AMLIdentifier.SYMBOL_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.FIELD_MODIFIER,
       T.or([T.literal(`primary`), T.literal(`unique`), T.literal(`indexed`)]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.FIELD,
       T.concat([
         T.resolve(AMLIdentifier.WS),
@@ -114,12 +114,12 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.MESSAGE_NAME,
       T.resolve(AMLIdentifier.SYMBOL_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.MESSAGE,
       T.concat([
         T.literal(`message`),
@@ -134,27 +134,27 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.RPC_NAME,
       T.resolve(AMLIdentifier.SYMBOL_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.REQUEST,
       T.resolve(AMLIdentifier.MESSAGE_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.SUCCESS,
       T.resolve(AMLIdentifier.MESSAGE_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.ERROR,
       T.resolve(AMLIdentifier.MESSAGE_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.RPC,
       T.concat([
         T.resolve(AMLIdentifier.WS),
@@ -177,12 +177,12 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.SERVICE_NAME,
       T.resolve(AMLIdentifier.SYMBOL_NAME),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.SERVICE,
       T.concat([
         T.literal(`service`),
@@ -197,7 +197,7 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.G_DOMAIN,
       T.concat([
         T.literal(`$`),
@@ -215,7 +215,7 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.ENUM_VALUE,
       T.concat([
         T.optional(
@@ -229,7 +229,7 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.ENUM,
       T.concat([
         T.literal(`enum`),
@@ -242,12 +242,12 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.GLOBAL_OVERIDES,
       T.resolve(AMLIdentifier.G_DOMAIN),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.COMMENT,
       T.concat([
         T.literal(`#`),
@@ -258,7 +258,7 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.SYMBOL_NAME,
       T.concat([
         T.resolve(AMLIdentifier.LETTER),
@@ -266,7 +266,7 @@ export class AMLTokenizer extends AbstractTokenizer implements ITokenizer {
       ]),
       `main`,
     );
-    T.identifier(
+    T.addSyntax(
       AMLIdentifier.SYNTAX,
       T.repetition(
         T.or([

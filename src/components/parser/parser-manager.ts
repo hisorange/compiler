@@ -5,14 +5,15 @@ import { LoggerFactory } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
-import { IToken } from '../models/interfaces/token.interface';
-import { Token } from '../models/token';
+import { GrammarToken } from '../models/token';
+import { IParserManager } from './interfaces/parser-manager.interface';
 import { IParser } from './interfaces/parser.interface';
-import { ITokenizer } from './interfaces/tokenizer.interface';
 
-export abstract class AbstractTokenizer implements ITokenizer {
+export class SyntaxToken extends GrammarToken {}
+
+export abstract class AbstractParserManager implements IParserManager {
   protected readonly logger: ILogger;
-  protected readonly symbolMap = new Map<string, IParser>();
+  protected readonly referenceMap = new Map<string, IParser>();
   protected lastChar: ICharacter | null = null;
 
   constructor(
@@ -30,7 +31,7 @@ export abstract class AbstractTokenizer implements ITokenizer {
     return this.lastChar;
   }
 
-  private createToken(characters: ICharacter[], type: string) {
+  private createMatch(characters: ICharacter[], type: string) {
     if (characters.length) {
       const lastChar = characters[characters.length - 1];
 
@@ -42,29 +43,29 @@ export abstract class AbstractTokenizer implements ITokenizer {
       }
     }
 
-    return new Token(characters, type);
+    return new SyntaxToken(characters, type);
   }
 
-  identifier(reference: string, parser: IParser, channel?: string): IParser {
-    if (this.symbolMap.has(reference)) {
-      throw new ParserException(`Type [${reference}] is already registered!`);
+  addSyntax(reference: string, parser: IParser, channel?: string): IParser {
+    if (this.referenceMap.has(reference)) {
+      throw new ParserException(`Parser [${reference}] is already registered!`);
     }
 
     const product = (chrs: ICollection<ICharacter>) => {
       const result = parser(chrs);
 
-      if (result.token) {
-        result.token.type = reference;
+      if (result.match) {
+        result.match.type = reference;
 
-        const tokenLength = result.token.length;
+        const matchLength = result.match.characters.length;
 
-        this.logger.info('Token created', {
-          type: reference,
-          size: tokenLength,
+        this.logger.debug('Parsed', {
+          parser: reference,
+          size: matchLength,
           content:
-            tokenLength > 12
-              ? result.token.content.substr(0, 12) + '...'
-              : result.token.content,
+            matchLength > 12
+              ? result.match.content.substr(0, 12) + '...'
+              : result.match.content,
         });
       }
 
@@ -75,7 +76,50 @@ export abstract class AbstractTokenizer implements ITokenizer {
       reference,
     });
 
-    this.symbolMap.set(reference, product);
+    this.referenceMap.set(reference, product);
+
+    return product;
+  }
+
+  addToken(reference: string, parser: IParser, channel?: string): IParser {
+    if (this.referenceMap.has(reference)) {
+      throw new ParserException(
+        `Tokenizer [${reference}] is already registered!`,
+      );
+    }
+
+    const product: IParser = (chrs: ICollection<ICharacter>) => {
+      const result = parser(chrs);
+
+      if (result.match) {
+        result.match.type = reference;
+
+        const matchLength = result.match.characters.length;
+
+        this.logger.info('Token created', {
+          tokenizer: reference,
+          size: matchLength,
+          content:
+            matchLength > 12
+              ? result.match.content.substr(0, 12) + '...'
+              : result.match.content,
+        });
+
+        result.match = new GrammarToken(
+          result.match.characters,
+          reference,
+          channel,
+        );
+      }
+
+      return result;
+    };
+
+    this.logger.success('Tokenizer registered', {
+      reference,
+    });
+
+    this.referenceMap.set(reference, product);
 
     return product;
   }
@@ -83,7 +127,7 @@ export abstract class AbstractTokenizer implements ITokenizer {
   optional(parser: IParser): IParser {
     return (characters: ICollection<ICharacter>) => {
       const result = parser(characters);
-      return result.token ? result : { characters, optional: true };
+      return result.match ? result : { characters, optional: true };
     };
   }
 
@@ -95,7 +139,7 @@ export abstract class AbstractTokenizer implements ITokenizer {
     }
 
     return (characters: ICollection<ICharacter>) => {
-      let token: IToken;
+      let match: SyntaxToken;
 
       if (
         characters.isValid &&
@@ -105,39 +149,39 @@ export abstract class AbstractTokenizer implements ITokenizer {
             .map(character => character.value)
             .join('')
       ) {
-        token = this.createToken(
+        match = this.createMatch(
           characters.slice(characters.cursor, length),
           '$LITERAL',
         );
         characters.advance(length);
       }
 
-      return { characters, token };
+      return { characters, match: match };
     };
   }
 
   regexp(regex: RegExp): IParser {
     return (characters: ICollection<ICharacter>) => {
-      let token: IToken;
+      let match: SyntaxToken;
 
       if (characters.isValid && regex.test(characters.current.value)) {
-        token = this.createToken(characters.consume(), '$REGEXP');
+        match = this.createMatch(characters.consume(), '$REGEXP');
       }
 
-      return { characters, token };
+      return { characters, match: match };
     };
   }
 
   repetition(parser: IParser): IParser {
     return (characters: ICollection<ICharacter>) => {
-      let token: IToken;
-      const children: IToken[] = [];
+      let match: SyntaxToken;
+      const children: SyntaxToken[] = [];
 
       while (characters.isValid) {
         const result = parser(characters.clone());
 
-        if (result.token) {
-          children.push(result.token);
+        if (result.match) {
+          children.push(result.match as SyntaxToken);
           characters = result.characters;
         } else {
           break;
@@ -145,11 +189,11 @@ export abstract class AbstractTokenizer implements ITokenizer {
       }
 
       if (children.length) {
-        token = this.createToken([], '$REPETITION');
-        token.addChildren(...children);
+        match = this.createMatch([], '$REPETITION');
+        match.addChildren(...children);
       }
 
-      return { characters, token, optional: true };
+      return { characters, match: match, optional: true };
     };
   }
 
@@ -164,7 +208,7 @@ export abstract class AbstractTokenizer implements ITokenizer {
       for (const parser of parsers) {
         const result = parser(characters.clone());
 
-        if (result.token) {
+        if (result.match) {
           return result;
         }
       }
@@ -182,13 +226,13 @@ export abstract class AbstractTokenizer implements ITokenizer {
 
     return (characters: ICollection<ICharacter>) => {
       let chrs: ICollection<ICharacter> = characters.clone();
-      const children: IToken[] = [];
+      const children: SyntaxToken[] = [];
 
       for (const parser of parsers) {
         const result = parser(chrs.clone());
 
-        if (result.token) {
-          children.push(result.token);
+        if (result.match) {
+          children.push(result.match as SyntaxToken);
           chrs = result.characters;
         } else {
           if (!result.optional) {
@@ -197,12 +241,12 @@ export abstract class AbstractTokenizer implements ITokenizer {
         }
       }
 
-      const token: IToken = this.createToken([], '$CONCAT');
+      const token: SyntaxToken = this.createMatch([], '$CONCAT');
       token.addChildren(...children);
 
       return {
         characters: chrs,
-        token,
+        match: token,
       };
     };
   }
@@ -212,14 +256,14 @@ export abstract class AbstractTokenizer implements ITokenizer {
       const parser = this.resolve(identifier);
       const result = parser(characters);
 
-      if (result.token) {
-        const wrapper = this.createToken([], identifier);
-        wrapper.addChildren(result.token as Token);
+      if (result.match) {
+        const wrapper = this.createMatch([], identifier);
+        wrapper.addChildren(result.match as GrammarToken);
 
         return {
           characters: result.characters,
           optional: result.optional,
-          token: wrapper,
+          match: wrapper,
         };
       }
 
@@ -229,10 +273,10 @@ export abstract class AbstractTokenizer implements ITokenizer {
 
   resolve(identifier: string): IParser {
     return (characters: ICollection<ICharacter>) => {
-      if (this.symbolMap.has(identifier)) {
-        return this.symbolMap.get(identifier)(characters);
+      if (this.referenceMap.has(identifier)) {
+        return this.referenceMap.get(identifier)(characters);
       } else {
-        throw new LexerException(`Identifier not registered!`, {
+        throw new LexerException(`Parser not registered!`, {
           identifier,
         });
       }

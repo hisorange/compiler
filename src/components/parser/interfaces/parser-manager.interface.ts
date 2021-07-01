@@ -1,23 +1,22 @@
 import { ICharacter } from '../../models/interfaces/character.interface';
 import { IParser } from './parser.interface';
 
-export interface ITokenizer {
+export interface IParserManager {
   /**
-   * Register the identifier and enforce token for the same type.
+   * Register a parser.
    *
    * @param {string} reference
    * @param {IParser} parser
    * @returns {IParser}
-   * @memberof ITokenizer
    */
-  identifier(reference: string, parser: IParser, channel?: string): IParser;
+  addSyntax(reference: string, parser: IParser, channel?: string): IParser;
+  addToken(reference: string, tokenizer: IParser, channel?: string): IParser;
 
   /**
    * Make the parser result optional for other parser's conditions.
    *
    * @param {IParser} parser
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   optional(parser: IParser): IParser;
 
@@ -26,7 +25,6 @@ export interface ITokenizer {
    *
    * @param {string} literal
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   literal(literal: string): IParser;
 
@@ -35,7 +33,6 @@ export interface ITokenizer {
    *
    * @param {RegExp} regex
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   regexp(regex: RegExp): IParser;
 
@@ -44,7 +41,6 @@ export interface ITokenizer {
    *
    * @param {IParser} parser
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   repetition(parser: IParser): IParser;
 
@@ -53,7 +49,6 @@ export interface ITokenizer {
    *
    * @param {IParser[]} parsers
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   or(parsers: IParser[]): IParser;
 
@@ -62,7 +57,6 @@ export interface ITokenizer {
    *
    * @param {IParser[]} parsers
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   concat(parsers: IParser[]): IParser;
 
@@ -71,7 +65,6 @@ export interface ITokenizer {
    *
    * @param {string} identifier
    * @returns {IParser}
-   * @memberof ITokenizer
    */
   resolve(identifier: string): IParser;
 

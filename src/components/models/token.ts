@@ -4,11 +4,18 @@ import { IPath } from './interfaces/path.interface';
 import { IToken } from './interfaces/token.interface';
 import { TreeModel } from './tree.model';
 
-export class Token extends TreeModel<Token> implements IToken, IPathAware {
+export class GrammarToken
+  extends TreeModel<GrammarToken>
+  implements IToken, IPathAware
+{
   protected _prev: IToken;
   protected _next: IToken;
 
-  constructor(readonly characters: ICharacter[], public type: string) {
+  constructor(
+    readonly characters: ICharacter[],
+    public type: string,
+    readonly channel: string = 'main',
+  ) {
     super();
   }
 
@@ -27,5 +34,9 @@ export class Token extends TreeModel<Token> implements IToken, IPathAware {
 
   get path(): IPath {
     return this.characters[0].path;
+  }
+
+  clearSyntaxTokens(): void {
+    this.children = this.children.filter(c => c instanceof GrammarToken);
   }
 }

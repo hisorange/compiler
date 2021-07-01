@@ -27,6 +27,13 @@ export interface IToken extends ITreeModel<IToken> {
   readonly length: number;
 
   /**
+   * Target channel.
+   *
+   * @type {string}
+   */
+  readonly channel: string;
+
+  /**
    * Use a single token instance with token types as identifier,
    * this allows the dynamic creation of new token types.
    *
@@ -34,4 +41,6 @@ export interface IToken extends ITreeModel<IToken> {
    * @memberof IToken
    */
   type: string;
+
+  clearSyntaxTokens(): void;
 }

@@ -1,64 +1,52 @@
 :AML:
 
 # Defining the basic blocks of the language.
-EOL = "\n" .
-SPACE = " " .
-WS = { SPACE | EOL }.
-LETTER =  "A" | "a" | "B" | "b" |
-          "C" | "c" | "D" | "d" |
-          "E" | "e" | "F" | "f" |
-          "G" | "g" | "H" | "h" |
-          "I" | "i" | "J" | "j" |
-          "K" | "k" | "L" | "l" |
-          "M" | "m" | "N" | "n" |
-          "O" | "o" | "P" | "p" |
-          "Q" | "q" | "R" | "r" |
-          "S" | "s" | "T" | "t" |
-          "U" | "u" | "V" | "v" |
-          "W" | "w" | "X" | "x" |
-          "Y" | "y" | "Z" | "z" .
+parser EOL = "\n" .
+parser SPACE = " " .
+parser WS = { SPACE | EOL }.
+parser LETTER =  /[a-zA-Z]/ .
 
 # Primite types
-TYPE_NAME = SYMBOL_NAME .
-TYPE = "<" TYPE_NAME ">" .
+token TYPE_NAME = SYMBOL_NAME .
+token TYPE = "<" TYPE_NAME ">" .
 
 # Field definition
-FIELD_NAME = SYMBOL_NAME .
-FIELD_MODIFIER = "primary" | "unique" | "indexed" .
-FIELD = WS { FIELD_MODIFIER WS } "field" WS FIELD_NAME [ TYPE ] EOL .
+token FIELD_NAME = SYMBOL_NAME .
+token FIELD_MODIFIER = "primary" | "unique" | "indexed" .
+token FIELD = WS { FIELD_MODIFIER WS } "field" WS FIELD_NAME [ TYPE ] EOL .
 
 
 # Message definition
-MESSAGE_NAME = SYMBOL_NAME .
-MESSAGE = "message" WS MESSAGE_NAME WS "{" { FIELD | WS } "}" .
+token MESSAGE_NAME = SYMBOL_NAME .
+token MESSAGE = "message" WS MESSAGE_NAME WS "{" { FIELD | WS } "}" .
 
 
 # RPC definition
-RPC_NAME = SYMBOL_NAME .
-REQUEST = MESSAGE_NAME .
-SUCCESS = MESSAGE_NAME .
-ERROR = MESSAGE_NAME .
-RPC = WS "rpc" WS RPC_NAME "(" REQUEST ")" WS "->" WS "<" ERROR "," WS SUCCESS ">" EOL .
+token RPC_NAME = &SYMBOL_NAME .
+token REQUEST = &MESSAGE_NAME .
+token SUCCESS = &MESSAGE_NAME .
+token ERROR = &MESSAGE_NAME .
+token RPC = WS "rpc" WS RPC_NAME "(" REQUEST ")" WS "->" WS "<" ERROR "," WS SUCCESS ">" EOL .
 
 
 # Service definition
-SERVICE_NAME = SYMBOL_NAME .
-SERVICE = "service" WS SERVICE_NAME WS '{' { RPC | WS } '}' .
+token SERVICE_NAME = SYMBOL_NAME .
+token SERVICE = "service" WS SERVICE_NAME WS '{' { RPC | WS } '}' .
 
 
 # Global overides
-G_DOMAIN = "$" "domain" WS "{" { FIELD | WS | COMMENT } "}" .
+token GLOBAL_DOMAIN = "$" "domain" WS "{" { FIELD | WS | COMMENT } "}" .
 
 # Enumerators
-ENUM_VALUE = [ "default" WS ] "value" WS SYMBOL_NAME { WS } EOL .
-ENUM = "enum" WS SYMBOL_NAME WS "{" { ENUM_VALUE } "}" .
+token ENUM_VALUE = [ "default" WS ] "value" WS SYMBOL_NAME { WS } EOL .
+token ENUM = "enum" WS SYMBOL_NAME WS "{" { ENUM_VALUE } "}" .
 
-GLOBAL_OVERIDES = G_DOMAIN .
+token GLOBAL_OVERIDES = GLOBAL_DOMAIN .
 
 # Comment definition
-COMMENT = "#" { LETTER | WS } EOL .
+token COMMENT = "#" { LETTER | WS } EOL -> comment.
 
-SYMBOL_NAME = LETTER { LETTER } .
+token SYMBOL_NAME = LETTER { LETTER } .
 
 # Final grammar
-SYNTAX = { G_DOMAIN | ENUM | SERVICE | MESSAGE | WS | COMMENT } .
+token SYNTAX = { GLOBAL_OVERIDES | ENUM | SERVICE | MESSAGE | WS | COMMENT } .

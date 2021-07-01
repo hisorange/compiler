@@ -9,6 +9,7 @@ import { Grammar } from '../iml/grammar';
 import { IGrammar } from '../iml/interfaces/grammar.interface';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
+import { GrammarToken } from '../models';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
 import { IToken } from '../models/interfaces/token.interface';
@@ -55,7 +56,7 @@ export class ParserPipe
     // Grammar should be a helper class to handle the frontend, without collections like lexer?
     const result = grammar.parse(characters);
 
-    if (!result.token || result.characters.isValid) {
+    if (!result.match || result.characters.isValid) {
       throw new ParserException<IParserExceptionContext>(
         'Unexpected character',
         {
@@ -65,11 +66,20 @@ export class ParserPipe
       );
     }
 
+    // Convert to grammar tokens.
+    result.match.clearSyntaxTokens();
+
+    if (!(result.match instanceof GrammarToken)) {
+      throw new Error('Grammar resolved to a syntax token!');
+    }
+
+    const token = result.match as IToken;
+
     // Publish the result, here the subscribers can even optimize or change the tokens.
-    this.event.publish(Events.PARSED, result.token);
+    this.event.publish(Events.PARSED, token);
     this.logger.timeEnd(Timings.PARSING);
 
-    return result.token;
+    return token;
   }
 
   protected loadGrammar(extension: string): IGrammar {

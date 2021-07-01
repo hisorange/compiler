@@ -1,11 +1,11 @@
 import { Frontend, IFrontend } from '../../../components';
-import { AMLTokenizer } from './aml.tokenizer';
+import { AMLParser } from './aml.tokenizer';
 
 @Frontend({
   name: 'Aml',
   reference: 'artgen.aml',
   extensions: ['aml'],
-  tokenizer: AMLTokenizer,
+  tokenizer: AMLParser,
   lexers: [],
   interpreters: [],
 })

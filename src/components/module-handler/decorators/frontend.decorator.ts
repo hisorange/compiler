@@ -1,6 +1,6 @@
 import { ClassDecoratorFactory } from '@loopback/metadata';
 import { Constructor } from '../../container/interfaces/constructor.interface';
-import { ITokenizer } from '../../parser/interfaces/tokenizer.interface';
+import { IParserManager } from '../../parser/interfaces/parser-manager.interface';
 import { IInterpreter } from '../../pipes/interfaces/interpreter.interface';
 import { ILexer } from '../../pipes/interfaces/lexer.interface';
 
@@ -8,7 +8,7 @@ export interface IFrontendMeta {
   name: string;
   reference: string;
   extensions: string[];
-  tokenizer?: Constructor<ITokenizer>;
+  tokenizer?: Constructor<IParserManager>;
   lexers?: Constructor<ILexer>[];
   interpreters?: Constructor<IInterpreter>[];
   // <3
