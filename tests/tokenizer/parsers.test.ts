@@ -1,6 +1,12 @@
-import { Character, Collection, ICharacter, Path, Tokenizer } from '../../src/';
+import {
+  AbstractTokenizer,
+  Character,
+  Collection,
+  ICharacter,
+  Path,
+} from '../../src/';
 
-class TokenizerTestImpl extends Tokenizer {
+class TokenizerTestImpl extends AbstractTokenizer {
   prepare(): void {}
 }
 

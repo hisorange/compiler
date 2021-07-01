@@ -1,8 +1,8 @@
 import { ITokenizer } from '../../../components/parser/interfaces/tokenizer.interface';
-import { Tokenizer } from '../../../components/parser/tokenizer';
+import { AbstractTokenizer } from '../../../components/parser/tokenizer';
 import { WSNIdentifier } from './wsn.identifier';
 
-export class WSNTokenizer extends Tokenizer implements ITokenizer {
+export class WSNTokenizer extends AbstractTokenizer implements ITokenizer {
   prepare() {
     const T = this;
     T.identifier(WSNIdentifier.EOL, T.literal(`\n`), `whitespace`);

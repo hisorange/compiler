@@ -1,5 +1,4 @@
 import { Frontend, IFrontend } from '../../../components';
-import { AMLLexers } from './aml.lexers';
 import { AMLTokenizer } from './aml.tokenizer';
 
 @Frontend({

@@ -10,7 +10,7 @@ import { Token } from '../models/token';
 import { IParser } from './interfaces/parser.interface';
 import { ITokenizer } from './interfaces/tokenizer.interface';
 
-export abstract class Tokenizer implements ITokenizer {
+export abstract class AbstractTokenizer implements ITokenizer {
   protected readonly logger: ILogger;
   protected readonly symbolMap = new Map<string, IParser>();
   protected lastChar: ICharacter | null = null;
@@ -70,6 +70,10 @@ export abstract class Tokenizer implements ITokenizer {
 
       return result;
     };
+
+    this.logger.success('Parser registered', {
+      reference,
+    });
 
     this.symbolMap.set(reference, product);
 
