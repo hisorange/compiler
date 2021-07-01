@@ -9,6 +9,7 @@ import {
   TemplateGenerator,
   WSNFrontend,
 } from '../../builtins';
+import { BuildLogger } from '../compiler/build-logger';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
@@ -130,15 +131,15 @@ export class ContainerProvider implements Provider<Container> {
     container
       .bind(namespace.Logger)
       .toProvider(LoggerProvider)
-      .inScope(BindingScope.CONTEXT);
+      .inScope(BindingScope.SINGLETON);
     container
       .bind(namespace.InputFileSystem)
       .toProvider(FileSystemProvider)
-      .inScope(BindingScope.CONTEXT);
+      .inScope(BindingScope.SINGLETON);
     container
       .bind(namespace.OutputFileSystem)
       .toProvider(FileSystemProvider)
-      .inScope(BindingScope.CONTEXT);
+      .inScope(BindingScope.SINGLETON);
   }
 
   /**
@@ -202,12 +203,20 @@ export class ContainerProvider implements Provider<Container> {
     container
       .bind(namespace.EventEmitter)
       .toClass(EventEmitter)
-      .inScope(BindingScope.CONTEXT);
+      .inScope(BindingScope.SINGLETON);
     container
       .bind(namespace.SymbolTable)
       .toClass(SymbolTable)
-      .inScope(BindingScope.CONTEXT);
-    container.bind(namespace.Renderer).toClass(Renderer);
+      .inScope(BindingScope.SINGLETON);
+
+    container
+      .bind(namespace.Renderer)
+      .toClass(Renderer)
+      .inScope(BindingScope.SINGLETON);
+    container
+      .bind(namespace.BuildLogger)
+      .toClass(BuildLogger)
+      .inScope(BindingScope.SINGLETON);
   }
 
   /**

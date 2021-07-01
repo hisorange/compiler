@@ -82,6 +82,9 @@ export class Kernel implements IKernel {
       input = new Path(input);
     }
 
+    const bLogger = this.ctx.getSync(Bindings.Components.BuildLogger);
+    bLogger.register();
+
     this.logger.time(Timings.OVERALL);
     this.logger.start('Compiling from path', { path: input });
 

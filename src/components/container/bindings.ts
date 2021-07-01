@@ -1,4 +1,5 @@
 import { BindingKey } from '@loopback/context';
+import { BuildLogger } from '../compiler/build-logger';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { IFileSystem } from '../file-system';
@@ -32,6 +33,7 @@ export const Bindings = {
     EventEmitter: BindingKey.create<IEventEmitter>('EventEmitter'),
     SymbolTable: BindingKey.create<ISymbolTable>('SymbolTable'),
     Renderer: BindingKey.create<IRenderer>('Renderer'),
+    BuildLogger: BindingKey.create<BuildLogger>('BuildLogger'),
   },
   Provider: {
     Logger: BindingKey.create<ILogger>('Provider.Logger'),
