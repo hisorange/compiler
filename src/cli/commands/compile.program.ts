@@ -64,7 +64,9 @@ export class CompileCommand
       .option('backend', {
         demandOption: true,
         type: 'array',
-        choices: ['artgen.frontend', 'artgen.highlight', 'nestjs'],
+        choices: new Kernel().module
+          .search(ModuleType.BACKEND)
+          .map(m => m.meta.reference),
         string: true,
       })
       .option('grammar', {
