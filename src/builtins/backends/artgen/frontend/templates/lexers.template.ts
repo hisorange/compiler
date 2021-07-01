@@ -17,7 +17,7 @@ export class LexersTemplate implements ITemplate {
   }
 
   render() {
-    return `import { ILexer } from '../../../components/interfaces/pipes/lexer.interface';
+    return `import { ILexer } from '../../../components';
 
 // Lexers
 export const <%- lexers.cnst %>: ILexer[] = [

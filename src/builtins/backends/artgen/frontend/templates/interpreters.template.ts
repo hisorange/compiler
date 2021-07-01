@@ -17,7 +17,7 @@ export class InterpretersTemplate implements ITemplate {
   }
 
   render() {
-    return `import { IInterpreter } from '../../../components/interfaces/pipes/interpreter.interface';
+    return `import { IInterpreter } from '../../../components';
 
 // Interpreters
 export const <%- interpreters.cnst %>: IInterpreter[] = [

@@ -77,4 +77,9 @@ export interface ISmartString {
    * @param subject
    */
   suffix(subject: string | ISmartString): ISmartString;
+
+  /**
+   * Remove the extension from a path like string
+   */
+  stripExtension(): ISmartString;
 }

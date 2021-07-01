@@ -128,6 +128,7 @@ export class WSNTokenizer extends Tokenizer implements ITokenizer {
         T.literal(`-`),
         T.literal(`~`),
         T.literal(`&`),
+        T.literal(`$`),
       ]),
       `main`,
     );

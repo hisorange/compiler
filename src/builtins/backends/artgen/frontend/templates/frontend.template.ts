@@ -20,9 +20,8 @@ export class FrontendTemplate implements ITemplate {
 
   render() {
     return `import { Frontend, IFrontend } from '../../../components';
-import { createParsers } from './<%- frontend.$name.kebabCase %>.parsers';
-import { <%- 'LEXER' %>Lexers } from './<%- frontend.$name.kebabCase  %>.lexers';
-import { <%- 'INTP'  %>Interpreters } from './<%- frontend.$name.kebabCase %>.interpreters';
+import { <%- lexers.cnst %> } from './<%- lexers.path.stripExtension() %>';
+import { <%- tokenizer.clss %> } from './<%- tokenizer.path.stripExtension() %>';
 
 @Frontend({
   name: '<%- frontend.$name.titleCase %>',

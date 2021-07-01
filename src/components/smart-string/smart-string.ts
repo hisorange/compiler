@@ -97,6 +97,10 @@ export class SmartString implements ISmartString {
     return new SmartString(this.subject + suffix.toString());
   }
 
+  stripExtension() {
+    return new SmartString(this.subject.toString().replace(/\.[^\.]+$/, ''));
+  }
+
   toString(): string {
     return this.subject;
   }

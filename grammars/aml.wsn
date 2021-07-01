@@ -24,12 +24,13 @@ TYPE = "<" TYPE_NAME ">" .
 
 # Field definition
 FIELD_NAME = SYMBOL_NAME .
-FIELD = WS "field" SPACE FIELD_NAME [ TYPE ] EOL .
+FIELD_MODIFIER = "primary" | "unique" | "indexed" .
+FIELD = WS { FIELD_MODIFIER WS } "field" WS FIELD_NAME [ TYPE ] EOL .
 
 
 # Message definition
 MESSAGE_NAME = SYMBOL_NAME .
-MESSAGE = "message" SPACE MESSAGE_NAME SPACE "{" { FIELD | WS } "}" .
+MESSAGE = "message" WS MESSAGE_NAME WS "{" { FIELD | WS } "}" .
 
 
 # RPC definition
@@ -37,18 +38,27 @@ RPC_NAME = SYMBOL_NAME .
 REQUEST = MESSAGE_NAME .
 SUCCESS = MESSAGE_NAME .
 ERROR = MESSAGE_NAME .
-RPC = WS "rpc" SPACE RPC_NAME "(" REQUEST ")" SPACE "->" SPACE "<" ERROR "," SPACE SUCCESS ">" EOL .
+RPC = WS "rpc" WS RPC_NAME "(" REQUEST ")" WS "->" WS "<" ERROR "," WS SUCCESS ">" EOL .
 
 
 # Service definition
 SERVICE_NAME = SYMBOL_NAME .
-SERVICE = "service" SPACE SERVICE_NAME SPACE '{' { RPC | WS } '}' .
+SERVICE = "service" WS SERVICE_NAME WS '{' { RPC | WS } '}' .
 
+
+# Global overides
+G_DOMAIN = "$" "domain" WS "{" { FIELD | WS | COMMENT } "}" .
+
+# Enumerators
+ENUM_VALUE = [ "default" WS ] "value" WS SYMBOL_NAME { WS } EOL .
+ENUM = "enum" WS SYMBOL_NAME WS "{" { ENUM_VALUE } "}" .
+
+GLOBAL_OVERIDES = G_DOMAIN .
 
 # Comment definition
-COMMENT = "#" { LETTER | SPACE } EOL .
+COMMENT = "#" { LETTER | WS } EOL .
 
 SYMBOL_NAME = LETTER { LETTER } .
 
 # Final grammar
-SYNTAX = { SERVICE | MESSAGE | WS | COMMENT } .
+SYNTAX = { G_DOMAIN | ENUM | SERVICE | MESSAGE | WS | COMMENT } .
