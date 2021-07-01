@@ -17,7 +17,8 @@ import { ReaderException } from './exceptions/reader.exception';
 import { FileNotFoundExcetionContext } from './interfaces/file-not-found.exception-context';
 
 export class ReaderPipe
-  implements IPipe<IPath, Promise<ICollection<ICharacter>>> {
+  implements IPipe<IPath, Promise<ICollection<ICharacter>>>
+{
   protected readonly logger: ILogger;
 
   constructor(
@@ -68,7 +69,7 @@ export class ReaderPipe
       characters.push(new Character(value, path, line, column, cursor));
 
       // Step up the line counter.
-      if (value === '\n') {
+      if (value === '\n' || cursor + 1 === content.length) {
         this.logger.complete('Read line', {
           file: path.baseName,
           byteIndex: cursor,
