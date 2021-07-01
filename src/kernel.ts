@@ -1,8 +1,6 @@
 import { Bindings } from './components/container/bindings';
 import { Container } from './components/container/container';
 import { ContainerProvider } from './components/container/container.provider';
-import { KernelException } from './components/container/exceptions/kernel.exception';
-import { MissingBindingExceptionContext } from './components/container/interfaces/missing-binding.exception-context';
 import { Timings } from './components/event-handler/timings';
 import { IFileSystem } from './components/file-system';
 import { IGeneratorInput } from './components/generator/generator-input.interface';
@@ -40,15 +38,6 @@ export class Kernel implements IKernel {
   }
 
   createFileSystem(): IFileSystem {
-    if (this.ctx.contains(Bindings.Factory.FileSystem)) {
-      throw new KernelException<MissingBindingExceptionContext>(
-        `Missing kernel binding`,
-        {
-          binding: Bindings.Factory.FileSystem.key,
-        },
-      );
-    }
-
     return this.ctx.getSync(Bindings.Factory.FileSystem).create();
   }
 

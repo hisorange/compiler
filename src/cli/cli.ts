@@ -113,7 +113,7 @@ export class CLI {
    * @memberof CLI
    */
   protected isColorsAllowed(): boolean {
-    return this.getProgram().argv.color;
+    return (this.getProgram().argv as any).color;
   }
 
   /**
