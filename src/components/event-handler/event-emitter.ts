@@ -12,7 +12,7 @@ export class EventEmitter implements IEventEmitter {
   constructor(@Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory) {
     // Create a new logger.
     this.logger = loggerFactory.create({
-      label: ['Compiler', this.constructor.name],
+      label: this.constructor.name,
     });
   }
 
