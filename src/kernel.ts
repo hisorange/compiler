@@ -42,6 +42,8 @@ export class Kernel implements IKernel {
   }
 
   mount(input: IFileSystem): void {
+    this.logger.warn('Mounting an external file system as input space!');
+
     this.ctx.bind(Bindings.Provider.InputFileSystem).to(input);
   }
 
@@ -81,7 +83,7 @@ export class Kernel implements IKernel {
     }
 
     this.logger.time(Timings.OVERALL);
-    this.logger.start('Compiling input path', { path: input });
+    this.logger.start('Compiling from path', { path: input });
 
     try {
       const output = await this.ctx
