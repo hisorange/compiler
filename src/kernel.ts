@@ -1,67 +1,62 @@
-import { Bindings } from './components/container/bindings';
-import { Container } from './components/container/container';
-import { ContainerProvider } from './components/container/container.provider';
-import { Timings } from './components/event-handler/timings';
-import { IFileSystem } from './components/file-system';
-import { IGeneratorInput } from './components/generator/generator-input.interface';
-import { ILogger } from './components/logger/interfaces/logger.interface';
-import { IPath } from './components/models/interfaces/path.interface';
-import { Path } from './components/models/path';
-import { IModuleHandler } from './components/module-handler/interfaces/module-handler.interface';
+import {
+  Bindings,
+  Container,
+  ContainerProvider,
+  IFileSystem,
+  IGeneratorInput,
+  ILogger,
+  IPath,
+  Path,
+  Timings,
+} from './components';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {
-  /**
-   * Dependency container, always created when the artgen is constructed
-   * this container is shared with the kernel modules.
-   */
-  protected readonly ctx: Container;
-
-  readonly module: IModuleHandler;
-  readonly logger: ILogger;
+  protected readonly container: Container;
+  protected readonly logger: ILogger;
 
   constructor() {
     // Prepare a new container and inject every neccessary dependency.
-    this.ctx = new ContainerProvider().value();
+    this.container = new ContainerProvider().value();
 
     // Configure the kernel, later it can be overwritten.
-    this.ctx.bind(Bindings.Config).to({
+    this.container.bind(Bindings.Config).to({
       debug: true,
     });
 
-    this.logger = this.ctx
+    this.logger = this.container
       .getSync(Bindings.Factory.Logger)
       .create({ label: 'Kernel' });
-    this.module = this.ctx.getSync(Bindings.Module.Handler);
 
     this.logger.info('System is ready to rock!');
   }
 
   createFileSystem(): IFileSystem {
-    return this.ctx.getSync(Bindings.Factory.FileSystem).create();
+    return this.container.getSync(Bindings.Factory.FileSystem).create();
   }
 
-  mount(input: IFileSystem): void {
+  createLogger(label: string): ILogger {
+    return this.logger.scope(label);
+  }
+
+  mountInputFileSystem(input: IFileSystem): void {
     this.logger.warn('Mounting an external file system as input space!');
 
-    this.ctx.bind(Bindings.Provider.InputFileSystem).to(input);
+    this.container.bind(Bindings.Provider.InputFileSystem).to(input);
   }
 
   async generate(
-    reference: string,
+    generatorRef: string,
     input: IGeneratorInput = {},
   ): Promise<IFileSystem> {
     this.logger.time(Timings.OVERALL);
     this.logger.start('Generate job starts');
 
     try {
-      const output = await this.ctx
+      const output = await this.container
         .getSync(Bindings.Pipeline.Generator)
-        .pipe({ reference, input });
+        .pipe({ reference: generatorRef, input });
       this.logger.timeEnd(Timings.OVERALL);
-
-      // All pipe finished, display the elapsed time.
-      // And cheer for our success ^.^
       this.logger.success('Generate job successful!');
 
       return output;
@@ -82,20 +77,17 @@ export class Kernel implements IKernel {
       input = new Path(input);
     }
 
-    const bLogger = this.ctx.getSync(Bindings.Components.BuildLogger);
-    bLogger.register();
-
     this.logger.time(Timings.OVERALL);
     this.logger.start('Compiling from path', { path: input });
 
     try {
-      const output = await this.ctx
+      // Register the debug helper to track the compilation.
+      this.container.getSync(Bindings.Components.DebugHelper).register();
+
+      const output = await this.container
         .getSync(Bindings.Pipeline.Compiler)
         .pipe({ input, backendRefs });
       this.logger.timeEnd(Timings.OVERALL);
-
-      // All pipe finished, display the elapsed time.
-      // And cheer for our success ^.^
       this.logger.success('Compilation successful!');
 
       return output;

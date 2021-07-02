@@ -5,7 +5,7 @@ import { IEventEmitter } from '../event-handler';
 import { IFileSystem } from '../file-system';
 import { ILogger, LoggerFactory } from '../logger';
 import {
-  IModuleHandler,
+  IKernelModuleManager,
   ITemplate,
   ITemplateMeta,
   ModuleType,
@@ -49,7 +49,7 @@ export class Renderer implements IRenderer {
     @Inject(Bindings.Provider.OutputFileSystem)
     readonly outputFileSystem: IFileSystem,
     @Inject(Bindings.Module.Handler)
-    private module: IModuleHandler,
+    private module: IKernelModuleManager,
   ) {
     // Create a new logger.
     this.logger = loggerFactory.create({

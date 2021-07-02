@@ -1,6 +1,6 @@
 import * as engine from 'ejs';
 import { Bindings, Inject } from '../../container';
-import { IModuleHandler, ModuleType } from '../../module-handler';
+import { IKernelModuleManager, ModuleType } from '../../module-handler';
 import { IEngine } from '../interfaces/engine.interface';
 const merge = require('deepmerge');
 
@@ -12,7 +12,7 @@ export class EJSEngine implements IEngine {
 
   constructor(
     @Inject(Bindings.Module.Handler)
-    protected readonly module: IModuleHandler,
+    protected readonly module: IKernelModuleManager,
   ) {
     this._engine = engine;
   }

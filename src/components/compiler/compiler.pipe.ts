@@ -10,7 +10,7 @@ import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
 import { IBackendMeta } from '../module-handler/decorators/backend.decorator';
 import { IBackend } from '../module-handler/interfaces/backend.interface';
-import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
+import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { IModule } from '../module-handler/interfaces/module.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
@@ -31,7 +31,7 @@ export class CompilerPipe
     @Inject(Bindings.Provider.OutputFileSystem)
     protected readonly output: IFileSystem,
     @Inject(Bindings.Module.Handler)
-    protected readonly module: IModuleHandler,
+    protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
   ) {

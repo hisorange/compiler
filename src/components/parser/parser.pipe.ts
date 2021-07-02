@@ -12,7 +12,7 @@ import { LoggerFactory } from '../logger/logger.factory';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
 import { IToken } from '../models/interfaces/token.interface';
-import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
+import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { ExtensionExceptionContext } from './interfaces/extension.exception-context';
@@ -26,7 +26,8 @@ export class ParserPipe
   public constructor(
     @Inject(Bindings.Factory.Logger)
     protected readonly loggerFactory: LoggerFactory,
-    @Inject(Bindings.Module.Handler) protected readonly module: IModuleHandler,
+    @Inject(Bindings.Module.Handler)
+    protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Container) protected readonly container: Container,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly event: IEventEmitter,

@@ -6,14 +6,15 @@ import { Timings } from '../event-handler/timings';
 import { IFileSystem } from '../file-system';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
-import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
+import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
 import { IRenderer } from '../renderer';
 import { IGeneratorJob } from './generator-job.interface';
 
 export class GeneratorPipe
-  implements IPipe<IGeneratorJob, Promise<IFileSystem>> {
+  implements IPipe<IGeneratorJob, Promise<IFileSystem>>
+{
   protected readonly logger: ILogger;
 
   public constructor(
@@ -23,7 +24,7 @@ export class GeneratorPipe
     @Inject(Bindings.Provider.OutputFileSystem)
     protected readonly output: IFileSystem,
     @Inject(Bindings.Module.Handler)
-    protected readonly module: IModuleHandler,
+    protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
   ) {

@@ -58,10 +58,10 @@ export class GenerateCommand
     }
 
     const kernel = new Kernel();
-    const logger = kernel.logger.scope('CLI');
+    const logger = kernel.createLogger('CLI');
 
     try {
-      kernel.mount(fs as any);
+      kernel.mountInputFileSystem(fs as any);
 
       const cwd = process.cwd();
       let input = questions => inquirer.createPromptModule()(questions);

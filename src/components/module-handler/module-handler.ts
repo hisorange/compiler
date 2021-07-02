@@ -11,9 +11,9 @@ import { ITemplateMeta } from './decorators/template.decorator';
 import { ModuleException } from './exceptions/module.exception';
 import { IBackend, IGenerator } from './interfaces/backend.interface';
 import { IFrontend } from './interfaces/frontend.interface';
+import { IKernelModuleManager } from './interfaces/kernel-module-manager.interface';
 import { MissingMetaDataExceptionContext } from './interfaces/missing-meta-data.exception-context';
 import { MissingModuleBindingExceptionContext } from './interfaces/missing-module-binding.exception-context';
-import { IModuleHandler } from './interfaces/module-handler.interface';
 import { IModule } from './interfaces/module.interface';
 import { ITemplate } from './interfaces/template.interface';
 import { ModuleType } from './module-type.enum';
@@ -22,7 +22,7 @@ type ModuleMeta = ITemplateMeta | IGeneratorMeta | IBackendMeta | IFrontendMeta;
 type ModuleData = ITemplate | IGenerator | IBackend | IFrontend;
 type RetriveReturn = IModule<ModuleMeta, ModuleData>;
 
-export class ModuleHandler implements IModuleHandler {
+export class ModuleHandler implements IKernelModuleManager {
   /**
    * Private child context, this is used to separate the modules from the main context.
    */
@@ -167,9 +167,9 @@ export class ModuleHandler implements IModuleHandler {
     if (meta.depends) {
       for (let dependency of meta.depends) {
         if (dependency instanceof ReferenceResolver) {
-          dependency = (dependency as ReferenceResolver<
-            Constructor<ITemplate>
-          >).resolve();
+          dependency = (
+            dependency as ReferenceResolver<Constructor<ITemplate>>
+          ).resolve();
         }
 
         this.register(ModuleType.TEMPLATE, dependency);

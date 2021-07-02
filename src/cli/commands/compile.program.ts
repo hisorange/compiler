@@ -86,7 +86,7 @@ export class CompileCommand
     }
 
     const kernel = new Kernel();
-    const logger = kernel.logger.scope('CLI');
+    const logger = kernel.createLogger('CLI');
 
     try {
       const cwd = process.cwd();
@@ -94,7 +94,7 @@ export class CompileCommand
       const output =
         args.output[0] === '/' ? args.output : join(cwd, args.output);
 
-      kernel.mount(fs as any);
+      kernel.mountInputFileSystem(fs as any);
 
       const product = await kernel.compile(input, args.backend);
       let gitHandler;

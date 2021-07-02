@@ -9,8 +9,8 @@ import {
   TemplateGenerator,
   WSNFrontend,
 } from '../../builtins';
-import { BuildLogger } from '../compiler/build-logger';
 import { CompilerPipe } from '../compiler/compiler.pipe';
+import { DebugHelper } from '../compiler/debug-helper';
 import { EventEmitter } from '../event-handler/event-emitter';
 import { FileSystemFactory } from '../file-system/file-system.factory';
 import { FileSystemProvider } from '../file-system/file-system.provider';
@@ -214,8 +214,8 @@ export class ContainerProvider implements Provider<Container> {
       .toClass(Renderer)
       .inScope(BindingScope.SINGLETON);
     container
-      .bind(namespace.BuildLogger)
-      .toClass(BuildLogger)
+      .bind(namespace.DebugHelper)
+      .toClass(DebugHelper)
       .inScope(BindingScope.SINGLETON);
   }
 

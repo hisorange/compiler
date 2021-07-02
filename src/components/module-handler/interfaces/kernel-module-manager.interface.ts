@@ -9,7 +9,7 @@ import { IFrontend } from './frontend.interface';
 import { IModule } from './module.interface';
 import { ITemplate } from './template.interface';
 
-export interface IModuleHandler {
+export interface IKernelModuleManager {
   register(type: ModuleType.FRONTEND, module: Constructor<IFrontend>): void;
   register(type: ModuleType.TEMPLATE, module: Constructor<ITemplate>): void;
   register(type: ModuleType.GENERATOR, module: Constructor<IGenerator>): void;

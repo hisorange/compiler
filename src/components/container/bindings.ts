@@ -1,6 +1,6 @@
 import { BindingKey } from '@loopback/context';
-import { BuildLogger } from '../compiler/build-logger';
 import { CompilerPipe } from '../compiler/compiler.pipe';
+import { DebugHelper } from '../compiler/debug-helper';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { IFileSystem } from '../file-system';
 import { FileSystemFactory } from '../file-system/file-system.factory';
@@ -10,7 +10,7 @@ import { IGrammar } from '../iml/interfaces/grammar.interface';
 import { ISymbolTable } from '../iml/interfaces/symbol-table.interface';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { LoggerFactory } from '../logger/logger.factory';
-import { IModuleHandler } from '../module-handler/interfaces/module-handler.interface';
+import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { ParserPipe } from '../parser/parser.pipe';
 import { CompilerPipeline } from '../pipelines/compiler.pipeline';
 import { IInterpreter } from '../pipes/interfaces/interpreter.interface';
@@ -27,13 +27,13 @@ export const Bindings = {
   Session: BindingKey.create<string>('Session'),
   Container: BindingKey.create<Container>('Container'),
   Module: {
-    Handler: BindingKey.create<IModuleHandler>('Module.Handler'),
+    Handler: BindingKey.create<IKernelModuleManager>('Module.Handler'),
   },
   Components: {
     EventEmitter: BindingKey.create<IEventEmitter>('EventEmitter'),
     SymbolTable: BindingKey.create<ISymbolTable>('SymbolTable'),
     Renderer: BindingKey.create<IRenderer>('Renderer'),
-    BuildLogger: BindingKey.create<BuildLogger>('BuildLogger'),
+    DebugHelper: BindingKey.create<DebugHelper>('DebugHelper'),
   },
   Provider: {
     Logger: BindingKey.create<ILogger>('Provider.Logger'),
