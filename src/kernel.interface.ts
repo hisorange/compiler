@@ -26,7 +26,7 @@ export interface IKernel {
    * Run a generator pipe with the provided input, it's an easy shorthand to generate content
    * without running a full compiler pipeline.
    */
-  generate(reference: string, input: IGeneratorInput): Promise<IFileSystem>;
+  generate(input: IGeneratorInput, generatorRef: string): Promise<IFileSystem>;
 
   /**
    * Compile an input file into a virtual file system output,

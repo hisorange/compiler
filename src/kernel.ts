@@ -46,8 +46,8 @@ export class Kernel implements IKernel {
   }
 
   async generate(
-    generatorRef: string,
     input: IGeneratorInput = {},
+    generatorRef: string,
   ): Promise<IFileSystem> {
     this.logger.time(Timings.OVERALL);
     this.logger.start('Generate job starts');
@@ -80,10 +80,9 @@ export class Kernel implements IKernel {
     this.logger.time(Timings.OVERALL);
     this.logger.start('Compiling from path', { path: input });
 
+    // Register the debug helper to track the compilation.
+    this.container.getSync(Bindings.Components.DebugHelper).register();
     try {
-      // Register the debug helper to track the compilation.
-      this.container.getSync(Bindings.Components.DebugHelper).register();
-
       const output = await this.container
         .getSync(Bindings.Pipeline.Compiler)
         .pipe({ input, backendRefs });

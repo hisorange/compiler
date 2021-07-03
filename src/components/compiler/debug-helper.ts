@@ -1,4 +1,5 @@
-import { Bindings, Inject } from '../container';
+import { Bindings } from '../container/bindings';
+import { Inject } from '../container/decorators';
 import { IEventEmitter } from '../event-handler';
 import { Events } from '../event-handler/events';
 import { ReadEvent } from '../event-handler/events/read.event';

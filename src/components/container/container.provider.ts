@@ -213,6 +213,7 @@ export class ContainerProvider implements Provider<Container> {
       .bind(namespace.Renderer)
       .toClass(Renderer)
       .inScope(BindingScope.SINGLETON);
+
     container
       .bind(namespace.DebugHelper)
       .toClass(DebugHelper)

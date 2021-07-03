@@ -100,7 +100,7 @@ export class GenerateCommand
         args.generator = res.gen;
       }
 
-      const product = await kernel.generate(args.generator as string, input);
+      const product = await kernel.generate(input, args.generator as string);
 
       for (const [key, value] of Object.entries(product.toJSON())) {
         const file = key;
