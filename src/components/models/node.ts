@@ -2,7 +2,11 @@ import { INode } from './interfaces/node.interface';
 import { TreeModel } from './tree.model';
 
 export class Node extends TreeModel<Node> implements INode {
-  constructor(readonly type: string, protected _content: string = '') {
+  constructor(
+    readonly type: string,
+    readonly channel: string,
+    protected _content: string = '',
+  ) {
     super();
   }
 
