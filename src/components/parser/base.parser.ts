@@ -57,7 +57,7 @@ export abstract class BaseParser {
     }
   }
 
-  parseLiteral(ref: string, channel: string, literal: string): IFragmentParser {
+  parseLiteral(literal: string): IFragmentParser {
     const literalLength = literal.length;
 
     return (characters: ICollection<ICharacter>): IFragmentParserResult => {
@@ -65,7 +65,7 @@ export abstract class BaseParser {
       const asString = slice.map(c => c.value).join('');
 
       if (literal === asString) {
-        const node = new Node(ref, channel, characters.current.value);
+        const node = new Node('Literal', 'Main', characters.current.value);
 
         characters.consume(literalLength);
 

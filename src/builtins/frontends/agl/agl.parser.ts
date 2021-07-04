@@ -59,18 +59,18 @@ export class GrammarParser extends BaseParser {
 
   createParser_WS_EOL(ref: string, channel: string) {
     const orGroup = [];
-    orGroup.push(this.parseLiteral(ref, channel, `\n`));
-    orGroup.push(this.parseLiteral(ref, channel, `\r\n`));
+    orGroup.push(this.parseLiteral(`\n`));
+    orGroup.push(this.parseLiteral(`\r\n`));
 
     return this.parseLogicOr(orGroup);
   }
 
   createParser_WS_Tab(ref: string, channel: string) {
-    return this.parseLiteral(ref, channel, `\t`);
+    return this.parseLiteral(`\t`);
   }
 
   createParser_WS_Space(ref: string, channel: string) {
-    return this.parseLiteral(ref, channel, ` `);
+    return this.parseLiteral(` `);
   }
 
   createParser_WS_Set(ref: string, channel: string) {
@@ -108,7 +108,7 @@ export class GrammarParser extends BaseParser {
       this.parseRepetitionOneOrMore(ref, channel, this.resolveParser('Digit')),
     );
 
-    andGroup.push(this.parseLiteral(ref, channel, `.`));
+    andGroup.push(this.parseLiteral(`.`));
 
     andGroup.push(
       this.parseRepetitionOneOrMore(ref, channel, this.resolveParser('Digit')),
@@ -150,7 +150,7 @@ export class GrammarParser extends BaseParser {
         this.resolveParser('Digit'),
       ),
     );
-    andGroup.push(this.parseLiteral(ref, channel, `..`));
+    andGroup.push(this.parseLiteral(`..`));
     andGroup.push(
       this.parseRepetitionOneOrMore(
         'Digit',
@@ -168,7 +168,7 @@ export class GrammarParser extends BaseParser {
     const andGroup = [];
 
     andGroup.push(this.resolveParser('Letter'));
-    andGroup.push(this.parseLiteral(ref, channel, `..`));
+    andGroup.push(this.parseLiteral(`..`));
     andGroup.push(this.resolveParser('Letter'));
 
     const andParser = this.parseLogicAnd(andGroup);
@@ -179,10 +179,10 @@ export class GrammarParser extends BaseParser {
   createParser_Boolean(ref: string, channel: string) {
     const orGroup = [];
 
-    orGroup.push(this.parseLiteral(ref, channel, `true`));
-    orGroup.push(this.parseLiteral(ref, channel, `false`));
+    orGroup.push(this.parseLiteral(`true`));
+    orGroup.push(this.parseLiteral(`false`));
 
-    return this.parseLogicOr(orGroup);
+    return this.wrapParser(ref, channel, this.parseLogicOr(orGroup));
   }
 
   createParser_Range(ref: string, channel: string) {

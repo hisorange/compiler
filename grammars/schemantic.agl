@@ -128,7 +128,7 @@ grammar AGL {
     parser Name &= SymbolName;
     parser Literal &= QuotedString;
     parser Reference &= SymbolName;
-    parser DefinitionModifier &= Op.RepetitionModifier | Invert | Alias;
+    parser DefinitionModifier &= Op.RepetitionModifier | Op.Invert | Op.Alias;
 
     # "Literal"*
     # ReferencedParser+
