@@ -23,7 +23,7 @@ grammar AGL {
   parser Digit = 0..9;
   parser Float = Digit+ > "." > Digit+;
   parser Number = Digit | Float;
-  parser Symbol ^= Letter | Digit | WS;
+  parser Symbol ^= Letter | Number | WS;
   parser NumericRange = Digit+ > ".." > Digit+;
   parser AlphabeticRange = Letter > ".." > Letter;
   parser Boolean = "true" | "false";
@@ -138,7 +138,9 @@ grammar AGL {
     # "a" | "b"
     # "a" > "b"
     # "a" > "b" | "c"
-    parser OpGroup = (Term | LogicGroup) > ( WS > (Op.Or | Op.Concat) > WS > (Term | LogicGroup))+;
+    parser OrGroup = (Term | LogicGroup) > ( WS > Op.Or > WS > (Term | LogicGroup))+;
+    parser AndGroup = (Term | LogicGroup) > ( WS > Op.Concat > WS > (Term | LogicGroup))+;
+    parser OpGroup = OrGroup | AndGroup;
 
     # "a" > ("b"? > "c" | "d")*
     # "a" > ^("b" | "c")* > "f"

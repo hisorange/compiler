@@ -31,12 +31,14 @@ export abstract class BaseParser {
     this.logger.info('Channel registered', { name, key });
   }
 
-  registerParser(ref: string, parser: IFragmentParser): void {
-    const keyPrefix = 'grammar.' + this.getContextPrefix() + '.parser';
-    const key = keyPrefix + '.' + ref.toLowerCase();
+  registerParser(refs: string[], parser: IFragmentParser): void {
+    for (const ref of refs) {
+      const keyPrefix = 'grammar.' + this.getContextPrefix() + '.parser';
+      const key = keyPrefix + '.' + ref.toLowerCase();
 
-    this.ctx.bind(key).to(parser).tag(keyPrefix);
-    this.logger.info('Parser registered', { ref, key });
+      this.ctx.bind(key).to(parser).tag(keyPrefix);
+      this.logger.info('Parser registered', { ref, key });
+    }
   }
 
   protected resolveParser(ref: string): IFragmentParser {
@@ -83,11 +85,126 @@ export abstract class BaseParser {
         const result = parser(characters);
 
         if (result) {
-          return result;
+          const node = new Node('OrGroup', 'Main');
+          node.addChildren(result.node as Node);
+
+          return {
+            characters: result.characters,
+            node: node,
+          };
         }
       }
 
       return false;
+    };
+  }
+
+  parseLogicAnd(sequence: IFragmentParser[]): IFragmentParser {
+    return (characters: ICollection<ICharacter>): IFragmentParserResult => {
+      const node = new Node('AndGroup', 'Main');
+      const from = characters.cursor;
+
+      for (const parser of sequence) {
+        const result = parser(characters);
+
+        if (!result) {
+          // Revert the cursor to the starting point.
+          characters.advance(from - characters.cursor);
+
+          return false;
+        } else {
+          node.addChildren(result.node as Node);
+        }
+      }
+
+      return false;
+    };
+  }
+
+  parseRange(
+    ref: string,
+    channel: string,
+    from: string,
+    to: string,
+  ): IFragmentParser {
+    let range_pointer = from.charCodeAt(0);
+    const range_end = to.charCodeAt(0);
+    const orGroup = [];
+
+    if (range_pointer > range_end) {
+      throw new ParserException('Invalid parser range', {
+        ref,
+        from,
+        to,
+      });
+    }
+
+    while (range_pointer <= range_end) {
+      orGroup.push(
+        this.parseLiteral(ref, channel, String.fromCharCode(range_pointer)),
+      );
+
+      range_pointer++;
+    }
+
+    const parser = this.parseLogicOr(orGroup);
+
+    return parser;
+  }
+
+  parseRepetitionNoneOrMore(
+    ref: string,
+    channel: string,
+    parser: IFragmentParser,
+  ): IFragmentParser {
+    return (characters: ICollection<ICharacter>): IFragmentParserResult => {
+      const node = new Node(ref, channel);
+
+      while (characters.isValid) {
+        const result = parser(characters);
+
+        if (result) {
+          node.addChildren(result.node as Node);
+          characters = result.characters;
+        } else {
+          break;
+        }
+      }
+
+      return {
+        characters,
+        node: node,
+      };
+    };
+  }
+
+  parseRepetitionOneOrMore(
+    ref: string,
+    channel: string,
+    parser: IFragmentParser,
+  ): IFragmentParser {
+    return (characters: ICollection<ICharacter>): IFragmentParserResult => {
+      const node = new Node(ref, channel);
+
+      while (characters.isValid) {
+        const result = parser(characters);
+
+        if (result) {
+          node.addChildren(result.node as Node);
+          characters = result.characters;
+        } else {
+          break;
+        }
+      }
+
+      if (node.getChildren().length) {
+        return {
+          characters,
+          node: node,
+        };
+      } else {
+        return false;
+      }
     };
   }
 
@@ -110,6 +227,31 @@ export abstract class BaseParser {
       }
 
       return result;
+    };
+  }
+
+  invertParser(
+    ref: string,
+    channel: string,
+    parser: IFragmentParser,
+  ): IFragmentParser {
+    return (characters: ICollection<ICharacter>): IFragmentParserResult => {
+      const from = characters.cursor;
+
+      const result = parser(characters);
+
+      if (result) {
+        if (characters.cursor !== from) {
+          // Revert to the start point.
+          characters.advance(from - characters.cursor);
+
+          return false;
+        }
+      }
+
+      const node = new Node(ref, channel, characters.consume(1)[0].value);
+
+      return { characters, node };
     };
   }
 }
