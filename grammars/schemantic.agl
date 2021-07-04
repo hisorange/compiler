@@ -13,7 +13,7 @@ grammar AGL {
     parser EOL = "\n" | "\r\n";
     parser Tab = "\t";
     parser Space = " ";
-    parser Set = WhiteSpace.EOL | WhiteSpace.Space | WhiteSpace.Tab;
+    parser Set = EOL | Space | Tab;
 
     default parser Any *= Set;
   }
@@ -43,7 +43,7 @@ grammar AGL {
 
     # After the double escape sequnce we have a leftover of a single escape sequence.
 
-    parser EscapeSequence = Escape > Capsulator; #
+    parser EscapeSequence = EscapeEscaper > Capsulator; #
     parser SpecialChar = Escape > (Capsulator | Escape)!; # For example the "Tab \t ulated"
     parser InCapsulation = ^(Capsulator | Escape) | DoubleEscape* | EscapeSequence | SpecialChar;
 
@@ -147,13 +147,15 @@ grammar AGL {
     # ("a" > ("b"? | ("c"+)?) | "d") > "f"?
     parser Expression = (Term | OpGroup | LogicGroup)+;
 
+    parser Default = Keyword.Default > WS.Set+ > Parser;
+
     default parser Definition = Keyword.Parser > WS.Set+ > Name > WS > DefinitionModifier? > Op.DefinitionStart > WS > Expression > WS > Op.DefinitionEnd;
   }
 
   struct Struct {
     parser Name &= SymbolName;
-    parser DefaultParser = Keyword.Default > WS.Set+ > Parser;
-    parser Body = (Parser | Comment)* > DefaultParser? > (Parser | Comment)*;
+
+    parser Body = (Parser | Comment)* > Parser.Default? > (Parser | Comment)*;
 
     default parser Definition = Keyword.Struct > WS.Set+ > Name > WS > Syntax.ContextOpen > WS > Body > WS > Syntax.ContextClose;
   }
@@ -161,10 +163,10 @@ grammar AGL {
 
   struct Grammar -> Main {
     parser Name &= SymbolName;
-    parser Body *= Meta | Channel | Parser | Comment | Struct | WS;
+    parser Body *= Meta | Channel | Parser | Comment | Struct | WS | Parser.Default;
 
     default parser Definition = Keywords.Grammar > WS.Set+ > Name > Op.CurlyOpen > Body > Op.CurlyClose;
   }
 
-  parser Root = ( Comment | Grammar )*;
+  default parser Grammar = ( Comment | Grammar )*;
 }
