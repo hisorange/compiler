@@ -1,14 +1,14 @@
+import { Bindings } from './components/container/bindings';
+import { Container } from './components/container/container';
+import { ContainerProvider } from './components/container/container.provider';
 import {
-  Bindings,
-  Container,
-  ContainerProvider,
   IFileSystem,
   IGeneratorInput,
   ILogger,
   IPath,
   Path,
   Timings,
-} from './components';
+} from './components/index';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {

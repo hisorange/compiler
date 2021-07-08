@@ -1,5 +1,6 @@
 import * as engine from 'ejs';
-import { Bindings, Inject } from '../../container';
+import { Bindings } from '../../container/bindings';
+import { Inject } from '../../container/decorators';
 import { IKernelModuleManager, ModuleType } from '../../module-handler';
 import { IEngine } from '../interfaces/engine.interface';
 const merge = require('deepmerge');

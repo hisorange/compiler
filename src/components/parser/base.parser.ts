@@ -1,4 +1,6 @@
-import { Bindings, Container, Inject } from '../container';
+import { Bindings } from '../container/bindings';
+import { Container } from '../container/container';
+import { Inject } from '../container/decorators';
 import { ParserException } from '../exceptions';
 import { ILogger, LoggerFactory } from '../logger';
 import { ICharacter, ICollection, Node } from '../models';

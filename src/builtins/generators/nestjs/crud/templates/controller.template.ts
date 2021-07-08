@@ -1,9 +1,5 @@
-import {
-  forwardRef,
-  ISmartString,
-  ITemplate,
-  Template,
-} from '../../../../../components';
+import { ISmartString, ITemplate, Template } from '../../../../../components';
+import { forwardRef } from '../../../../../components/container/forward-ref';
 import { CreateDtoTemplate, ReadDtoTemplate } from './dto';
 import { ServiceTemplate } from './service.template';
 

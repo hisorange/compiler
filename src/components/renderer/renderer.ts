@@ -1,6 +1,8 @@
 import { dirname, extname, join } from 'path';
-import { Bindings, Constructor, Inject } from '../container';
+import { Bindings } from '../container/bindings';
+import { Inject } from '../container/decorators';
 import { ReferenceResolver } from '../container/forward-ref';
+import { Constructor } from '../container/interfaces';
 import { IEventEmitter } from '../event-handler';
 import { IFileSystem } from '../file-system';
 import { ILogger, LoggerFactory } from '../logger';
