@@ -34,18 +34,22 @@ export class Character implements ICharacter {
     this.code = this.value.charCodeAt(0);
   }
 
-  prev(prev?: ICharacter) {
+  prev(prev?: ICharacter): ICharacter | undefined {
     if (prev) {
       this._prev = prev;
-      prev.next(this);
+      prev.next(this as ICharacter);
+
+      return undefined;
     } else {
       return this._prev;
     }
   }
 
-  next(next?: ICharacter) {
+  next(next?: ICharacter): ICharacter | undefined {
     if (next) {
       this._next = next;
+
+      return undefined;
     } else {
       return this._next;
     }

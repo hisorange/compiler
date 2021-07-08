@@ -1,6 +1,5 @@
 import { BindingScope, Provider } from '@loopback/context';
 import {
-  AMLFrontend,
   BackendGenerator,
   FrontendBackend,
   HighlightBackend,
@@ -229,7 +228,7 @@ export class ContainerProvider implements Provider<Container> {
     const moduleHandler = container.getSync(Bindings.Module.Handler);
 
     // Built in FRONTENDS
-    const frontends: Constructor<IFrontend>[] = [AMLFrontend, WSNFrontend];
+    const frontends: Constructor<IFrontend>[] = [WSNFrontend];
 
     // Built in BACKENDS
     const backends: Constructor<IBackend>[] = [
