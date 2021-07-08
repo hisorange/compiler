@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.dev.json",
   "compilerOptions": {
     "skipLibCheck": true,
     "removeComments": false,
     "incremental": false,
     "noEmitOnError": true
-  }
+  },
+  "include": ["./src"]
 }

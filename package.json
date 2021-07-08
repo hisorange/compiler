@@ -11,8 +11,8 @@
     "test:cover": "jest",
     "type": "tsc --noEmit",
     "type:watch": "tsc --noEmit --watch",
-    "build": "rimraf build && tsc",
-    "build:watch": "rimraf build && tsc --watch",
+    "build": "rimraf build && tsc -p tsconfig.dev.json",
+    "build:watch": "rimraf build && tsc -p tsconfig.dev.json --watch",
     "build:prod": "rimraf build && tsc -p tsconfig.prod.json"
   },
   "repository": {
