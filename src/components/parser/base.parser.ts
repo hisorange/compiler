@@ -4,6 +4,7 @@ import { ILogger, LoggerFactory } from '../logger';
 import { ICharacter, ICollection, Node } from '../models';
 import { Channel } from './channel';
 import { IFragmentParserResult } from './interfaces/fragment-parser-result.interface';
+import { IFragmentParserSchema } from './interfaces/fragment-parser-schema.interface';
 import { IFragmentParser } from './interfaces/fragment-parser.interface';
 
 export abstract class BaseParser {
@@ -31,12 +32,12 @@ export abstract class BaseParser {
     this.logger.info('Channel registered', { name, key });
   }
 
-  registerParser(refs: string[], parser: IFragmentParser): void {
-    for (const ref of refs) {
+  registerParser(schema: IFragmentParserSchema): void {
+    for (const ref of schema.references) {
       const keyPrefix = 'grammar.' + this.getContextPrefix() + '.parser';
       const key = keyPrefix + '.' + ref.toLowerCase();
 
-      this.ctx.bind(key).to(parser).tag(keyPrefix);
+      this.ctx.bind(key).to(schema.matcher).tag(keyPrefix);
       this.logger.info('Parser registered', { ref, key });
     }
   }
@@ -140,9 +141,7 @@ export abstract class BaseParser {
     }
 
     while (range_pointer <= range_end) {
-      orGroup.push(
-        this.parseLiteral(ref, channel, String.fromCharCode(range_pointer)),
-      );
+      orGroup.push(this.parseLiteral(String.fromCharCode(range_pointer)));
 
       range_pointer++;
     }

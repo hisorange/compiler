@@ -1,4 +1,5 @@
 import { BaseParser, Grammar } from '../../../components';
+import { IFragmentParserSchema } from '../../../components/parser/interfaces/fragment-parser-schema.interface';
 
 @Grammar({
   name: 'agl',
@@ -29,40 +30,20 @@ export class GrammarParser extends BaseParser {
   }
 
   protected createStruct_WS() {
-    const channel = 'WhiteSpace';
-
-    this.registerParser(
-      ['WS.EOL'],
-      this.createParser_WS_EOL('WS.EOL', channel),
-    );
-
-    this.registerParser(
-      ['WS.Tab'],
-      this.createParser_WS_Tab('WS.Tab', channel),
-    );
-
-    this.registerParser(
-      ['WS.Space'],
-      this.createParser_WS_Space('WS.Space', channel),
-    );
-
-    this.registerParser(
-      ['WS.Set'],
-      this.createParser_WS_Set('WS.Set', channel),
-    );
-
-    this.registerParser(
-      ['WS.Any', 'WS'],
-      this.createParser_WS_Any('WS.Any', channel),
-    );
+    this.registerParser(this.createParser_WS_EOL());
   }
 
-  createParser_WS_EOL(ref: string, channel: string) {
+  createParser_WS_EOL(): IFragmentParserSchema {
     const orGroup = [];
     orGroup.push(this.parseLiteral(`\n`));
     orGroup.push(this.parseLiteral(`\r\n`));
 
-    return this.parseLogicOr(orGroup);
+    return {
+      references: ['WS.EOL'],
+      isOptional: false,
+      channel: 'WhiteSpace',
+      matcher: this.parseLogicOr(orGroup),
+    };
   }
 
   createParser_WS_Tab(ref: string, channel: string) {
