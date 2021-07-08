@@ -2,18 +2,18 @@
   "name": "@hisorange/artgen",
   "version": "0.0.1",
   "description": "Work less, do More!",
-  "main": "build/index.js",
+  "main": "./build/index.js",
+  "bin": {
+    "artgen": "./bin/artgen"
+  },
   "scripts": {
     "test": "jest --collectCoverage=0",
     "test:cover": "jest",
     "type": "tsc --noEmit",
     "type:watch": "tsc --noEmit --watch",
-    "lint": "true",
-    "lint:test": "true",
     "build": "rimraf build && tsc",
     "build:watch": "rimraf build && tsc --watch",
-    "build:prod": "rimraf build && tsc -p tsconfig.prod.json",
-    "prettify": "prettier --write ./src"
+    "build:prod": "rimraf build && tsc -p tsconfig.prod.json"
   },
   "repository": {
     "type": "git",
@@ -69,19 +69,10 @@
     "@types/signale": "^1.4.1",
     "@types/uuid": "^8.3.0",
     "@types/yargs": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.0",
-    "@typescript-eslint/parser": "^4.4.0",
     "coveralls": "^3.1.0",
-    "eslint": "^7.10.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-import": "^2.22.1",
     "jest": "^27.0.6",
-    "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.3",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.2",
-    "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^4.0.0"
   }
 }
