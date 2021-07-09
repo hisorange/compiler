@@ -8,14 +8,6 @@ import { SchemaTemplate } from './schema.template';
   depends: [SchemaTemplate, ReadDtoTemplate, CreateDtoTemplate],
 })
 export class ServiceTemplate implements ITemplate {
-  props() {
-    return {
-      $name: {
-        type: 'string', // Will prompt for string
-      },
-    };
-  }
-
   data(input: { $name: ISmartString }) {
     return {
       service: {
