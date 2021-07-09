@@ -1,4 +1,4 @@
-import { Path } from '../../src/';
+import { Path } from '../src';
 
 describe('Path', () => {
   test('should parse the input', () => {
@@ -9,7 +9,7 @@ describe('Path', () => {
     expect(path.extension).toBe('art');
   });
 
-  test('should normalize and parse the input', () => {
+  test('should normalize the input', () => {
     const path = new Path('/home/artgen/work/../test.art');
 
     expect(path.baseName).toBe('test.art');

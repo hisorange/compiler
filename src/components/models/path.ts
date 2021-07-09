@@ -9,11 +9,16 @@ export class Path implements IPath {
   constructor(path: string) {
     this.realPath = normalize(path);
     this.baseName = basename(path);
+    this.extension = this.parseExtension();
+  }
 
+  protected parseExtension(): string | undefined {
     const lastDotPosition = this.baseName.lastIndexOf('.');
 
     if (lastDotPosition !== -1) {
-      this.extension = this.baseName.substr(lastDotPosition + 1).toLowerCase();
+      return this.baseName.substr(lastDotPosition + 1).toLowerCase();
     }
+
+    return undefined;
   }
 }
