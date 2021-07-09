@@ -1,7 +1,7 @@
 import { Provider } from '@loopback/context';
 import { Signale, SignaleOptions } from 'signale';
 import { IKernelConfig } from '../../kernel/kernel-config.interface';
-import { KernelMode } from '../../kernel/kernel-mode.enum';
+import { KernelEnvironment } from '../../kernel/kernel-environment.enum';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators';
 
@@ -16,8 +16,11 @@ export class LoggerProvider implements Provider<Signale> {
 
   value() {
     const options: SignaleOptions = {
-      logLevel: this.config.mode === KernelMode.PRODUCTION ? 'info' : 'debug',
-      disabled: this.config.mode === KernelMode.TESTING,
+      logLevel:
+        this.config.environment === KernelEnvironment.PRODUCTION
+          ? 'info'
+          : 'debug',
+      disabled: this.config.environment === KernelEnvironment.TESTING,
     };
 
     return new Signale(options);

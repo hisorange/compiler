@@ -1,9 +1,9 @@
-import { IKernelConfig, Kernel, KernelMode } from '../../src';
+import { IKernelConfig, Kernel, KernelEnvironment } from '../../src';
 
 export class TestKernel extends Kernel {
   constructor(
     config: IKernelConfig = {
-      mode: KernelMode.TESTING,
+      environment: KernelEnvironment.TESTING,
     },
   ) {
     super(config);

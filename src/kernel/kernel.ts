@@ -9,7 +9,7 @@ import {
   Timings,
 } from '../components/index';
 import { IKernelConfig } from './kernel-config.interface';
-import { KernelMode } from './kernel-mode.enum';
+import { KernelEnvironment } from './kernel-environment.enum';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {
@@ -18,7 +18,7 @@ export class Kernel implements IKernel {
 
   constructor(
     protected readonly config: IKernelConfig = {
-      mode: KernelMode.PRODUCTION,
+      environment: KernelEnvironment.PRODUCTION,
     },
   ) {}
 

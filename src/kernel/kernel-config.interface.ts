@@ -1,5 +1,5 @@
-import { KernelMode } from './kernel-mode.enum';
+import { KernelEnvironment } from './kernel-environment.enum';
 
 export interface IKernelConfig {
-  mode: KernelMode;
+  environment: KernelEnvironment;
 }
