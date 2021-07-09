@@ -8,6 +8,7 @@ import {
   TemplateGenerator,
   WSNFrontend,
 } from '../../builtins';
+import { IKernel } from '../../kernel';
 import { IKernelConfig } from '../../kernel/interfaces/kernel-config.interface';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { DebugHelper } from '../compiler/debug-helper';
@@ -66,8 +67,12 @@ export class Container extends Context {
   /**
    * Create a new container and bind the required dependencies to it.
    */
-  prepareKernelBindings(kernelConfig: IKernelConfig): void {
+  prepareKernelBindings(
+    kernelInstance: IKernel,
+    kernelConfig: IKernelConfig,
+  ): void {
     this.bindSelf();
+    this.bind(Bindings.Kernel).to(kernelInstance);
     this.bind(Bindings.Config).to(kernelConfig);
 
     this.bind(Bindings.Module.Handler)

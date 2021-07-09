@@ -25,7 +25,7 @@ export class Kernel implements IKernel {
   getContainer(): Container {
     if (!this.container) {
       this.container = new Container('kernel');
-      this.container.prepareKernelBindings(this.config);
+      this.container.prepareKernelBindings(this, this.config);
     }
 
     return this.container;
@@ -59,12 +59,15 @@ export class Kernel implements IKernel {
     generatorRef: string,
   ): Promise<IFileSystem> {
     this.getLogger().time(Timings.OVERALL);
-    this.getLogger().start('Generate job starts');
+    this.getLogger().start('Generate job starts', {
+      generator: generatorRef,
+    });
 
     try {
       const output = await this.getContainer()
         .getSync(Bindings.Pipeline.Generator)
         .pipe({ reference: generatorRef, input });
+
       this.getLogger().timeEnd(Timings.OVERALL);
       this.getLogger().success('Generate job successful!');
 
