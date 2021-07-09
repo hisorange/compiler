@@ -5,7 +5,7 @@ import {
   ModuleType,
 } from '../../src';
 import { Bindings } from '../../src/components/container/bindings';
-import { ArTestGenerator } from './test-generator';
+import { ArTestGenerator } from './artest.generator';
 
 export class TestKernel extends Kernel {
   constructor(

@@ -60,12 +60,13 @@ export class Renderer implements IRenderer {
 
     // Register the rendering engines.
     this.engines.set('ejs', new EJSEngine(this.module));
-
     this.logger.info('Renderer is ready!');
   }
 
-  setContext(context: Object): void {
-    this.context = context;
+  mergeContext(extension: Object): void {
+    this.context = merge(this.context, extension, {
+      isMergeableObject: isPlainObject,
+    });
   }
 
   /**
@@ -162,12 +163,23 @@ export class Renderer implements IRenderer {
     // Safely resolve dependencies to fill up the context.
     this.resolveTemplateDependencies(template.meta, []);
 
-    this.context = merge(this.context, template.module.data(this.context), {
-      isMergeableObject: isPlainObject,
+    if (template.module.context) {
+      this.mergeContext(template.module.context(this.context));
+    }
+
+    const path = this.renderString(
+      template.meta.path,
+      this.context,
+      template.meta.engine,
+    );
+
+    this.mergeContext({
+      __FILE__: path,
+      __DIR__: dirname(path),
     });
 
     this.write(
-      this.renderString(template.meta.path, this.context, template.meta.engine),
+      path,
       this.renderString(
         template.module.render(),
         this.context,
@@ -188,10 +200,10 @@ export class Renderer implements IRenderer {
         const dMeta = this.module.meta(ModuleType.TEMPLATE, dependency);
         const dInst = this.module.retrive(ModuleType.TEMPLATE, dMeta.reference);
 
-        // Load the dependency's data to context.
-        this.context = merge(this.context, dInst.module.data(this.context), {
-          isMergeableObject: isPlainObject,
-        });
+        if (dInst.module.context) {
+          // Load the dependency's data to context.
+          this.mergeContext(dInst.module.context(this.context));
+        }
 
         // Check for dependency loop.
         if (!trace.includes(dMeta.reference)) {

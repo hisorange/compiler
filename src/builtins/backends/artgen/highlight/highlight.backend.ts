@@ -25,7 +25,7 @@ export class HighlightBackend implements IBackend {
       extension: input.name.lowerCase.prefix('.'),
     };
 
-    renderer.setContext(context);
+    renderer.mergeContext(context);
 
     renderer.renderTemplate('artgen.highlight.textmate');
     renderer.renderTemplate('artgen.highlight.package');

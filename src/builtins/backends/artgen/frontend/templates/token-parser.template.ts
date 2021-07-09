@@ -8,7 +8,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol'
   path: `/dev/null`,
 })
 export class TokenParserTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       tokenParser: {
         test: 'ABC',

@@ -1,12 +1,13 @@
 import {
+  Bindings,
   Generator,
   IGenerator,
   IKernel,
+  Inject,
   IRenderer,
   SmartString,
 } from '../../src';
-import { Bindings, Inject } from '../../src/';
-import { TestTemplate } from './test-template';
+import { ArTestTemplate } from './artest.template';
 
 interface Input {
   name: string;
@@ -16,7 +17,7 @@ interface Input {
 @Generator<Input>({
   name: 'ArTest Generator',
   reference: 'artest.generator',
-  templates: [TestTemplate],
+  templates: [ArTestTemplate],
   input: [
     {
       message: `What is the param name?`,
@@ -45,7 +46,7 @@ export class ArTestGenerator implements IGenerator {
   async render(input) {
     const context = { $name: new SmartString(input.name) };
 
-    this.renderer.setContext(context);
+    this.renderer.mergeContext(context);
     this.renderer.outputBaseDirectory = input.baseDirectory || '.';
     this.renderer.renderTemplate(`artest.template`);
   }

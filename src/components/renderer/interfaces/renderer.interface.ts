@@ -32,14 +32,13 @@ export interface IRenderer {
    */
   setScope(scope: string): void;
 
-  setContext(context: Object): void;
+  mergeContext(ctx: Object): void;
 
   /**
    * Write to the output file system.
    */
   write(path: string, content: string): void;
 
-  renderTemplate(template: string): void;
-
+  renderTemplate(ref: string): void;
   renderGenerator(ref: string, ctx?: Object): Promise<void>;
 }

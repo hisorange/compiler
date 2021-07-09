@@ -6,7 +6,7 @@ import { GrammarSymbol, ProductionSymbol } from '../../../../frontends/wsn';
   path: `./<%- textmate.path %>`,
 })
 export class TextMateTemplate implements ITemplate {
-  data(ctx: { $symbol: GrammarSymbol }) {
+  context(ctx: { $symbol: GrammarSymbol }) {
     return {
       textmate: {
         path: ctx.$symbol.name.lowerCase.suffix('.tmLanguage.json'),

@@ -17,7 +17,7 @@ export class NestJSBackend implements IBackend {
   async render(renderer: IRenderer, symbol: any) {
     const context = { $name: new SmartString(symbol.toString()) };
 
-    renderer.setContext(context);
+    renderer.mergeContext(context);
     renderer.outputBaseDirectory = '/';
 
     renderer.renderTemplate(`nestjs.readme`);

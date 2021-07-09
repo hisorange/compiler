@@ -1,4 +1,4 @@
 export interface ITemplate {
-  data?(input): Object;
+  context?(input): Object;
   render(): string;
 }

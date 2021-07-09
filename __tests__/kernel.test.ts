@@ -2,7 +2,7 @@ import { Signale } from 'signale';
 import { FileSystem, KernelEnvironment } from '../src';
 import { Bindings } from '../src/components/container/bindings';
 import { Container } from '../src/components/container/container';
-import { TestKernel } from './helpers/test-kernel';
+import { TestKernel } from './helpers/test.kernel';
 
 describe('Kernel', () => {
   describe('Initialization', () => {

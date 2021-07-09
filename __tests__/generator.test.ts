@@ -1,7 +1,7 @@
 import { ModuleType } from '../src';
 import { Bindings } from '../src/components/container/bindings';
-import { ArTestGenerator } from './helpers/test-generator';
-import { TestKernel } from './helpers/test-kernel';
+import { ArTestGenerator } from './helpers/artest.generator';
+import { TestKernel } from './helpers/test.kernel';
 
 describe('Generator', () => {
   describe('Support', () => {

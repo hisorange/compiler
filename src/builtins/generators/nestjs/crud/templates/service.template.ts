@@ -8,7 +8,7 @@ import { SchemaTemplate } from './schema.template';
   depends: [SchemaTemplate, ReadDtoTemplate, CreateDtoTemplate],
 })
 export class ServiceTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       service: {
         name: input.$name.pascalCase.suffix('Service'),

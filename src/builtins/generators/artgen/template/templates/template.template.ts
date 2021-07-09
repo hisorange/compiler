@@ -8,7 +8,7 @@ import { ISmartString, ITemplate, Template } from '../../../../../components';
   path: `templates/<?- template.path ?>`,
 })
 export class TemplateTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       template: {
         name: input.$name.pascalCase.suffix('Template'),

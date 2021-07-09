@@ -7,7 +7,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol'
   path: `./<%- lexers.path %>`,
 })
 export class LexersTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       lexers: {
         path: input.$symbol.name.kebabCase.suffix('.lexers.ts'),

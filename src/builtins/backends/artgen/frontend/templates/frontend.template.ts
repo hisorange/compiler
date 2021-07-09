@@ -6,7 +6,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn';
   path: `./<%- frontend.path %>`,
 })
 export class FrontendTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       frontend: {
         $name: input.$symbol.name,

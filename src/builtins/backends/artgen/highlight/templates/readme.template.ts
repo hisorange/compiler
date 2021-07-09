@@ -6,7 +6,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn';
   path: `./readme.md`,
 })
 export class ReadmeTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {};
   }
 

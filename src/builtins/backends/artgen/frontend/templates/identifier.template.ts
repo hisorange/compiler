@@ -7,7 +7,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol'
   path: `./<%- identifier.path %>`,
 })
 export class IdentifierTemplate implements ITemplate {
-  data(context: { $symbol: GrammarSymbol }) {
+  context(context: { $symbol: GrammarSymbol }) {
     return {
       identifier: {
         clss: context.$symbol.name.upperCase.suffix('Identifier'),

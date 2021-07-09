@@ -9,7 +9,7 @@ import {
   path: `dto/<%- dto.create.path %>`,
 })
 export class CreateDtoTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       dto: {
         create: {

@@ -9,7 +9,7 @@ import {
   path: `dto/<%- dto.read.path %>`,
 })
 export class ReadDtoTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       dto: {
         read: {

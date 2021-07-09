@@ -7,7 +7,7 @@ import { ISmartString } from '../../../../../components/smart-string';
   path: `./<%- backend.path %>`,
 })
 export class BackendTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       backend: {
         path: input.$name.kebabCase.suffix('.backend.ts'),

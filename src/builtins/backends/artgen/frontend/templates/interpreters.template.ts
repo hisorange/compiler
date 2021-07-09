@@ -7,7 +7,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn/symbols/grammar.symbol'
   path: `./<%- interpreters.path %>`,
 })
 export class InterpretersTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       interpreters: {
         path: input.$symbol.name.kebabCase.suffix('.interpreters.ts'),

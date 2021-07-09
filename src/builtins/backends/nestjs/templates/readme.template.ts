@@ -6,7 +6,7 @@ import { ISmartString } from '../../../../components/smart-string';
   path: `readme.md`,
 })
 export class ReadMeTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       input: {
         // Template data

@@ -26,7 +26,7 @@ export class FrontendBackend implements IBackend {
   async render(renderer: IRenderer, input: GrammarSymbol) {
     const context = { $symbol: input };
 
-    renderer.setContext(context);
+    renderer.mergeContext(context);
 
     renderer.renderTemplate('artgen.frontend.interpreters');
     renderer.renderTemplate('artgen.frontend.lexers');

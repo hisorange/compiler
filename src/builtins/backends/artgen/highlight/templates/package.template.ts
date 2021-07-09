@@ -6,7 +6,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn';
   path: `./<%- package.path %>`,
 })
 export class PackageTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       package: {
         path: 'package.json',

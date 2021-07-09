@@ -6,7 +6,7 @@ import { GrammarSymbol } from '../../../../frontends/wsn';
   path: `./<%- config.path %>`,
 })
 export class ConfigTemplate implements ITemplate {
-  data(input: { $symbol: GrammarSymbol }) {
+  context(input: { $symbol: GrammarSymbol }) {
     return {
       config: {
         path: 'language-configuration.json',

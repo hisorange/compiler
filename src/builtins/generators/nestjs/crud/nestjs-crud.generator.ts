@@ -40,7 +40,7 @@ export class NestJSCrudGenerator implements IGenerator {
   async render(input: any) {
     const context = { $name: new SmartString(input.moduleName) };
 
-    this.renderer.setContext(context);
+    this.renderer.mergeContext(context);
     this.renderer.outputBaseDirectory = join(
       input.baseDirectory,
       context.$name.kebabCase.toString(),

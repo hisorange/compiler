@@ -7,7 +7,7 @@ import { ReadDtoTemplate } from './dto';
   depends: [ReadDtoTemplate],
 })
 export class SchemaTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       schema: {
         collection: input.$name.plural.pascalCase,

@@ -13,7 +13,7 @@ import { ServiceTemplate } from './service.template';
   ],
 })
 export class ControllerTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       controller: {
         name: input.$name.pascalCase.suffix('Controller'),

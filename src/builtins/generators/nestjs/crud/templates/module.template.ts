@@ -10,7 +10,7 @@ import { ServiceTemplate } from './service.template';
   depends: [ControllerTemplate, SchemaTemplate, ModelTemplate, ServiceTemplate],
 })
 export class ModuleTemplate implements ITemplate {
-  data(input: { $name: ISmartString }) {
+  context(input: { $name: ISmartString }) {
     return {
       module: {
         name: input.$name.pascalCase.suffix('Module'),

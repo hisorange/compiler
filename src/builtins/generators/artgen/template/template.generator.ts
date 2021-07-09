@@ -38,7 +38,7 @@ export class TemplateGenerator implements IGenerator {
   async render(input: any) {
     const context = { $name: new SmartString(input.name) };
 
-    this.renderer.setContext(context);
+    this.renderer.mergeContext(context);
     this.renderer.outputBaseDirectory = input.baseDirectory || '.';
     this.renderer.renderTemplate(`artgen.template`);
   }

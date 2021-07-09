@@ -8,7 +8,7 @@ import { ProductionSymbol } from '../../../../frontends/wsn/symbols/production.s
   path: `./<%- tokenizer.path %>`,
 })
 export class TokenizerTemplate implements ITemplate {
-  data(ctx: { $symbol: GrammarSymbol }) {
+  context(ctx: { $symbol: GrammarSymbol }) {
     return {
       tokenizer: {
         clss: ctx.$symbol.name.upperCase.suffix('Tokenizer'),
