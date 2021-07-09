@@ -54,7 +54,7 @@ export class GeneratorPipe
       }
     }
 
-    await generator.module.render(this.renderer, input);
+    await generator.module.render(input);
 
     if (generator.meta.author) {
       this.logger.fav(

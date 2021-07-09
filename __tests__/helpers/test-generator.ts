@@ -5,8 +5,7 @@ import {
   IRenderer,
   SmartString,
 } from '../../src';
-import { Bindings } from '../../src/components/container/bindings';
-import { Inject } from '../../src/components/container/decorators';
+import { Bindings, Inject } from '../../src/';
 import { TestTemplate } from './test-template';
 
 @Generator({
@@ -34,14 +33,15 @@ export class ArTestGenerator implements IGenerator {
   constructor(
     @Inject(Bindings.Kernel)
     public kernel: IKernel,
+    @Inject(Bindings.Components.Renderer)
+    protected readonly renderer: IRenderer,
   ) {}
 
-  async render(renderer: IRenderer, input: any) {
+  async render(input: any) {
     const context = { $name: new SmartString(input.name) };
 
-    renderer.setContext(context);
-    renderer.outputBaseDirectory = input.baseDirectory || '.';
-
-    renderer.renderTemplate(`artest.template`);
+    this.renderer.setContext(context);
+    this.renderer.outputBaseDirectory = input.baseDirectory || '.';
+    this.renderer.renderTemplate(`artest.template`);
   }
 }

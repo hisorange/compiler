@@ -1,3 +1,4 @@
+export * from './container/index';
 export * from './event-handler/index';
 export * from './exceptions';
 export * from './file-system';

@@ -1,7 +1,9 @@
 import { join } from 'path';
 import {
+  Bindings,
   Generator,
   IGenerator,
+  Inject,
   IRenderer,
   SmartString,
 } from '../../../../components';
@@ -30,21 +32,26 @@ import { ModuleTemplate } from './templates';
   },
 })
 export class NestJSCrudGenerator implements IGenerator {
-  async render(renderer: IRenderer, input: any) {
+  constructor(
+    @Inject(Bindings.Components.Renderer)
+    protected readonly renderer: IRenderer,
+  ) {}
+
+  async render(input: any) {
     const context = { $name: new SmartString(input.moduleName) };
 
-    renderer.setContext(context);
-    renderer.outputBaseDirectory = join(
+    this.renderer.setContext(context);
+    this.renderer.outputBaseDirectory = join(
       input.baseDirectory,
       context.$name.kebabCase.toString(),
     );
 
-    renderer.renderTemplate(`nestjs.crud.dto.read`);
-    renderer.renderTemplate(`nestjs.crud.dto.create`);
-    renderer.renderTemplate(`nestjs.crud.schema`);
-    renderer.renderTemplate(`nestjs.crud.model`);
-    renderer.renderTemplate(`nestjs.crud.service`);
-    renderer.renderTemplate(`nestjs.crud.controller`);
-    renderer.renderTemplate(`nestjs.crud.module`);
+    this.renderer.renderTemplate(`nestjs.crud.dto.read`);
+    this.renderer.renderTemplate(`nestjs.crud.dto.create`);
+    this.renderer.renderTemplate(`nestjs.crud.schema`);
+    this.renderer.renderTemplate(`nestjs.crud.model`);
+    this.renderer.renderTemplate(`nestjs.crud.service`);
+    this.renderer.renderTemplate(`nestjs.crud.controller`);
+    this.renderer.renderTemplate(`nestjs.crud.module`);
   }
 }

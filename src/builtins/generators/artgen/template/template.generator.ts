@@ -1,6 +1,8 @@
 import {
+  Bindings,
   Generator,
   IGenerator,
+  Inject,
   IRenderer,
   SmartString,
 } from '../../../../components';
@@ -28,12 +30,16 @@ import { TemplateTemplate } from './templates';
   },
 })
 export class TemplateGenerator implements IGenerator {
-  async render(renderer: IRenderer, input: any) {
+  constructor(
+    @Inject(Bindings.Components.Renderer)
+    protected readonly renderer: IRenderer,
+  ) {}
+
+  async render(input: any) {
     const context = { $name: new SmartString(input.name) };
 
-    renderer.setContext(context);
-    renderer.outputBaseDirectory = input.baseDirectory || '.';
-
-    renderer.renderTemplate(`artgen.template`);
+    this.renderer.setContext(context);
+    this.renderer.outputBaseDirectory = input.baseDirectory || '.';
+    this.renderer.renderTemplate(`artgen.template`);
   }
 }

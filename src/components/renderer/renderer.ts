@@ -150,7 +150,7 @@ export class Renderer implements IRenderer {
   async renderGenerator(ref: string, ctx: Object = {}) {
     const generator = this.module.retrive(ModuleType.GENERATOR, ref);
 
-    await generator.module.render(this, ctx);
+    await generator.module.render(ctx);
   }
 
   /**
