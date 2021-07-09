@@ -8,9 +8,9 @@ import {
   Path,
   Timings,
 } from '../components/index';
-import { IKernelConfig } from './kernel-config.interface';
-import { KernelEnvironment } from './kernel-environment.enum';
-import { IKernel } from './kernel.interface';
+import { KernelEnvironment } from './enumerators/kernel-environment.enum';
+import { IKernelConfig } from './interfaces/kernel-config.interface';
+import { IKernel } from './interfaces/kernel.interface';
 
 export class Kernel implements IKernel {
   protected container: Container;
@@ -51,7 +51,6 @@ export class Kernel implements IKernel {
 
   mountInputFileSystem(fs: IFileSystem): void {
     this.getLogger().warn('Mounting an external file system as input space!');
-
     this.getContainer().bind(Bindings.Provider.InputFileSystem).to(fs);
   }
 

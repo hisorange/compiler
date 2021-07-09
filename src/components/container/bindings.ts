@@ -1,5 +1,6 @@
 import { BindingKey } from '@loopback/context';
-import { IKernelConfig } from '../../kernel/kernel-config.interface';
+import { IKernel } from '../../kernel';
+import { IKernelConfig } from '../../kernel/interfaces/kernel-config.interface';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { DebugHelper } from '../compiler/debug-helper';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
@@ -23,9 +24,11 @@ import { IRenderer } from '../renderer';
 import { Container } from './container';
 
 export const Bindings = {
+  Kernel: BindingKey.create<IKernel>('Kernel'),
   Config: BindingKey.create<IKernelConfig>('Config'),
-  Session: BindingKey.create<string>('Session'),
   Container: BindingKey.create<Container>('Container'),
+
+  Session: BindingKey.create<string>('Session'),
   Module: {
     Handler: BindingKey.create<IKernelModuleManager>('Module.Handler'),
   },

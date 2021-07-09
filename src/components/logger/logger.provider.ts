@@ -1,7 +1,7 @@
 import { Provider } from '@loopback/context';
 import { Signale, SignaleOptions } from 'signale';
-import { IKernelConfig } from '../../kernel/kernel-config.interface';
-import { KernelEnvironment } from '../../kernel/kernel-environment.enum';
+import { KernelEnvironment } from '../../kernel/enumerators/kernel-environment.enum';
+import { IKernelConfig } from '../../kernel/interfaces/kernel-config.interface';
 import { Bindings } from '../container/bindings';
 import { Inject } from '../container/decorators';
 

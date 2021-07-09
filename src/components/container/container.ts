@@ -8,7 +8,7 @@ import {
   TemplateGenerator,
   WSNFrontend,
 } from '../../builtins';
-import { IKernelConfig } from '../../kernel/kernel-config.interface';
+import { IKernelConfig } from '../../kernel/interfaces/kernel-config.interface';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { DebugHelper } from '../compiler/debug-helper';
 import { EventEmitter } from '../event-handler/event-emitter';
