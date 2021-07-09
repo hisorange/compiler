@@ -51,15 +51,18 @@ describe('Reader', () => {
 
   test('should handle binary content', async () => {
     const kernel = new TestKernel();
-    createInput(kernel, String.fromCharCode(2) + String.fromCharCode(21));
+    const binary = Buffer.from(String.fromCharCode(2, 21, 35), 'binary');
+
+    createInput(kernel, binary.toString());
 
     const inst = getPipe(kernel);
     const result = await inst.pipe(new Path('/testf'));
 
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(3);
     expect(result.current).toBeInstanceOf(Character);
     expect(result.current.code).toBe(2);
     expect(result.next.code).toBe(21);
+    expect(result.items[2].code).toBe(35);
   });
 
   test('should assign line and column position', async () => {
