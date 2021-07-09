@@ -13,8 +13,7 @@ import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
 import { IPath } from '../models/interfaces/path.interface';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
-import { ReaderException } from './exceptions/reader.exception';
-import { FileNotFoundExcetionContext } from './interfaces/file-not-found.exception-context';
+import { FileNotFoundExcetion } from './exceptions/file-not-found.exception';
 
 export class ReaderPipe
   implements IPipe<IPath, Promise<ICollection<ICharacter>>>
@@ -41,10 +40,9 @@ export class ReaderPipe
     this.logger.info(`Verifying the input path's existence`);
 
     if (!this.fileSystem.existsSync(path.realPath)) {
-      throw new ReaderException<FileNotFoundExcetionContext>(
-        'Path does not exists on the volume!',
-        { path },
-      );
+      throw new FileNotFoundExcetion('Path does not exists on the volume!', {
+        path,
+      });
     }
 
     this.logger.success('Path verified, starting to read characters');
@@ -54,7 +52,7 @@ export class ReaderPipe
 
     // Important notice, maybe there is an error, but generally this is not an error itself.
     if (!content.length) {
-      this.logger.warn(`File is empty`, { path });
+      this.logger.warn('File is empty', { path });
     }
 
     let line = 1;

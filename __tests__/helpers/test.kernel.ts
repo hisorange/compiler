@@ -1,4 +1,5 @@
 import {
+  IEventEmitter,
   IKernelConfig,
   Kernel,
   KernelEnvironment,
@@ -20,5 +21,9 @@ export class TestKernel extends Kernel {
     this.getContainer()
       .getSync(Bindings.Module.Handler)
       .register(ModuleType.GENERATOR, ArTestGenerator);
+  }
+
+  getEmitter(): IEventEmitter {
+    return this.getContainer().getSync(Bindings.Components.EventEmitter);
   }
 }
