@@ -6,5 +6,5 @@ export interface IBackend {
 }
 
 export interface IGenerator {
-  render(ctx: Object): Promise<void>;
+  render(ctx?: any): Promise<void>;
 }

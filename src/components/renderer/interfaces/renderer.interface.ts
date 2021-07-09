@@ -1,4 +1,5 @@
 import { IFileSystem } from '../../file-system';
+import { RenderContext } from '../context/render.context';
 
 /**
  * Code template rendering, used by the renderers to render the source code
@@ -26,6 +27,8 @@ export interface IRenderer {
    * Base directory where the templates are found.
    */
   inputBaseDirectory: string;
+
+  context: RenderContext;
 
   /**
    * Change the logger scope.

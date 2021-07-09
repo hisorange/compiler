@@ -13,19 +13,19 @@ import {
   ModuleType,
 } from '../module-handler';
 import { RendererEvents } from './contants/events';
+import { RenderContext } from './context/render.context';
 import { EJSEngine } from './engines/ejs.engine';
 import { IEngine } from './interfaces/engine.interface';
 import { IRenderer } from './interfaces/renderer.interface';
 
 const merge = require('deepmerge');
-const { isPlainObject } = require('is-plain-object');
 
 export class Renderer implements IRenderer {
   /**
    * Own logger instance.
    */
   protected logger: ILogger;
-  protected context: any;
+  protected ctx: RenderContext;
 
   /**
    * Base directory on the output file system.
@@ -61,17 +61,23 @@ export class Renderer implements IRenderer {
     // Register the rendering engines.
     this.engines.set('ejs', new EJSEngine(this.module));
     this.logger.info('Renderer is ready!');
-  }
 
-  mergeContext(extension: Object): void {
-    this.context = merge(this.context, extension, {
-      isMergeableObject: isPlainObject,
+    this.ctx = new RenderContext({
+      __ENGINE__: 'ejs',
     });
   }
 
+  get context(): RenderContext {
+    return this.ctx;
+  }
+
   /**
-   * @inheritdoc
+   * @deprecated
    */
+  mergeContext(extension: Object): void {
+    this.ctx.extend(extension);
+  }
+
   setScope(scope: string): void {
     this.logger = this.logger.scope(scope.trim(), this.constructor.name);
   }
@@ -148,7 +154,7 @@ export class Renderer implements IRenderer {
   /**
    * @inheritdoc
    */
-  async renderGenerator(ref: string, ctx: Object = {}) {
+  async renderGenerator(ref: string, ctx: RenderContext) {
     const generator = this.module.retrive(ModuleType.GENERATOR, ref);
 
     await generator.module.render(ctx);
@@ -157,34 +163,38 @@ export class Renderer implements IRenderer {
   /**
    * @inheritdoc
    */
-  renderTemplate(templateRef: string) {
+  renderTemplate(templateRef: string, withContext?: RenderContext) {
+    // Define the local context from the global.
+    let ctx = this.ctx;
+
+    // Fork into an isolated local copy if an overide is defined.
+    if (withContext) {
+      ctx = ctx.fork().extend(withContext);
+    }
+
     const template = this.module.retrive(ModuleType.TEMPLATE, templateRef);
 
     // Safely resolve dependencies to fill up the context.
     this.resolveTemplateDependencies(template.meta, []);
 
     if (template.module.context) {
-      this.mergeContext(template.module.context(this.context));
+      ctx.extend(template.module.context(ctx.props()));
     }
 
     const path = this.renderString(
       template.meta.path,
-      this.context,
+      ctx,
       template.meta.engine,
     );
 
-    this.mergeContext({
+    ctx.extend({
       __FILE__: path,
       __DIR__: dirname(path),
     });
 
     this.write(
       path,
-      this.renderString(
-        template.module.render(),
-        this.context,
-        template.meta.engine,
-      ),
+      this.renderString(template.module.render(), ctx, template.meta.engine),
     );
   }
 
@@ -202,7 +212,7 @@ export class Renderer implements IRenderer {
 
         if (dInst.module.context) {
           // Load the dependency's data to context.
-          this.mergeContext(dInst.module.context(this.context));
+          this.ctx.extend(dInst.module.context(this.ctx));
         }
 
         // Check for dependency loop.
@@ -255,7 +265,7 @@ export class Renderer implements IRenderer {
    */
   protected renderString(
     input: string,
-    context: any,
+    context: RenderContext,
     options?: Object,
   ): string {
     const baseOptions = {
@@ -270,6 +280,6 @@ export class Renderer implements IRenderer {
 
     return this.engines
       .get((options as any).engine)
-      .render(input, context, options);
+      .render(input, context.props(), options);
   }
 }

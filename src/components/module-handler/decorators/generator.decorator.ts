@@ -9,7 +9,7 @@ interface InputRecord<K> {
   default?: string;
 }
 
-export interface IGeneratorMeta<I> {
+export interface IGeneratorMeta<I = {}> {
   name: string;
   reference: string;
   templates: Constructor<ITemplate>[];

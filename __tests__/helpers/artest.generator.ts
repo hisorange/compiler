@@ -5,16 +5,17 @@ import {
   IKernel,
   Inject,
   IRenderer,
-  SmartString,
+  ISmartString,
+  RenderContext,
 } from '../../src';
 import { ArTestTemplate } from './artest.template';
 
-interface Input {
-  name: string;
-  baseDirectory: string;
+export interface TestInput {
+  name: ISmartString;
+  baseDirectory: ISmartString;
 }
 
-@Generator<Input>({
+@Generator<TestInput>({
   name: 'ArTest Generator',
   reference: 'artest.generator',
   templates: [ArTestTemplate],
@@ -43,11 +44,13 @@ export class ArTestGenerator implements IGenerator {
     protected readonly renderer: IRenderer,
   ) {}
 
-  async render(input) {
-    const context = { $name: new SmartString(input.name) };
+  async render() {
+    const ctx = this.renderer.context as RenderContext<TestInput>;
 
-    this.renderer.mergeContext(context);
-    this.renderer.outputBaseDirectory = input.baseDirectory || '.';
+    this.renderer.outputBaseDirectory = ctx.props().baseDirectory
+      ? ctx.props().baseDirectory.toString()
+      : '/';
+
     this.renderer.renderTemplate(`artest.template`);
   }
 }

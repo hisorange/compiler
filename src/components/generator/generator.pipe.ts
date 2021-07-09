@@ -9,7 +9,8 @@ import { LoggerFactory } from '../logger/logger.factory';
 import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
-import { IRenderer } from '../renderer';
+import { IRenderer, RenderContext } from '../renderer';
+import { SmartString } from '../smart-string';
 import { IGeneratorJob } from './generator-job.interface';
 
 export class GeneratorPipe
@@ -44,15 +45,26 @@ export class GeneratorPipe
       generator: generator.meta.name,
     });
 
-    let input = {};
+    let input = new RenderContext();
 
     if (job.input) {
       if (typeof job.input === 'function') {
-        input = await job.input(generator.meta.input);
+        // Convert the response properties into smart strings.
+        const response = await job.input(generator.meta.input);
+
+        for (const prop in response) {
+          if (Object.prototype.hasOwnProperty.call(response, prop)) {
+            response[prop] = new SmartString(response[prop]);
+          }
+        }
+
+        input.extend(response);
       } else {
-        input = job.input;
+        input.extend(job.input);
       }
     }
+
+    this.renderer.mergeContext(input);
 
     await generator.module.render(input);
 
@@ -68,7 +80,7 @@ export class GeneratorPipe
         {
           mode: 'generator',
           reference: job.reference,
-          input,
+          input: input,
         },
         null,
         2,

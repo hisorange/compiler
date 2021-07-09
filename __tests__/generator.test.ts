@@ -1,4 +1,4 @@
-import { ModuleType } from '../src';
+import { ModuleType, SmartString } from '../src';
 import { Bindings } from '../src/components/container/bindings';
 import { ArTestGenerator } from './helpers/artest.generator';
 import { TestKernel } from './helpers/test.kernel';
@@ -51,8 +51,8 @@ describe('Generator', () => {
 
       const result = await kernel.generate(
         {
-          name: 'Ar Test',
-          baseDirectory: '/artest/',
+          name: new SmartString('Ar Test'),
+          baseDirectory: new SmartString('/artest/'),
         },
         'artest.generator',
       );

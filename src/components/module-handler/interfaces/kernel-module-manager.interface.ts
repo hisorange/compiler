@@ -26,7 +26,7 @@ export interface IKernelModuleManager {
   retrive(
     type: ModuleType.GENERATOR,
     reference: string,
-  ): IModule<IGeneratorMeta<any>, IGenerator>;
+  ): IModule<IGeneratorMeta, IGenerator>;
   retrive(
     type: ModuleType.BACKEND,
     reference: string,
@@ -34,9 +34,7 @@ export interface IKernelModuleManager {
 
   search(type: ModuleType.FRONTEND): IModule<IFrontendMeta, IFrontend>[];
   search(type: ModuleType.TEMPLATE): IModule<ITemplateMeta, ITemplate>[];
-  search(
-    type: ModuleType.GENERATOR,
-  ): IModule<IGeneratorMeta<any>, IGenerator>[];
+  search(type: ModuleType.GENERATOR): IModule<IGeneratorMeta, IGenerator>[];
   search(type: ModuleType.BACKEND): IModule<IBackendMeta, IBackend>[];
 
   meta(
@@ -50,6 +48,6 @@ export interface IKernelModuleManager {
   meta(
     type: ModuleType.GENERATOR,
     module: Constructor<IGenerator>,
-  ): IGeneratorMeta<any>;
+  ): IGeneratorMeta;
   meta(type: ModuleType.BACKEND, module: Constructor<IBackend>): IBackendMeta;
 }
