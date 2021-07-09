@@ -8,7 +8,12 @@ import {
 import { Bindings, Inject } from '../../src/';
 import { TestTemplate } from './test-template';
 
-@Generator({
+interface Input {
+  name: string;
+  baseDirectory: string;
+}
+
+@Generator<Input>({
   name: 'ArTest Generator',
   reference: 'artest.generator',
   templates: [TestTemplate],
@@ -37,7 +42,7 @@ export class ArTestGenerator implements IGenerator {
     protected readonly renderer: IRenderer,
   ) {}
 
-  async render(input: any) {
+  async render(input) {
     const context = { $name: new SmartString(input.name) };
 
     this.renderer.setContext(context);

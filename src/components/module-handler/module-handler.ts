@@ -18,7 +18,11 @@ import { IModule } from './interfaces/module.interface';
 import { ITemplate } from './interfaces/template.interface';
 import { ModuleType } from './module-type.enum';
 
-type ModuleMeta = ITemplateMeta | IGeneratorMeta | IBackendMeta | IFrontendMeta;
+type ModuleMeta =
+  | ITemplateMeta
+  | IGeneratorMeta<any>
+  | IBackendMeta
+  | IFrontendMeta;
 type ModuleData = ITemplate | IGenerator | IBackend | IFrontend;
 type RetriveReturn = IModule<ModuleMeta, ModuleData>;
 
@@ -59,7 +63,7 @@ export class ModuleHandler implements IKernelModuleManager {
     // Run the special hooks.
     switch (type) {
       case ModuleType.GENERATOR:
-        this.onRegisterGenerator(meta as IGeneratorMeta);
+        this.onRegisterGenerator(meta as IGeneratorMeta<any>);
         break;
       case ModuleType.TEMPLATE:
         this.onRegisterTemplate(meta as ITemplateMeta);
@@ -81,7 +85,7 @@ export class ModuleHandler implements IKernelModuleManager {
   retrive(
     type: ModuleType.GENERATOR,
     reference: string,
-  ): IModule<IGeneratorMeta, IGenerator>;
+  ): IModule<IGeneratorMeta<any>, IGenerator>;
   retrive(
     type: ModuleType.BACKEND,
     reference: string,
@@ -128,7 +132,9 @@ export class ModuleHandler implements IKernelModuleManager {
 
   search(type: ModuleType.FRONTEND): IModule<IFrontendMeta, IFrontend>[];
   search(type: ModuleType.TEMPLATE): IModule<ITemplateMeta, ITemplate>[];
-  search(type: ModuleType.GENERATOR): IModule<IGeneratorMeta, IGenerator>[];
+  search(
+    type: ModuleType.GENERATOR,
+  ): IModule<IGeneratorMeta<any>, IGenerator>[];
   search(type: ModuleType.BACKEND): IModule<IBackendMeta, IBackend>[];
   search(type: ModuleType): RetriveReturn[] {
     return this.ctx
@@ -143,7 +149,7 @@ export class ModuleHandler implements IKernelModuleManager {
   meta(
     type: ModuleType.GENERATOR,
     mod: Constructor<IGenerator>,
-  ): IGeneratorMeta;
+  ): IGeneratorMeta<any>;
   meta(type: ModuleType.BACKEND, mod: Constructor<IBackend>): IBackendMeta;
   meta(type: ModuleType, module: Constructor<ModuleData>): ModuleMeta {
     return this.readMeta<ModuleMeta>(type, module);
@@ -152,7 +158,7 @@ export class ModuleHandler implements IKernelModuleManager {
   /**
    * Hook to handle special cases when registering a generator module.
    */
-  protected onRegisterGenerator(meta: IGeneratorMeta): void {
+  protected onRegisterGenerator(meta: IGeneratorMeta<any>): void {
     if (meta.templates) {
       for (const template of meta.templates) {
         this.register(ModuleType.TEMPLATE, template);
