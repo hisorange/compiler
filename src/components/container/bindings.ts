@@ -1,4 +1,5 @@
 import { BindingKey } from '@loopback/context';
+import { IKernelConfig } from '../../kernel/kernel-config.interface';
 import { CompilerPipe } from '../compiler/compiler.pipe';
 import { DebugHelper } from '../compiler/debug-helper';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
@@ -20,10 +21,9 @@ import { LexerPipe } from '../pipes/lexer.pipe';
 import { ReaderPipe } from '../reader/reader.pipe';
 import { IRenderer } from '../renderer';
 import { Container } from './container';
-import { IConfig } from './interfaces/config.interface';
 
 export const Bindings = {
-  Config: BindingKey.create<IConfig>('Config'),
+  Config: BindingKey.create<IKernelConfig>('Config'),
   Session: BindingKey.create<string>('Session'),
   Container: BindingKey.create<Container>('Container'),
   Module: {

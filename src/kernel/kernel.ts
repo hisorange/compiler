@@ -1,6 +1,5 @@
-import { Bindings } from './components/container/bindings';
-import { Container } from './components/container/container';
-import { ContainerProvider } from './components/container/container.provider';
+import { Bindings } from '../components/container/bindings';
+import { Container } from '../components/container/container';
 import {
   IFileSystem,
   IGeneratorInput,
@@ -8,21 +7,23 @@ import {
   IPath,
   Path,
   Timings,
-} from './components/index';
+} from '../components/index';
+import { IKernelConfig } from './kernel-config.interface';
+import { KernelMode } from './kernel-mode.enum';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {
   protected readonly container: Container;
   protected readonly logger: ILogger;
 
-  constructor() {
-    // Prepare a new container and inject every neccessary dependency.
-    this.container = new ContainerProvider().value();
-
-    // Configure the kernel, later it can be overwritten.
-    this.container.bind(Bindings.Config).to({
-      debug: true,
-    });
+  constructor(
+    config: IKernelConfig = {
+      mode: KernelMode.PRODUCTION,
+    },
+  ) {
+    // Prepare a new container and inject every necessary dependency.
+    this.container = new Container();
+    this.container.prepareKernelBindings(config);
 
     this.logger = this.container
       .getSync(Bindings.Factory.Logger)

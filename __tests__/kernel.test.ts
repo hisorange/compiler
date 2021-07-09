@@ -1,9 +1,9 @@
-import { Kernel } from '../src';
+import { TestKernel } from './helpers/test-kernel';
 
 describe('Kernel', () => {
-  test('should initialize the dependency contianer', () => {
-    const kernel = new Kernel();
-
-    expect(1).toBe(1);
+  test('should initialize', () => {
+    expect(() => {
+      new TestKernel();
+    }).not.toThrow();
   });
 });
