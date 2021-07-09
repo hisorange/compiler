@@ -13,57 +13,66 @@ import { KernelMode } from './kernel-mode.enum';
 import { IKernel } from './kernel.interface';
 
 export class Kernel implements IKernel {
-  protected readonly container: Container;
-  protected readonly logger: ILogger;
+  protected container: Container;
+  protected logger: ILogger;
 
   constructor(
-    config: IKernelConfig = {
+    protected readonly config: IKernelConfig = {
       mode: KernelMode.PRODUCTION,
     },
-  ) {
-    // Prepare a new container and inject every necessary dependency.
-    this.container = new Container();
-    this.container.prepareKernelBindings(config);
+  ) {}
 
-    this.logger = this.container
-      .getSync(Bindings.Factory.Logger)
-      .create({ label: 'Kernel' });
+  getContainer(): Container {
+    if (!this.container) {
+      this.container = new Container('kernel');
+      this.container.prepareKernelBindings(this.config);
+    }
 
-    this.logger.info('System is ready to rock!');
+    return this.container;
+  }
+
+  protected getLogger(): ILogger {
+    if (!this.logger) {
+      this.logger = this.getContainer()
+        .getSync(Bindings.Factory.Logger)
+        .create({ label: 'Kernel' });
+    }
+
+    return this.logger;
   }
 
   createFileSystem(): IFileSystem {
-    return this.container.getSync(Bindings.Factory.FileSystem).create();
+    return this.getContainer().getSync(Bindings.Factory.FileSystem).create();
   }
 
   createLogger(label: string): ILogger {
-    return this.logger.scope(label);
+    return this.getLogger().scope(label);
   }
 
-  mountInputFileSystem(input: IFileSystem): void {
-    this.logger.warn('Mounting an external file system as input space!');
+  mountInputFileSystem(fs: IFileSystem): void {
+    this.getLogger().warn('Mounting an external file system as input space!');
 
-    this.container.bind(Bindings.Provider.InputFileSystem).to(input);
+    this.getContainer().bind(Bindings.Provider.InputFileSystem).to(fs);
   }
 
   async generate(
     input: IGeneratorInput = {},
     generatorRef: string,
   ): Promise<IFileSystem> {
-    this.logger.time(Timings.OVERALL);
-    this.logger.start('Generate job starts');
+    this.getLogger().time(Timings.OVERALL);
+    this.getLogger().start('Generate job starts');
 
     try {
-      const output = await this.container
+      const output = await this.getContainer()
         .getSync(Bindings.Pipeline.Generator)
         .pipe({ reference: generatorRef, input });
-      this.logger.timeEnd(Timings.OVERALL);
-      this.logger.success('Generate job successful!');
+      this.getLogger().timeEnd(Timings.OVERALL);
+      this.getLogger().success('Generate job successful!');
 
       return output;
     } catch (error) {
       // Something went wrong while running the generator, maybe bad user input.
-      this.logger.fatal('Could not execute the generator job!');
+      this.getLogger().fatal('Could not execute the generator job!');
 
       throw error;
     }
@@ -78,17 +87,17 @@ export class Kernel implements IKernel {
       input = new Path(input);
     }
 
-    this.logger.time(Timings.OVERALL);
-    this.logger.start('Compiling from path', { path: input });
+    this.getLogger().time(Timings.OVERALL);
+    this.getLogger().start('Compiling from path', { path: input });
 
     // Register the debug helper to track the compilation.
-    this.container.getSync(Bindings.Components.DebugHelper).register();
+    this.getContainer().getSync(Bindings.Components.DebugHelper).register();
     try {
-      const output = await this.container
+      const output = await this.getContainer()
         .getSync(Bindings.Pipeline.Compiler)
         .pipe({ input, backendRefs });
-      this.logger.timeEnd(Timings.OVERALL);
-      this.logger.success('Compilation successful!');
+      this.getLogger().timeEnd(Timings.OVERALL);
+      this.getLogger().success('Compilation successful!');
 
       return output;
     } catch (error) {
@@ -96,7 +105,7 @@ export class Kernel implements IKernel {
       // report if possible and notify the user about
       // the fatal error, then throw it to propagate
       // to the implementer's error handler.
-      this.logger.fatal('Could not compile the input!');
+      this.getLogger().fatal('Could not compile the input!');
 
       throw error;
     }

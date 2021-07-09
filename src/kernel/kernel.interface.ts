@@ -1,9 +1,15 @@
+import { Container } from '../components/container/container';
 import { IFileSystem } from '../components/file-system';
 import { IGeneratorInput } from '../components/generator/generator-input.interface';
 import { ILogger } from '../components/logger/interfaces/logger.interface';
 import { IPath } from '../components/models/interfaces/path.interface';
 
 export interface IKernel {
+  /**
+   * Public access to the dependency container to allow the injection of custom components.
+   */
+  getContainer(): Container;
+
   /**
    * Create an empty virtual file system, useful for input handling.
    *
