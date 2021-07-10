@@ -3,8 +3,8 @@ import { Inject } from '../container/decorators/inject.decorator';
 import { Events } from '../event-handler/events';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { INode } from '../models/interfaces/node.interface';
 import { IToken } from '../models/interfaces/token.interface';
 import { Node } from '../models/node';
@@ -12,20 +12,13 @@ import { ILexer } from './interfaces/lexer.interface';
 import { IPipe } from './interfaces/pipe.interface';
 
 export class LexerPipe implements IPipe<IToken, Promise<INode>> {
-  protected readonly logger: ILogger;
-
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Logger('LexerPipe') protected logger: ILogger,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly events: IEventEmitter,
     @Inject(Bindings.Collection.Lexer)
     protected readonly lexers: ILexer[],
-  ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  ) {}
 
   public async pipe(token: IToken): Promise<INode> {
     this.logger.time(Timings.LEXING);

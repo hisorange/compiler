@@ -7,8 +7,8 @@ import { Timings } from '../event-handler/timings';
 import { ParserException } from '../exceptions';
 import { Grammar } from '../iml/grammar';
 import { IGrammar } from '../iml/interfaces/grammar.interface';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
 import { IToken } from '../models/interfaces/token.interface';
@@ -21,19 +21,14 @@ import { IParserExceptionContext } from './interfaces/parser.exception-context';
 export class ParserPipe
   implements IPipe<ICollection<ICharacter>, Promise<IToken>>
 {
-  protected readonly logger: ILogger;
-
   public constructor(
-    @Inject(Bindings.Factory.Logger)
-    protected readonly loggerFactory: LoggerFactory,
+    @Logger('ParserPipe') protected logger: ILogger,
     @Inject(Bindings.Module.Handler)
     protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Container) protected readonly container: Container,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly event: IEventEmitter,
-  ) {
-    this.logger = loggerFactory.create({ label: 'Parser' });
-  }
+  ) {}
 
   async pipe(characters: ICollection<ICharacter>): Promise<IToken> {
     this.logger.time(Timings.PARSING);
@@ -101,7 +96,7 @@ export class ParserPipe
 
           this.logger.info('Initializing the tokenizer');
           const tknCls = frontendMod.meta.tokenizer;
-          const tokenizer = new tknCls(this.loggerFactory);
+          const tokenizer = new tknCls();
 
           grammar = new Grammar(frontendMod.meta.name, tokenizer);
           this.logger.success('Grammar is ready for parsing');

@@ -5,8 +5,8 @@ import { ReadEvent } from '../event-handler/events/read.event';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
 import { IFileSystem } from '../file-system';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { Character } from '../models/character';
 import { Collection } from '../models/collection.model';
 import { ICharacter } from '../models/interfaces/character.interface';
@@ -18,17 +18,13 @@ import { FileNotFoundExcetion } from './exceptions/file-not-found.exception';
 export class ReaderPipe
   implements IPipe<IPath, Promise<ICollection<ICharacter>>>
 {
-  protected readonly logger: ILogger;
-
   constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Logger('ReaderPipe') protected logger: ILogger,
     @Inject(Bindings.Provider.InputFileSystem)
     protected readonly fileSystem: IFileSystem,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly event: IEventEmitter,
-  ) {
-    this.logger = loggerFactory.create({ label: 'Reader' });
-  }
+  ) {}
 
   /**
    * Process the input path and create the linked list of characters from it.

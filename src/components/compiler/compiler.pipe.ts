@@ -6,8 +6,8 @@ import { Timings } from '../event-handler/timings';
 import { CompilerException } from '../exceptions/compiler.exception';
 import { IFileSystem } from '../file-system';
 import { ISymbol } from '../iml/interfaces/symbol.interface';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { IBackendMeta } from '../module-handler/decorators/backend.decorator';
 import { IBackend } from '../module-handler/interfaces/backend.interface';
 import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
@@ -22,10 +22,8 @@ type IBackendModule = IModule<IBackendMeta, IBackend>;
 export class CompilerPipe
   implements IPipe<ICompilerInput, Promise<IFileSystem>>
 {
-  protected readonly logger: ILogger;
-
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Logger('CompilerPipe') protected readonly logger: ILogger,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly eventEmitter: IEventEmitter,
     @Inject(Bindings.Provider.OutputFileSystem)
@@ -34,12 +32,7 @@ export class CompilerPipe
     protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
-  ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  ) {}
 
   public async pipe(input: ICompilerInput): Promise<IFileSystem> {
     const symbol = input.symbol;

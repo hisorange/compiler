@@ -1,20 +1,12 @@
-import { Bindings } from '../container/bindings';
-import { Inject } from '../container/decorators/inject.decorator';
-import { LoggerFactory } from '../logger';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { IEventEmitter } from './interfaces/event-emitter.interface';
 import CrispHooks = require('crisphooks');
 
 export class EventEmitter implements IEventEmitter {
   protected readonly engine = new CrispHooks();
-  protected readonly logger: ILogger;
 
-  constructor(@Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: this.constructor.name,
-    });
-  }
+  constructor(@Logger('EventEmitter') protected logger: ILogger) {}
 
   publish<T>(event: string, data: T = null) {
     this.logger.debug('Emitting', { event });

@@ -4,8 +4,8 @@ import { Events } from '../event-handler/events';
 import { IEventEmitter } from '../event-handler/interfaces/event-emitter.interface';
 import { Timings } from '../event-handler/timings';
 import { IFileSystem } from '../file-system';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { IKernelModuleManager } from '../module-handler/interfaces/kernel-module-manager.interface';
 import { ModuleType } from '../module-handler/module-type.enum';
 import { IPipe } from '../pipes/interfaces/pipe.interface';
@@ -16,10 +16,8 @@ import { IGeneratorJob } from './generator-job.interface';
 export class GeneratorPipe
   implements IPipe<IGeneratorJob, Promise<IFileSystem>>
 {
-  protected readonly logger: ILogger;
-
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Logger('GeneratorPipe') protected logger: ILogger,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly eventEmitter: IEventEmitter,
     @Inject(Bindings.Provider.OutputFileSystem)
@@ -28,12 +26,7 @@ export class GeneratorPipe
     protected readonly module: IKernelModuleManager,
     @Inject(Bindings.Components.Renderer)
     protected readonly renderer: IRenderer,
-  ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  ) {}
 
   public async pipe(job: IGeneratorJob): Promise<IFileSystem> {
     this.logger.time(Timings.COMPILING);

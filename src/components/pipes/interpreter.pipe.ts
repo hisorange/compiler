@@ -6,29 +6,22 @@ import { Timings } from '../event-handler/timings';
 import { ISymbolTable } from '../iml/interfaces/symbol-table.interface';
 import { ISymbol } from '../iml/interfaces/symbol.interface';
 import { Symbol } from '../iml/symbol';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { INode } from '../models/interfaces/node.interface';
 import { IInterpreter } from './interfaces/interpreter.interface';
 import { IPipe } from './interfaces/pipe.interface';
 
 export class InterpreterPipe implements IPipe<INode, Promise<ISymbol>> {
-  protected readonly logger: ILogger;
-
   public constructor(
-    @Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory,
+    @Logger('InterpreterPipe') protected logger: ILogger,
     @Inject(Bindings.Components.SymbolTable)
     protected readonly symbolTable: ISymbolTable,
     @Inject(Bindings.Components.EventEmitter)
     protected readonly events: IEventEmitter,
     @Inject(Bindings.Collection.Interpreter)
     protected readonly interpreters: IInterpreter[],
-  ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  ) {}
 
   public async pipe(node: INode): Promise<ISymbol> {
     this.logger.time(Timings.INTERPRETING);

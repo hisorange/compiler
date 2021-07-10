@@ -2,7 +2,7 @@ import { Bindings } from '../container/bindings';
 import { Container } from '../container/container';
 import { Inject } from '../container/decorators';
 import { ParserException } from '../exceptions';
-import { ILogger, LoggerFactory } from '../logger';
+import { ILogger, Logger } from '../logger';
 import { ICharacter, ICollection, Node } from '../models';
 import { Channel } from './channel';
 import { IFragmentParserResult } from './interfaces/fragment-parser-result.interface';
@@ -10,18 +10,11 @@ import { IFragmentParserSchema } from './interfaces/fragment-parser-schema.inter
 import { IFragmentParser } from './interfaces/fragment-parser.interface';
 
 export abstract class BaseParser {
-  protected readonly logger: ILogger;
-
   constructor(
     @Inject(Bindings.Container)
     protected readonly ctx: Container,
-    @Inject(Bindings.Factory.Logger)
-    loggerFactory: LoggerFactory,
-  ) {
-    this.logger = loggerFactory.create({
-      label: 'GrammarParser',
-    });
-  }
+    @Logger('BaseParser') protected logger: ILogger,
+  ) {}
 
   abstract getContextPrefix(): string;
   abstract register(): void;

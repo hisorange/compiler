@@ -5,7 +5,7 @@ import { ReferenceResolver } from '../container/forward-ref';
 import { Constructor } from '../container/interfaces';
 import { IEventEmitter } from '../event-handler';
 import { IFileSystem } from '../file-system';
-import { ILogger, LoggerFactory } from '../logger';
+import { ILogger, Logger } from '../logger';
 import {
   IKernelModuleManager,
   ITemplate,
@@ -21,20 +21,8 @@ import { IRenderer } from './interfaces/renderer.interface';
 const merge = require('deepmerge');
 
 export class Renderer implements IRenderer {
-  /**
-   * Own logger instance.
-   */
-  protected logger: ILogger;
   protected ctx: RenderContext;
-
-  /**
-   * Base directory on the output file system.
-   */
   protected _outputBaseDirectory: string = '/';
-
-  /**
-   * Base directory in the input / view file system.
-   */
   protected _inputBaseDirectory: string = '/';
   protected engines = new Map<string, IEngine>();
 
@@ -42,8 +30,7 @@ export class Renderer implements IRenderer {
    * @inheritdoc
    */
   constructor(
-    @Inject(Bindings.Factory.Logger)
-    loggerFactory: LoggerFactory,
+    @Logger('Renderer') protected logger: ILogger,
     @Inject(Bindings.Components.EventEmitter)
     readonly events: IEventEmitter,
     @Inject(Bindings.Provider.InputFileSystem)
@@ -53,13 +40,8 @@ export class Renderer implements IRenderer {
     @Inject(Bindings.Module.Handler)
     private module: IKernelModuleManager,
   ) {
-    // Create a new logger.
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-
     // Register the rendering engines.
-    this.engines.set('ejs', new EJSEngine(this.module));
+    this.engines.set('ejs', new EJSEngine(this.module)); // TODO: ctx tags
     this.logger.info('Renderer is ready!');
 
     this.ctx = new RenderContext({

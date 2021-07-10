@@ -1,21 +1,14 @@
-import { Bindings } from '../container/bindings';
-import { Inject } from '../container/decorators/inject.decorator';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { ISymbolId } from './interfaces/symbol-record.interface';
 import { ISymbolTable } from './interfaces/symbol-table.interface';
 import { ISymbol } from './interfaces/symbol.interface';
 
 export class SymbolTable implements ISymbolTable {
   protected readonly table = new Map<string, ISymbolId>();
-  protected readonly logger: ILogger;
   protected increment: number = 1;
 
-  constructor(@Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory) {
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  constructor(@Logger('SymbolTable') protected logger: ILogger) {}
 
   lookup(context: string): ISymbolId {
     context = context.toLowerCase();

@@ -1,7 +1,5 @@
-import { Bindings } from '../container/bindings';
-import { Inject } from '../container/decorators/inject.decorator';
 import { LexerException, ParserException } from '../exceptions';
-import { LoggerFactory } from '../logger';
+import { Logger } from '../logger';
 import { ILogger } from '../logger/interfaces/logger.interface';
 import { ICharacter } from '../models/interfaces/character.interface';
 import { ICollection } from '../models/interfaces/collection.interface';
@@ -11,18 +9,10 @@ import { IParser } from './interfaces/parser.interface';
 import { ITokenizer } from './interfaces/tokenizer.interface';
 
 export abstract class AbstractTokenizer implements ITokenizer {
-  protected readonly logger: ILogger;
   protected readonly symbolMap = new Map<string, IParser>();
   protected lastChar: ICharacter | null = null;
 
-  constructor(
-    @Inject(Bindings.Factory.Logger)
-    loggerFactory: LoggerFactory,
-  ) {
-    this.logger = loggerFactory.create({
-      label: [this.constructor.name],
-    });
-  }
+  constructor(@Logger('AbstractTokenizer') protected logger: ILogger) {}
 
   abstract prepare(): void;
 

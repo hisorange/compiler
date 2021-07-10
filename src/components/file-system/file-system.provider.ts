@@ -1,8 +1,6 @@
 import { Provider } from '@loopback/context';
-import { Bindings } from '../container/bindings';
-import { Inject } from '../container/decorators/inject.decorator';
+import { Logger } from '../logger/decorators/logger.decorator';
 import { ILogger } from '../logger/interfaces/logger.interface';
-import { LoggerFactory } from '../logger/logger.factory';
 import { FileSystem } from './file-system';
 import { IFileSystem } from './file-system.interface';
 
@@ -11,18 +9,9 @@ import { IFileSystem } from './file-system.interface';
  */
 export class FileSystemProvider implements Provider<IFileSystem> {
   /**
-   * Custom logger to track the volume creations.
-   */
-  protected readonly logger: ILogger;
-
-  /**
    * Creates an instance of FileSystemProvider.
    */
-  constructor(@Inject(Bindings.Factory.Logger) loggerFactory: LoggerFactory) {
-    this.logger = loggerFactory.create({
-      label: ['FileSystem'],
-    });
-  }
+  constructor(@Logger('FileSystem') protected readonly logger: ILogger) {}
 
   value(): IFileSystem {
     this.logger.info('New volume has been created!');
